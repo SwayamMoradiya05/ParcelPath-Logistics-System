@@ -1,0 +1,294 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Customer Dashboard | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-3 mb-4">
+
+                {% include "customers/sidebar.html" %}
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+
+                        <h2 class="fw-bold mb-1">
+                            Customer Dashboard
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Welcome back, {{ request.user.first_name }}.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Statistics -->
+
+                <div class="row g-4 mb-5">
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="card dashboard-card h-100">
+
+                            <div class="card-body text-center p-4">
+
+                                <div class="dashboard-icon mx-auto mb-3">
+                                    <i class="bi bi-box-seam"></i>
+                                </div>
+
+                                <h2 class="stat-number">
+                                    {{ total_shipments }}
+                                </h2>
+
+                                <p class="stat-title mb-0">
+                                    Total Shipments
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="card dashboard-card h-100">
+
+                            <div class="card-body text-center p-4">
+
+                                <div class="dashboard-icon mx-auto mb-3 text-success bg-success-subtle">
+                                    <i class="bi bi-truck"></i>
+                                </div>
+
+                                <h2 class="stat-number">
+                                    {{ in_transit_shipments }}
+                                </h2>
+
+                                <p class="stat-title mb-0">
+                                    In Transit
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="card dashboard-card h-100">
+
+                            <div class="card-body text-center p-4">
+
+                                <div class="dashboard-icon mx-auto mb-3 text-info bg-info-subtle">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+
+                                <h2 class="stat-number">
+                                    {{ delivered_shipments }}
+                                </h2>
+
+                                <p class="stat-title mb-0">
+                                    Delivered
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="card dashboard-card h-100">
+
+                            <div class="card-body text-center p-4">
+
+                                <div class="dashboard-icon mx-auto mb-3 text-warning bg-warning-subtle">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+
+                                <h2 class="stat-number">
+                                    {{ pending_shipments }}
+                                </h2>
+
+                                <p class="stat-title mb-0">
+                                    Pending
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Recent Shipments -->
+
+                <div class="dashboard-table">
+
+                    <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
+
+                        <h4 class="fw-bold mb-0">
+
+                            Recent Shipments
+
+                        </h4>
+
+                        <a href="{% url 'shipments:shipment_list' %}"
+                           class="btn btn-primary btn-sm">
+
+                            View All
+
+                        </a>
+
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="table align-middle mb-0">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Tracking ID</th>
+                                    <th>Receiver</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Action</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                {% for shipment in recent_shipments %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <strong>
+
+                                            {{ shipment.tracking_number }}
+
+                                        </strong>
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ shipment.receiver_name }}
+
+                                    </td>
+
+                                    <td>
+
+                                        {% if shipment.status == "DELIVERED" %}
+
+                                            <span class="badge bg-success">
+
+                                                Delivered
+
+                                            </span>
+
+                                        {% elif shipment.status == "PENDING" %}
+
+                                            <span class="badge bg-warning text-dark">
+
+                                                Pending
+
+                                            </span>
+
+                                        {% elif shipment.status == "CANCELLED" %}
+
+                                            <span class="badge bg-danger">
+
+                                                Cancelled
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge bg-primary">
+
+                                                {{ shipment.get_status_display }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+
+                                        {{ shipment.created_at|date:"d M Y" }}
+
+                                    </td>
+
+                                    <td class="text-end">
+
+                                        <a href="{% url 'shipments:shipment_detail' shipment.id %}"
+                                           class="btn btn-outline-primary btn-sm">
+
+                                            <i class="bi bi-eye"></i>
+
+                                            View
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+
+                                    <td colspan="5" class="text-center py-5 text-muted">
+
+                                        <i class="bi bi-box-seam display-6 d-block mb-3"></i>
+
+                                        No shipments found.
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

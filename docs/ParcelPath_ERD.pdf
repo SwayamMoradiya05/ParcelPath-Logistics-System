@@ -1,0 +1,111 @@
+                                    +----------------------+
+                                    |        USER          |
+                                    +----------------------+
+                                    | id (PK)             |
+                                    | first_name          |
+                                    | last_name           |
+                                    | email              |
+                                    | phone              |
+                                    | role               |
+                                    | profile_picture    |
+                                    | address            |
+                                    | city               |
+                                    | state              |
+                                    | country            |
+                                    | postal_code        |
+                                    +----------+---------+
+                                               |
+                    +--------------------------+--------------------------+
+                    |                                                     |
+              One-to-One                                           One-to-One
+                    |                                                     |
+                    |                                                     |
+         +----------v---------+                              +------------v-----------+
+         |     CUSTOMER       |                              |        DRIVER          |
+         +--------------------+                              +------------------------+
+         | id (PK)           |                              | id (PK)               |
+         | customer_id       |                              | driver_id             |
+         | user_id (FK)      |                              | user_id (FK)          |
+         | company_name      |                              | vehicle_number        |
+         | gst_number        |                              | vehicle_type          |
+         | city              |                              | license_number        |
+         | total_shipments   |                              | status               |
+         +---------+---------+                              +-----------+-----------+
+                   |                                                    |
+                   | One                                               | One
+                   |                                                    |
+                   |                                                    |
+              Many |                                               Many |
+                   |                                                    |
+         +---------v-------------------------------------------+--------v-----------+
+         |                    SHIPMENT                         |
+         +-----------------------------------------------------+
+         | id (PK)                                            |
+         | tracking_number                                    |
+         | customer_id (FK)                                   |
+         | driver_id (FK)                                     |
+         | created_by (FK → User)                             |
+         | sender_name                                        |
+         | receiver_name                                      |
+         | package_type                                       |
+         | weight                                             |
+         | shipping_cost                                      |
+         | status                                             |
+         | expected_delivery                                  |
+         +-----------+-----------------------------+-----------+
+                     |                             |
+                     | One                         | One
+                     |                             |
+                Many |                        Optional
+                     |                             |
+      +--------------v-----------+          +------v------+
+      |    TRACKING EVENT        |          |   ROUTE     |
+      +--------------------------+          +-------------+
+      | id (PK)                  |          | id (PK)     |
+      | shipment_id (FK)         |          | origin      |
+      | updated_by (FK → User)   |          | destination |
+      | location                 |          | distance    |
+      | status                   |          +-------------+
+      | created_at               |
+      +--------------------------+
+
+
+
+
+             USER
+               |
+             One
+               |
+            Many
+               |
+      +--------v-----------+
+      |   NOTIFICATION     |
+      +--------------------+
+      | id (PK)            |
+      | user_id (FK)       |
+      | title              |
+      | message            |
+      | is_read            |
+      +--------------------+
+
+
+
+
+             USER
+               |
+             One
+               |
+            Many
+               |
+      +--------v-----------+
+      |      CONTACT       |
+      +--------------------+
+      | id (PK)            |
+      | user_id (FK)       |
+      | name               |
+      | email              |
+      | subject            |
+      | message            |
+      | category           |
+      | status             |
+      +--------------------+

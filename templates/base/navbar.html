@@ -1,0 +1,260 @@
+{% load static %}
+
+<!-- ======================================================
+                    TOP INFORMATION BAR
+======================================================= -->
+
+<div class="parcel-topbar">
+
+    <div class="container">
+
+        <div class="parcel-topbar-wrapper">
+
+            <div class="parcel-topbar-left">
+
+                <span>
+
+                    <i class="bi bi-shield-check me-2"></i>
+
+                    Fast. Reliable. Secure Logistics Solutions
+
+                </span>
+
+            </div>
+
+            <div class="parcel-topbar-right">
+
+                <span>
+
+                    <i class="bi bi-geo-alt-fill me-2"></i>
+
+                    Ahmedabad, Gujarat, India
+
+                </span>
+
+                <span>
+
+                    <i class="bi bi-telephone-fill me-2"></i>
+
+                    +91 93285 47380
+                </span>
+
+                <span>
+
+                    <i class="bi bi-envelope-fill me-2"></i>
+
+                    support@parcelpath.com
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ======================================================
+                        NAVBAR
+======================================================= -->
+
+<nav class="navbar navbar-expand-lg parcel-navbar sticky-top">
+
+    <div class="container">
+
+        <!-- ================= LOGO ================= -->
+
+            <a href="{% url 'home' %}" class="navbar-brand parcel-brand">
+
+                <img
+                    src="{% static 'images/logos/Nav_logo.png' %}"
+                    alt="ParcelPath"
+                    class="parcel-brand-logo">
+
+            </a>
+
+        <!-- ================= MOBILE TOGGLE ================= -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <!-- ================= MENU ================= -->
+
+        <div
+            class="collapse navbar-collapse parcel-navbar-content"
+            id="navbarMain">
+
+            <ul class="navbar-nav mx-auto parcel-navigation">
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="nav-link active">
+
+                        Home
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'about' %}"
+                        class="nav-link">
+
+                        About
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'services' %}"
+                        class="nav-link">
+
+                        Services
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'pricing' %}"
+                        class="nav-link">
+
+                        Pricing
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'tracking:track' %}"
+                        class="nav-link">
+
+                        Track Parcel
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="{% url 'contact' %}"
+                        class="nav-link">
+
+                        Contact
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+            <!-- ================= RIGHT SIDE ================= -->
+
+            <div class="parcel-navbar-actions">
+
+                {% if user.is_authenticated %}
+
+                <div class="dropdown">
+
+                    <a
+                        href="#"
+                        class="parcel-user-btn dropdown-toggle"
+                        data-bs-toggle="dropdown">
+
+                        <i class="bi bi-person-circle me-2"></i>
+
+                        {{ user.get_full_name|default:user.username }}
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'dashboard:dashboard' %}">
+
+                                <i class="bi bi-speedometer2 me-2"></i>
+
+                                Dashboard
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <hr class="dropdown-divider">
+
+                        </li>
+
+                        <li>
+
+                            <a
+                                class="dropdown-item text-danger"
+                                href="{% url 'accounts:logout' %}">
+
+                                <i class="bi bi-box-arrow-right me-2"></i>
+
+                                Logout
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                {% else %}
+
+                <a
+                    href="{% url 'accounts:login' %}"
+                    class="parcel-login-btn">
+
+                    <i class="bi bi-person-circle me-2"></i>
+
+                    Login
+
+                </a>
+
+                <a
+                    href="{% url 'accounts:register' %}"
+                    class="parcel-register-btn">
+
+                    <i class="bi bi-person-plus-fill me-2"></i>
+
+                    Register
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

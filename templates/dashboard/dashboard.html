@@ -1,0 +1,694 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Admin Dashboard | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<div class="dashboard-header mb-4">
+
+<div>
+
+<h2 class="fw-bold mb-1">
+Admin Dashboard
+</h2>
+
+<p class="text-muted mb-0">
+Welcome to ParcelPath Management System
+</p>
+
+</div>
+
+<div>
+
+<a
+href="{% url 'shipments:shipment_create' %}"
+class="btn dashboard-btn">
+
+<i class="bi bi-plus-circle me-2"></i>
+
+Create Shipment
+
+</a>
+
+</div>
+
+</div>
+
+<!-- ============================= -->
+<!-- Shipment Statistics -->
+<!-- ============================= -->
+
+<div class="row g-4">
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-box-seam display-5 text-primary"></i>
+
+<h2 class="mt-3">
+
+{{ total_shipments|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Total Shipments
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-hourglass-split display-5 text-warning"></i>
+
+<h2 class="mt-3">
+
+{{ pending|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Pending
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-person-check display-5 text-info"></i>
+
+<h2 class="mt-3">
+
+{{ pickup_assigned|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Pickup Assigned
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-truck display-5 text-primary"></i>
+
+<h2 class="mt-3">
+
+{{ transit|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+In Transit
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-geo-alt-fill display-5 text-warning"></i>
+
+<h2 class="mt-3">
+
+{{ out_for_delivery|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Out For Delivery
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-check-circle-fill display-5 text-success"></i>
+
+<h2 class="mt-3">
+
+{{ delivered|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Delivered
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-x-circle-fill display-5 text-danger"></i>
+
+<h2 class="mt-3">
+
+{{ cancelled|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Cancelled
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-arrow-counterclockwise display-5 text-secondary"></i>
+
+<h2 class="mt-3">
+
+{{ returned|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Returned
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ============================= -->
+<!-- Driver & Revenue Cards -->
+<!-- ============================= -->
+
+<div class="row g-4 mt-1">
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-people-fill display-5 text-success"></i>
+
+<h2 class="mt-3">
+
+{{ total_customers|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Customers
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-truck display-5 text-warning"></i>
+
+<h2 class="mt-3">
+
+{{ total_drivers|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Drivers
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-patch-check-fill display-5 text-primary"></i>
+
+<h2 class="mt-3">
+
+{{ verified_drivers|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Verified Drivers
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-body text-center">
+
+<i class="bi bi-currency-rupee display-5 text-success"></i>
+
+<h2 class="mt-3">
+
+₹{{ total_revenue|default:"0" }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Revenue
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ============================= -->
+<!-- Recent Shipments -->
+<!-- ============================= -->
+
+<div class="card dashboard-table-card border-0 mt-5">
+
+<div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+
+<h4 class="mb-0">
+Recent Shipments
+</h4>
+
+<a
+href="{% url 'shipments:shipment_list' %}"
+class="btn btn-sm btn-outline-primary">
+
+View All
+
+</a>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover dashboard-table align-middle mb-0">
+
+<thead class="table-light">
+
+<tr>
+
+<th>Tracking</th>
+<th>Customer</th>
+<th>Driver</th>
+<th>Status</th>
+<th>Expected Delivery</th>
+<th class="text-center">Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for shipment in recent_shipments %}
+
+<tr>
+
+<td>
+
+<strong>
+
+{{ shipment.tracking_number }}
+
+</strong>
+
+</td>
+
+<td>
+
+{{ shipment.customer }}
+
+</td>
+
+<td>
+
+{% if shipment.driver %}
+
+{{ shipment.driver.user.get_full_name|default:shipment.driver.user.username }}
+
+{% else %}
+
+<span class="text-muted">
+
+Not Assigned
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if shipment.status == "DELIVERED" %}
+
+<span class="badge bg-success">
+
+{% elif shipment.status == "IN_TRANSIT" %}
+
+<span class="badge bg-info">
+
+{% elif shipment.status == "OUT_FOR_DELIVERY" %}
+
+<span class="badge bg-warning text-dark">
+
+{% elif shipment.status == "PICKUP_ASSIGNED" %}
+
+<span class="badge bg-primary">
+
+{% elif shipment.status == "PICKED_UP" %}
+
+<span class="badge bg-secondary">
+
+{% elif shipment.status == "CANCELLED" %}
+
+<span class="badge bg-danger">
+
+{% elif shipment.status == "RETURNED" %}
+
+<span class="badge bg-dark">
+
+{% else %}
+
+<span class="badge bg-light text-dark">
+
+{% endif %}
+
+{{ shipment.get_status_display }}
+
+</span>
+
+</td>
+
+<td>
+
+{{ shipment.expected_delivery|default:"-" }}
+
+</td>
+
+<td class="text-center">
+
+<a
+href="{% url 'shipments:shipment_detail' shipment.pk %}"
+class="btn btn-sm dashboard-outline-btn"
+
+<i class="bi bi-eye"></i>
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6" class="text-center py-5">
+
+<div class="py-4">
+
+    <i class="bi bi-box display-5 text-secondary"></i>
+
+    <h5 class="mt-3">
+
+        No Shipments Found
+
+    </h5>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ============================= -->
+<!-- Tracking & Notifications -->
+<!-- ============================= -->
+
+<div class="row mt-5">
+
+<div class="col-lg-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-header dashboard-card-header">
+
+<h5 class="mb-0">
+
+Recent Tracking Updates
+
+</h5>
+
+</div>
+
+<ul class="list-group list-group-flush">
+
+{% for event in recent_tracking %}
+
+<li class="list-group-item">
+
+<div class="fw-semibold">
+
+{{ event.shipment.tracking_number }}
+
+</div>
+
+<div>
+
+{{ event.get_status_display }}
+
+</div>
+
+<small class="text-muted">
+
+{{ event.location }}
+
+<br>
+
+{{ event.created_at|date:"d M Y H:i" }}
+
+</small>
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item text-center py-4">
+
+<div class="py-4 text-center">
+
+    <i class="bi bi-clock-history display-5 text-secondary"></i>
+
+    <h5 class="mt-3">
+
+        No Tracking Updates
+
+    </h5>
+
+</div>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="col-lg-6">
+
+<div class="card dashboard-stat-card border-0 h-100">
+
+<div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+
+<h5 class="mb-0">
+
+Notifications
+
+</h5>
+
+<span class="badge bg-danger">
+
+{{ unread_notifications }}
+
+</span>
+
+</div>
+
+<ul class="list-group list-group-flush">
+
+{% for notification in recent_notifications %}
+
+<li class="list-group-item">
+
+<div>
+
+{{ notification.message }}
+
+</div>
+
+<small class="text-muted">
+
+{{ notification.created_at|timesince }} ago
+
+</small>
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item text-center py-4">
+
+<div class="py-4 text-center">
+
+    <i class="bi bi-bell display-5 text-secondary"></i>
+
+    <h5 class="mt-3">
+
+        No Notifications
+
+    </h5>
+
+</div>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

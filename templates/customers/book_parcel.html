@@ -1,0 +1,262 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Book Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                {% include "customers/sidebar.html" %}
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="card border-0 shadow-lg">
+
+                    <div class="card-header bg-white">
+
+                        <h3 class="mb-0">
+
+                            Book New Shipment
+
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body p-5">
+
+                        <form method="post">
+
+                            {% csrf_token %}
+
+                            <h5 class="fw-bold mb-4">
+
+                                Sender Information
+
+                            </h5>
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Sender Name
+
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="sender_name"
+                                        required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Mobile Number
+
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="sender_phone"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label class="form-label">
+
+                                    Pickup Address
+
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    rows="3"
+                                    name="pickup_address"
+                                    required></textarea>
+
+                            </div>
+
+                            <hr class="my-5">
+
+                            <h5 class="fw-bold mb-4">
+
+                                Receiver Information
+
+                            </h5>
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Receiver Name
+
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="receiver_name"
+                                        required>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+
+                                        Mobile Number
+
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="receiver_phone"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label class="form-label">
+
+                                    Delivery Address
+
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    rows="3"
+                                    name="delivery_address"
+                                    required></textarea>
+
+                            </div>
+
+                            <hr class="my-5">
+
+                            <h5 class="fw-bold mb-4">
+
+                                Parcel Details
+
+                            </h5>
+
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+
+                                        Weight (Kg)
+
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        step="0.1"
+                                        name="weight">
+
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+
+                                        Parcel Type
+
+                                    </label>
+
+                                    <select
+                                        class="form-select"
+                                        name="parcel_type">
+
+                                        <option>Documents</option>
+                                        <option>Electronics</option>
+                                        <option>Clothing</option>
+                                        <option>Fragile</option>
+                                        <option>Food</option>
+                                        <option>Others</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+
+                                    <label class="form-label">
+
+                                        Declared Value
+
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="declared_value">
+
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label class="form-label">
+
+                                    Parcel Description
+
+                                </label>
+
+                                <textarea
+                                    class="form-control"
+                                    rows="3"
+                                    name="description"></textarea>
+
+                            </div>
+
+                            <button
+                                class="btn btn-primary px-5">
+
+                                Book Shipment
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

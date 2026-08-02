@@ -1,0 +1,187 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+My Profile | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="profile-page py-5">
+
+    <div class="profile-bg-circle profile-bg-1"></div>
+
+    <div class="profile-bg-circle profile-bg-2"></div>
+
+    <div class="container">
+
+        <div class="row g-4 align-items-start justify-content-center">
+
+            <div class="col-xl-4 col-lg-5">
+
+                <div class="card profile-card border-0">
+
+                    <div class="card-body text-center profile-card-body">
+
+                        <div class="profile-avatar-wrapper">
+
+                            <img
+                                src="{% static 'images/avatar/default.png' %}"
+                                class="profile-avatar"
+                                alt="Profile">
+
+                        </div>
+
+                        <h3 class="profile-name">
+
+                            {{ request.user.get_full_name|default:request.user.username }}
+
+                        </h3>
+
+                        <p class="profile-email">
+
+                            {{ request.user.email }}
+
+                        </p>
+
+                        <a
+                            href="{% url 'accounts:edit_profile' %}"
+                            class="btn profile-edit-btn">
+
+                            <i class="bi bi-pencil-square me-2"></i>
+
+                            Edit Profile
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-8 col-lg-7">
+
+                <div class="card profile-info-card border-0">
+
+                    <div class="card-header profile-info-header">
+
+                        <h4 class="mb-0">
+
+                            <i class="bi bi-person-vcard-fill text-primary me-2"></i>
+
+                            Account Information
+
+                        </h4>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table profile-table align-middle mb-0">
+
+                            <tr>
+
+                                <th width="220">
+
+                                    <i class="bi bi-person-fill text-primary me-2"></i>
+
+                                    Full Name
+
+                                </th>   
+
+                                <td>
+
+                                    {{ request.user.get_full_name }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+
+                                    <i class="bi bi-at text-primary me-2"></i>
+
+                                    Username
+
+                                </th>
+
+                                <td>
+
+                                    {{ request.user.username }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+
+                                    <i class="bi bi-envelope-fill text-primary me-2"></i>
+
+                                    Email
+
+                                </th>
+
+                                <td>
+
+                                    {{ request.user.email }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+
+                                    <i class="bi bi-calendar-event text-primary me-2"></i>
+
+                                    Date Joined
+
+                                </th>
+
+                                <td>
+
+                                    {{ request.user.date_joined }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>
+
+                                    <i class="bi bi-clock-history text-primary me-2"></i>
+
+                                    Last Login
+
+                                </th>
+
+                                <td>
+
+                                    {{ request.user.last_login }}
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

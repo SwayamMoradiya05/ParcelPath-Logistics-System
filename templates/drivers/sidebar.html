@@ -1,0 +1,79 @@
+<div class="driver-sidebar">
+
+    <div class="driver-sidebar-header">
+
+        <div class="driver-sidebar-icon">
+
+            <i class="bi bi-truck"></i>
+
+        </div>
+
+        <h5 class="mb-1">
+
+            Driver Panel
+
+        </h5>
+
+        <p class="text-muted mb-0">
+
+            ParcelPath
+
+        </p>
+
+    </div>
+
+    <div class="list-group driver-sidebar-menu">
+
+        <a
+            href="{% url 'drivers:dashboard' %}"
+            class="list-group-item list-group-item-action driver-menu-item">
+
+            <i class="bi bi-speedometer2"></i>
+
+            <span>Dashboard</span>
+
+        </a>
+
+        <a
+            href="{% url 'drivers:deliveries' %}"
+            class="list-group-item list-group-item-action driver-menu-item">
+
+            <i class="bi bi-truck"></i>
+
+            <span>Assigned Deliveries</span>
+
+        </a>
+
+        <a
+            href="{% url 'drivers:route' %}"
+            class="list-group-item list-group-item-action driver-menu-item">
+
+            <i class="bi bi-geo-alt"></i>
+
+            <span>Today's Route</span>
+
+        </a>
+
+        <a
+            href="{% url 'drivers:history' %}"
+            class="list-group-item list-group-item-action driver-menu-item">
+
+            <i class="bi bi-clock-history"></i>
+
+            <span>Delivery History</span>
+
+        </a>
+
+        <a
+            href="{% url 'accounts:logout' %}"
+            class="list-group-item list-group-item-action driver-menu-item logout-item">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+</div>

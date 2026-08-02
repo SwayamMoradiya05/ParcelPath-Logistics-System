@@ -1,0 +1,141 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+System Settings | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white">
+
+<h3 class="mb-0">
+
+System Settings
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="post">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Company Name
+
+</label>
+
+<input
+type="text"
+class="form-control"
+name="company_name"
+value="{{ settings.company_name }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Support Email
+
+</label>
+
+<input
+type="email"
+class="form-control"
+name="support_email"
+value="{{ settings.support_email }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Support Phone
+
+</label>
+
+<input
+type="text"
+class="form-control"
+name="support_phone"
+value="{{ settings.support_phone }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Default Currency
+
+</label>
+
+<select
+class="form-select"
+name="currency">
+
+<option selected>
+
+INR
+
+</option>
+
+<option>
+
+USD
+
+</option>
+
+</select>
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Company Address
+
+</label>
+
+<textarea
+class="form-control"
+rows="4"
+name="address">{{ settings.address }}</textarea>
+
+</div>
+
+<button
+class="btn btn-primary px-5">
+
+Save Settings
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,280 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Shipment Details | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container">
+
+<div class="card shipment-detail-card border-0 mb-4">
+
+<div class="card-header shipment-detail-header">
+
+<div class="d-flex justify-content-between align-items-center flex-wrap">
+
+    <div>
+
+        <h3 class="mb-1">
+
+            <i class="bi bi-box-seam-fill text-primary me-2"></i>
+
+            Shipment Details
+
+        </h3>
+
+        <small class="text-muted">
+
+            Tracking #{{ shipment.tracking_number }}
+
+        </small>
+
+    </div>
+
+    <span class="badge shipment-detail-status">
+
+        {{ shipment.status }}
+
+    </span>
+
+</div>
+
+</div>
+
+<div class="card-body">
+
+<div class="row g-4">
+
+<div class="col-lg-6">
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+
+        Tracking Number
+
+    </span>
+
+    <h6>
+
+        {{ shipment.tracking_number }}
+
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Customer
+    </span>
+
+    <h6>
+        {{ shipment.customer }}
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Sender
+    </span>
+
+    <h6>
+        {{ shipment.sender_name }}
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Receiver
+    </span>
+
+    <h6>
+        {{ shipment.receiver_name }}
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Receiver Phone
+    </span>
+
+    <h6>
+        {{ shipment.receiver_phone }}
+    </h6>
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Status
+    </span>
+
+    <h6>
+
+        {% if shipment.status == "Delivered" %}
+            <span class="badge bg-success">Delivered</span>
+
+        {% elif shipment.status == "In Transit" %}
+            <span class="badge bg-primary">In Transit</span>
+
+        {% elif shipment.status == "Out For Delivery" %}
+            <span class="badge bg-warning text-dark">Out For Delivery</span>
+
+        {% elif shipment.status == "Cancelled" %}
+            <span class="badge bg-danger">Cancelled</span>
+
+        {% else %}
+            <span class="badge bg-secondary">{{ shipment.status }}</span>
+
+        {% endif %}
+
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Driver
+    </span>
+
+    <h6>
+        {{ shipment.driver }}
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Weight
+    </span>
+
+    <h6>
+        {{ shipment.weight }} Kg
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Total Amount
+    </span>
+
+    <h6 class="text-success">
+        ₹{{ shipment.total_amount }}
+    </h6>
+
+</div>
+
+<div class="shipment-info-item">
+
+    <span class="shipment-label">
+        Created
+    </span>
+
+    <h6>
+        {{ shipment.created_at }}
+    </h6>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<h5 class="timeline-title mb-4">
+
+<i class="bi bi-clock-history me-2"></i>
+
+Tracking Timeline
+
+</h5>
+
+<ul class="list-group">
+
+{% for event in tracking_events %}
+
+<li class="list-group-item shipment-timeline-item">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<strong>
+
+{{ event.status }}
+
+</strong>
+
+<br>
+
+<small>
+
+{{ event.location }}
+
+</small>
+
+</div>
+
+<div>
+
+{{ event.created_at }}
+
+</div>
+
+</div>
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item text-center py-5">
+
+<i class="bi bi-clock-history display-4 text-secondary"></i>
+
+<h5 class="mt-3">
+
+No Tracking Updates
+
+</h5>
+
+<p class="text-muted mb-0">
+
+Tracking history will appear here once shipment updates are available.
+
+</p>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

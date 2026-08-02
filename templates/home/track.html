@@ -1,0 +1,132 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Track Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+
+    <div class="container text-center">
+
+        <span class="text-primary fw-semibold">
+
+            TRACK SHIPMENT
+
+        </span>
+
+        <h1 class="display-5 fw-bold mt-3">
+
+            Real-Time Parcel Tracking
+
+        </h1>
+
+        <p class="lead text-muted">
+
+            Enter your tracking number to check the latest shipment status.
+
+        </p>
+
+    </div>
+
+</section>
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+                <div class="card border-0 shadow-lg">
+
+                    <div class="card-body p-5">
+
+                        <form method="get">
+
+                            <div class="input-group input-group-lg">
+
+                                <input
+                                    type="text"
+                                    name="tracking_number"
+                                    class="form-control"
+                                    placeholder="Enter Tracking Number">
+
+                                <button
+                                    class="btn btn-primary">
+
+                                    <i class="bi bi-search me-2"></i>
+
+                                    Track
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-5">
+
+                <h3 class="fw-bold mb-4">
+
+                    Shipment Timeline
+
+                </h3>
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item">
+                        ✔ Shipment Booked
+                    </li>
+
+                    <li class="list-group-item">
+                        ✔ Pickup Scheduled
+                    </li>
+
+                    <li class="list-group-item">
+                        ✔ Parcel Picked Up
+                    </li>
+
+                    <li class="list-group-item">
+                        ✔ In Transit
+                    </li>
+
+                    <li class="list-group-item text-muted">
+                        ○ Out For Delivery
+                    </li>
+
+                    <li class="list-group-item text-muted">
+                        ○ Delivered
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

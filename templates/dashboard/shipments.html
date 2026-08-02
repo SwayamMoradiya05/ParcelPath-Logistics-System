@@ -1,0 +1,117 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Shipment Management | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+<h3 class="mb-0">
+
+Shipment Management
+
+</h3>
+
+<div>
+
+<input
+type="text"
+class="form-control"
+placeholder="Search Shipment">
+
+</div>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle mb-0">
+
+<thead>
+
+<tr>
+
+<th>Tracking</th>
+<th>Customer</th>
+<th>Driver</th>
+<th>Status</th>
+<th>Created</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for shipment in shipments %}
+
+<tr>
+
+<td>{{ shipment.tracking_number }}</td>
+
+<td>{{ shipment.customer }}</td>
+
+<td>{{ shipment.driver }}</td>
+
+<td>
+
+<span class="badge bg-primary">
+
+{{ shipment.status }}
+
+</span>
+
+</td>
+
+<td>{{ shipment.created_at }}</td>
+
+<td>
+
+<a
+href="#"
+class="btn btn-sm btn-outline-primary">
+
+Manage
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6" class="text-center py-5">
+
+No shipment records available.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

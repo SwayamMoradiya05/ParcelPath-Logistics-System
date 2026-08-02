@@ -1,0 +1,93 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Destinations | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="fw-bold text-center mb-5">
+
+Service Destinations
+
+</h2>
+
+<div class="row g-4">
+
+{% for destination in destinations %}
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card border-0 shadow-sm h-100">
+
+<div class="card-body">
+
+<h5 class="fw-bold">
+
+{{ destination.city }}
+
+</h5>
+
+<p class="text-muted">
+
+{{ destination.state }}
+
+</p>
+
+<hr>
+
+<p>
+
+<strong>Estimated Delivery:</strong>
+
+{{ destination.delivery_days }} Days
+
+</p>
+
+<p>
+
+<strong>Service Type:</strong>
+
+{{ destination.service_type }}
+
+</p>
+
+<p>
+
+<strong>Coverage:</strong>
+
+{{ destination.coverage }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="col-12">
+
+<div class="alert alert-light text-center">
+
+No destinations available.
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

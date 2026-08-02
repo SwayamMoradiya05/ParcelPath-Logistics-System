@@ -1,0 +1,115 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Notifications | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-lg-3">
+
+{% include "customers/sidebar.html" %}
+
+</div>
+
+<div class="col-lg-9">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+<h3 class="mb-0">
+
+Notifications
+
+</h3>
+
+<a
+href="{% url 'notifications:clear' %}"
+class="btn btn-outline-danger btn-sm">
+
+Clear All
+
+</a>
+
+</div>
+
+<div class="list-group list-group-flush">
+
+{% for notification in notifications %}
+
+<div class="list-group-item">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<h6 class="mb-1">
+
+{{ notification.title }}
+
+</h6>
+
+<p class="mb-1 text-muted">
+
+{{ notification.message }}
+
+</p>
+
+<small>
+
+{{ notification.created_at }}
+
+</small>
+
+</div>
+
+{% if not notification.is_read %}
+
+<a
+href="{% url 'notifications:mark_read' notification.id %}"
+class="btn btn-sm btn-primary">
+
+Mark Read
+
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="text-center p-5">
+
+<h5>
+
+No notifications available.
+
+</h5>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

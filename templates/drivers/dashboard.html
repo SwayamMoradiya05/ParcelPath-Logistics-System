@@ -1,0 +1,428 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Driver Dashboard
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-lg-3">
+
+    {% include "drivers/sidebar.html" %}
+
+</div>
+
+<div class="col-lg-9">
+
+    <div class="driver-header mb-4">
+
+    <div class="d-lg-flex justify-content-between align-items-center">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="bi bi-truck-front-fill text-primary me-2"></i>
+
+                Welcome, {{ driver.user.first_name }}
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Manage your deliveries and assigned shipments.
+
+            </p>
+
+        </div>
+
+        <span class="badge driver-status-badge">
+
+            {{ driver.get_status_display }}
+
+        </span>
+
+    </div>
+
+</div>
+
+    <!-- Statistics Cards -->
+<div class="card-body text-center">
+
+    {% if driver.status == driver.Status.AVAILABLE %}
+
+        <div class="mb-3">
+
+            <i class="bi bi-check-circle-fill
+                      text-success display-4"></i>
+
+        </div>
+
+        <h4 class="fw-bold">
+
+            Available
+
+        </h4>
+
+        <p class="text-muted mb-4">
+
+            Ready to receive new shipment assignments.
+
+        </p>
+
+        <a
+            href="{% url 'drivers:toggle_availability' %}"
+            class="btn btn-outline-danger rounded-pill px-4">
+
+            <i class="bi bi-pause-circle me-2"></i>
+
+            Go Off Duty
+
+        </a>
+
+    {% elif driver.status == driver.Status.OFF_DUTY %}
+
+        <div class="mb-3">
+
+            <i class="bi bi-moon-stars-fill
+                      text-secondary display-4"></i>
+
+        </div>
+
+        <h4 class="fw-bold">
+
+            Off Duty
+
+        </h4>
+
+        <p class="text-muted mb-4">
+
+            You are currently unavailable for assignments.
+
+        </p>
+
+        <a
+            href="{% url 'drivers:toggle_availability' %}"
+            class="btn btn-success rounded-pill px-4">
+
+            <i class="bi bi-play-circle me-2"></i>
+
+            Go Available
+
+        </a>
+
+    {% elif driver.status == driver.Status.ON_DELIVERY %}
+
+        <div class="mb-3">
+
+            <i class="bi bi-truck text-primary display-4"></i>
+
+        </div>
+
+        <h4 class="fw-bold">
+
+            On Delivery
+
+        </h4>
+
+        <p class="text-muted">
+
+            Complete your assigned shipment first.
+
+        </p>
+
+        <button
+            class="btn btn-primary rounded-pill px-4"
+            disabled>
+
+            Delivering
+
+        </button>
+
+    {% else %}
+
+        <div class="mb-3">
+
+            <i class="bi bi-calendar-event
+                      text-warning display-4"></i>
+
+        </div>
+
+        <h4 class="fw-bold">
+
+            On Leave
+
+        </h4>
+
+        <p class="text-muted">
+
+            Contact administrator to resume work.
+
+        </p>
+
+        <button
+            class="btn btn-warning rounded-pill px-4"
+            disabled>
+
+            On Leave
+
+        </button>
+
+    {% endif %}
+
+</div>
+    
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card driver-stat-card border-0 text-center">
+                <div class="card-body">
+                    <h6>Pending Pickup</h6>
+                    <h2>{{ pending_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card driver-stat-card border-0 text-center">
+                <div class="card-body">
+                    <h6>In Transit</h6>
+                    <h2>{{ transit_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card driver-stat-card border-0 text-center">
+                <div class="card-body">
+                    <h6>Out For Delivery</h6>
+                    <h2>{{ out_delivery_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card driver-stat-card border-0 text-center">
+                <div class="card-body">
+                    <h6>Delivered</h6>
+                    <h2>{{ delivered_count }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Driver Information -->
+    <div class="card driver-info-card border-0 mb-4">
+
+        <div class="card-header driver-card-header">
+            <h5 class="mb-0">Driver Information</h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table driver-info-table align-middle mb-0">
+
+                <tr>
+                    <th width="30%">Driver ID</th>
+                    <td>{{ driver.driver_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Name</th>
+                    <td>{{ driver.user.full_name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ driver.user.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ driver.get_status_display }}</td>
+                </tr>
+
+                <tr>
+                    <th>Rating</th>
+                    <td>{{ driver.rating }}</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Type</th>
+                    <td>{{ driver.vehicle_type }}</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Number</th>
+                    <td>{{ driver.vehicle_number }}</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Model</th>
+                    <td>{{ driver.vehicle_model }}</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Capacity</th>
+                    <td>{{ driver.vehicle_capacity }} KG</td>
+                </tr>
+
+                <tr>
+                    <th>License Number</th>
+                    <td>{{ driver.license_number }}</td>
+                </tr>
+
+                <tr>
+                    <th>License Expiry</th>
+                    <td>{{ driver.license_expiry }}</td>
+                </tr>
+
+                <tr>
+                    <th>Verification</th>
+                    <td>
+                        {% if driver.is_verified %}
+
+                        <span class="badge bg-success driver-badge">
+
+                            <i class="bi bi-patch-check-fill me-1"></i>
+
+                            Verified
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger driver-badge">
+
+                            <i class="bi bi-x-circle-fill me-1"></i>
+
+                            Not Verified
+
+                        </span>
+
+                        {% endif %}
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Assigned Shipments -->
+    <div class="card driver-shipment-card border-0">
+
+        <div class="card-header driver-card-header">
+            <h5 class="mb-0">Assigned Shipments</h5>
+        </div>
+
+        <div class="card-body">
+
+            {% if assigned_shipments %}
+
+            <table class="table table-hover driver-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th>Tracking No.</th>
+                        <th>Customer</th>
+                        <th>Receiver</th>
+                        <th>Status</th>
+                        <th>Expected Delivery</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for shipment in assigned_shipments %}
+
+                    <tr>
+
+                        <td>{{ shipment.tracking_number }}</td>
+
+                        <td>{{ shipment.customer.user.full_name }}</td>
+
+                        <td>{{ shipment.receiver_name }}</td>
+
+                        <td>{{ shipment.get_status_display }}</td>
+
+                        <td>{{ shipment.expected_delivery }}</td>
+
+                        <td>
+
+    <a
+        href="{% url 'shipments:shipment_detail' shipment.pk %}"
+        class="btn btn-sm driver-view-btn">
+
+        View
+
+    </a>
+
+    {% if shipment.status != "DELIVERED" %}
+
+    <a
+        href="{% url 'shipments:driver_update_status' shipment.pk %}"
+        class="btn btn-sm driver-update-btn">
+
+        Update Status
+
+    </a>
+
+    {% endif %}
+
+</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                    <i class="bi bi-truck display-3 text-secondary"></i>
+
+                    <h4 class="mt-3">
+
+                        No Assigned Shipments
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Shipments assigned to you will appear here.
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>   <!-- col-lg-9 -->
+
+</div>   <!-- row -->
+
+</div>   <!-- container-fluid -->
+
+</section>
+
+{% endblock %}

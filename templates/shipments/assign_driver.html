@@ -1,0 +1,141 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Assign Driver
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h3>
+                        Assign Driver
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <h5 class="mb-3">
+                        Shipment Information
+                    </h5>
+
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th width="35%">Tracking Number</th>
+                            <td>{{ shipment.tracking_number }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Customer</th>
+                            <td>{{ shipment.customer.user.full_name }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Receiver</th>
+                            <td>{{ shipment.receiver_name }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>{{ shipment.get_status_display }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Expected Delivery</th>
+                            <td>{{ shipment.expected_delivery }}</td>
+                        </tr>
+
+                    </table>
+
+                    <hr>
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Select Driver
+
+                            </label>
+
+                            <select
+                                name="driver"
+                                class="form-select"
+                                required>
+
+                                <option value="">
+                                    -------- Select Driver --------
+                                </option>
+
+                                {% for driver in drivers %}
+
+                                <option value="{{ driver.id }}">
+
+                                    {{ driver.user.full_name }}
+                                    -
+                                    {{ driver.vehicle_number }}
+                                    -
+                                    {{ driver.vehicle_type }}
+
+                                </option>
+
+                                {% empty %}
+
+                                <option disabled>
+
+                                    No Available Drivers
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <a
+                                href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                                class="btn btn-secondary">
+
+                                Cancel
+
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+
+                                Assign Driver
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,683 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Track Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+
+<div class="container">
+
+    <!-- ================= HERO ================= -->
+
+    <div class="row justify-content-center mb-5">
+
+        <div class="col-lg-10">
+
+            <div class="card tracking-hero-card border-0 overflow-hidden">
+
+                <div class="card-body p-0">
+
+                    <div class="row g-0 align-items-center">
+
+                        <div class="col-lg-5 tracking-left-panel p-5">
+
+                            <div class="mb-4">
+
+                                <i class="bi bi-box-seam display-3"></i>
+
+                            </div>
+
+                            <h2 class="fw-bold mb-3">
+
+                                ParcelPath Tracking
+
+                            </h2>
+
+                            <p class="mb-0 opacity-75">
+
+                                Track your shipment instantly with your tracking
+                                number and receive the latest delivery updates.
+
+                            </p>
+
+                        </div>
+
+                        <div class="col-lg-7 tracking-right-panel p-5">
+
+                            <h4 class="fw-bold mb-4">
+
+                                Track Your Shipment
+
+                            </h4>
+
+                            <form method="get">
+
+                                <div class="input-group input-group-lg">
+
+                                    <input
+                                        type="text"
+                                        name="tracking_number"
+                                        class="form-control"
+                                        placeholder="Enter Tracking Number"
+                                        value="{{ shipment.tracking_number|default:'' }}"
+                                        required>
+
+                                    <button
+                                        class="btn btn-primary px-4"
+                                        type="submit">
+
+                                        <i class="bi bi-search me-2"></i>
+
+                                        Track
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <div class="row mt-4 text-center">
+
+                                <div class="col-4">
+
+                                    <i class="bi bi-lightning-charge-fill text-primary fs-3"></i>
+
+                                    <div class="small fw-semibold mt-2">
+
+                                        Fast Updates
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-4">
+
+                                    <i class="bi bi-shield-check text-success fs-3"></i>
+
+                                    <div class="small fw-semibold mt-2">
+
+                                        Secure Tracking
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-4">
+
+                                    <i class="bi bi-geo-alt-fill text-danger fs-3"></i>
+
+                                    <div class="small fw-semibold mt-2">
+
+                                        Live Status
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% if shipment %}
+
+    <!-- ================= SHIPMENT SUMMARY ================= -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3">
+
+            <div class="card summary-card border-0 text-center h-100">
+
+                <div class="card-body">
+
+                    <i class="bi bi-upc-scan display-6 text-primary"></i>
+
+                    <h6 class="text-muted mt-3">
+
+                        Tracking Number
+
+                    </h6>
+
+                    <h5 class="fw-bold">
+
+                        {{ shipment.tracking_number }}
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card summary-card border-0 text-center h-100">
+
+                <div class="card-body">
+
+                    <i class="bi bi-person-circle display-6 text-success"></i>
+
+                    <h6 class="text-muted mt-3">
+
+                        Receiver
+
+                    </h6>
+
+                    <h5 class="fw-bold">
+
+                        {{ shipment.receiver_name }}
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm text-center h-100">
+
+                <div class="card-body">
+
+                    <i class="bi bi-truck display-6 text-warning"></i>
+
+                    <h6 class="text-muted mt-3">
+
+                        Current Status
+
+                    </h6>
+
+                    {% if shipment.status == "DELIVERED" %}
+
+                        <span class="badge bg-success fs-6 px-3 py-2">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% elif shipment.status == "IN_TRANSIT" %}
+
+                        <span class="badge bg-primary fs-6 px-3 py-2">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% elif shipment.status == "OUT_FOR_DELIVERY" %}
+
+                        <span class="badge bg-info text-dark fs-6 px-3 py-2">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% elif shipment.status == "CANCELLED" %}
+
+                        <span class="badge bg-danger fs-6 px-3 py-2">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary fs-6 px-3 py-2">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3">
+
+            <div class="card border-0 shadow-sm text-center h-100">
+
+                <div class="card-body">
+
+                    <i class="bi bi-calendar-event display-6 text-danger"></i>
+
+                    <h6 class="text-muted mt-3">
+
+                        Expected Delivery
+
+                    </h6>
+
+                    <h6 class="fw-bold">
+
+                        {% if shipment.expected_delivery %}
+
+                            {{ shipment.expected_delivery }}
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+        <!-- ================= PROGRESS TRACKER ================= -->
+
+    <div class="card progress-card border-0 mb-5">
+
+        <div class="card-header bg-white border-0 py-4">
+
+            <h4 class="fw-bold mb-0">
+
+                <i class="bi bi-truck me-2 text-primary"></i>
+
+                Shipment Progress
+
+            </h4>
+
+        </div>
+
+        <div class="card-body px-lg-5 py-5">
+
+            <div class="position-relative">
+
+                <!-- Progress Line -->
+
+                <div class="position-absolute top-50 start-0 end-0 translate-middle-y"
+                     style="height:5px;background:#e9ecef;z-index:0;"></div>
+
+                <div class="row text-center position-relative"
+                     style="z-index:2;">
+
+                    <!-- Booked -->
+
+                    <div class="col">
+
+                        <div class="rounded-circle bg-success text-white mx-auto d-flex align-items-center justify-content-center"
+                             style="width:65px;height:65px;">
+
+                            <i class="bi bi-check-lg fs-3"></i>
+
+                        </div>
+
+                        <div class="fw-bold mt-3">
+
+                            Booked
+
+                        </div>
+
+                    </div>
+
+                    <!-- Confirmed -->
+
+                    <div class="col">
+
+                        {% if shipment.status == "PENDING" %}
+
+                            <div class="rounded-circle bg-light border mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-2-circle fs-3"></i>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="rounded-circle bg-success text-white mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-check-lg fs-3"></i>
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="fw-bold mt-3">
+
+                            Confirmed
+
+                        </div>
+
+                    </div>
+
+                    <!-- Picked Up -->
+
+                    <div class="col">
+
+                        {% if shipment.status == "PICKUP_ASSIGNED" or shipment.status == "PICKED_UP" or shipment.status == "IN_TRANSIT" or shipment.status == "OUT_FOR_DELIVERY" or shipment.status == "DELIVERED" %}
+
+                            <div class="rounded-circle bg-success text-white mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-box-seam fs-3"></i>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="rounded-circle bg-light border mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-box fs-3"></i>
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="fw-bold mt-3">
+
+                            Picked Up
+
+                        </div>
+
+                    </div>
+
+                    <!-- Transit -->
+
+                    <div class="col">
+
+                        {% if shipment.status == "IN_TRANSIT" or shipment.status == "OUT_FOR_DELIVERY" or shipment.status == "DELIVERED" %}
+
+                            <div class="rounded-circle bg-primary text-white mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-truck fs-3"></i>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="rounded-circle bg-light border mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-truck fs-3"></i>
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="fw-bold mt-3">
+
+                            In Transit
+
+                        </div>
+
+                    </div>
+
+                    <!-- Delivery -->
+
+                    <div class="col">
+
+                        {% if shipment.status == "OUT_FOR_DELIVERY" %}
+
+                            <div class="rounded-circle bg-warning text-dark mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-geo-alt fs-3"></i>
+
+                            </div>
+
+                        {% elif shipment.status == "DELIVERED" %}
+
+                            <div class="rounded-circle bg-success text-white mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-check2-all fs-3"></i>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="rounded-circle bg-light border mx-auto d-flex align-items-center justify-content-center"
+                                 style="width:65px;height:65px;">
+
+                                <i class="bi bi-geo-alt fs-3"></i>
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="fw-bold mt-3">
+
+                            Delivery
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr class="my-5">
+
+            <div class="text-center">
+
+                <h5 class="fw-bold">
+
+                    Current Shipment Status
+
+                </h5>
+
+                <div class="mt-3">
+
+                    {% if shipment.status == "DELIVERED" %}
+
+                        <span class="badge bg-success fs-5 px-4 py-3">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                            Delivered Successfully
+
+                        </span>
+
+                    {% elif shipment.status == "OUT_FOR_DELIVERY" %}
+
+                        <span class="badge bg-warning text-dark fs-5 px-4 py-3">
+
+                            <i class="bi bi-truck me-2"></i>
+
+                            Out For Delivery
+
+                        </span>
+
+                    {% elif shipment.status == "IN_TRANSIT" %}
+
+                        <span class="badge bg-primary fs-5 px-4 py-3">
+
+                            <i class="bi bi-arrow-repeat me-2"></i>
+
+                            Shipment In Transit
+
+                        </span>
+
+                    {% elif shipment.status == "CANCELLED" %}
+
+                        <span class="badge bg-danger fs-5 px-4 py-3">
+
+                            <i class="bi bi-x-circle-fill me-2"></i>
+
+                            Shipment Cancelled
+
+                        </span>
+
+                    {% elif shipment.status == "RETURNED" %}
+
+                        <span class="badge bg-secondary fs-5 px-4 py-3">
+
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>
+
+                            Shipment Returned
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-info text-dark fs-5 px-4 py-3">
+
+                            {{ shipment.get_status_display }}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+        <!-- ================= TRACKING HISTORY ================= -->
+
+    <div class="card history-card border-0 mb-5">
+
+        <div class="card-header bg-white border-0 py-4">
+
+            <h4 class="fw-bold mb-0">
+
+                <i class="bi bi-clock-history text-primary me-2"></i>
+
+                Tracking History
+
+            </h4>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            {% if tracking_events %}
+
+            <div class="timeline">
+
+                {% for event in tracking_events %}
+
+                <div class="timeline-item">
+
+                    <div class="timeline-icon">
+
+                        <i class="bi bi-geo-alt-fill"></i>
+
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <div class="card border-0 shadow-sm">
+
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+                                    <div>
+
+                                        <h5 class="fw-bold mb-2">
+
+                                            {{ event.status }}
+
+                                        </h5>
+
+                                        <p class="text-muted mb-2">
+
+                                            <i class="bi bi-geo-alt me-2 text-danger"></i>
+
+                                            {{ event.location }}
+
+                                        </p>
+
+                                        {% if event.description %}
+
+                                        <p class="mb-0">
+
+                                            {{ event.description }}
+
+                                        </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="text-end">
+
+                                        <span class="badge bg-light text-dark">
+
+                                            {{ event.created_at }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <i class="bi bi-box-seam display-1 text-secondary"></i>
+
+                <h4 class="mt-4">
+
+                    No Tracking Updates
+
+                </h4>
+
+                <p class="text-muted">
+
+                    Tracking events will appear here once your shipment starts moving.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,66 @@
+.form-card{
+    background:#fff;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:var(--shadow);
+}
+
+.form-title{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.form-label{
+    font-weight:600;
+    color:#495057;
+    margin-bottom:8px;
+}
+
+.form-control,
+.form-select{
+    height:50px;
+    border:1px solid #dee2e6;
+    border-radius:12px;
+    padding:10px 16px;
+    transition:.3s;
+    box-shadow:none;
+}
+
+textarea.form-control{
+    min-height:140px;
+    resize:vertical;
+}
+
+.form-control:focus,
+.form-select:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+.input-group-text{
+    border-radius:12px;
+    background:#f8f9fa;
+}
+
+.form-check-input{
+    width:18px;
+    height:18px;
+}
+
+.form-check-input:checked{
+    background:var(--primary);
+    border-color:var(--primary);
+}
+
+.required{
+    color:#dc3545;
+}
+
+.invalid-feedback{
+    font-size:13px;
+}
+
+.form-footer{
+    margin-top:30px;
+}

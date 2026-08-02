@@ -1,0 +1,82 @@
+<div class="list-group shadow-sm">
+
+    <a
+        href="{% url 'customers:dashboard' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-speedometer2 me-2"></i>
+
+        Dashboard
+
+    </a>
+
+  <a href="{% url 'shipments:shipment_create' %}"
+   class="list-group-item list-group-item-action">
+
+    <i class="bi bi-plus-circle me-2"></i>
+
+    Book Shipment
+
+</a>
+
+    <a
+        href="{% url 'shipments:shipment_list' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-box-seam me-2"></i>
+
+        My Shipments
+
+    </a>
+
+    <a
+        href="{% url 'tracking:tracking_list' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-geo-alt me-2"></i>
+
+        Track Shipment
+
+    </a>
+
+    <a
+        href="{% url 'notifications:list' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-bell me-2"></i>
+
+        Notifications
+
+    </a>
+
+    <a
+        href="{% url 'accounts:profile' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-person me-2"></i>
+
+        Profile
+
+    </a>
+
+    <a
+        href="{% url 'accounts:change_password' %}"
+        class="list-group-item list-group-item-action">
+
+        <i class="bi bi-key me-2"></i>
+
+        Change Password
+
+    </a>
+
+    <a
+        href="{% url 'accounts:logout' %}"
+        class="list-group-item list-group-item-action text-danger">
+
+        <i class="bi bi-box-arrow-right me-2"></i>
+
+        Logout
+
+    </a>
+
+</div>

@@ -1,0 +1,346 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Register | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7">
+
+                <div class="card shadow-lg border-0">
+
+                    <div class="card-body p-5">
+
+                        <div class="text-center mb-4">
+
+                            <h2 class="fw-bold">
+                                Create Account
+                            </h2>
+
+                            <p class="text-muted">
+                                Join ParcelPath today
+                            </p>
+
+                        </div>
+
+                        <!-- Success / Error Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert">
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- Form Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <form method="post" novalidate>
+
+                            {% csrf_token %}
+
+                            <!-- First Name + Last Name -->
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        First Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="first_name"
+                                        value="{{ form.first_name.value|default:'' }}"
+                                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                                        placeholder="Enter First Name"
+                                        required>
+
+                                    {% for error in form.first_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        Last Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="last_name"
+                                        value="{{ form.last_name.value|default:'' }}"
+                                        class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                                        placeholder="Enter Last Name"
+                                        required>
+
+                                    {% for error in form.last_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                            <!-- Email -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value="{{ form.email.value|default:'' }}"
+                                    class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                    placeholder="example@gmail.com"
+                                    required>
+
+                                {% for error in form.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                            <!-- Phone -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value="{{ form.phone.value|default:'' }}"
+                                    class="form-control {% if form.phone.errors %}is-invalid{% endif %}"
+                                    placeholder="9876543210"
+                                    required>
+
+                                {% for error in form.phone.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                            <!-- Role -->
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Account Type
+                                </label>
+
+                                <select
+                                    name="role"
+                                    class="form-select {% if form.role.errors %}is-invalid{% endif %}"
+                                    required>
+
+                                    <option value="">Select Role</option>
+
+                                    <option value="CUSTOMER"
+                                        {% if form.role.value == "CUSTOMER" %}selected{% endif %}>
+                                        Customer
+                                    </option>
+
+                                    <option value="DRIVER"
+                                        {% if form.role.value == "DRIVER" %}selected{% endif %}>
+                                        Driver
+                                    </option>
+
+                                </select>
+
+                                {% for error in form.role.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                                                        <!-- Password -->
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        Password
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <input
+                                            type="password"
+                                            id="password1"
+                                            name="password1"
+                                            class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                            required>
+
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            onclick="togglePassword('password1', this)">
+
+                                            👁
+
+                                        </button>
+
+                                    </div>
+
+                                    {% for error in form.password1.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label class="form-label">
+                                        Confirm Password
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <input
+                                            type="password"
+                                            id="password2"
+                                            name="password2"
+                                            class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                            required>
+
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            onclick="togglePassword('password2', this)">
+
+                                            👁
+
+                                        </button>
+
+                                    </div>
+
+                                    {% for error in form.password2.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                            <!-- Password Help -->
+
+                            <div class="alert alert-light border small">
+
+                                <strong>Password must contain:</strong>
+
+                                <ul class="mb-0 mt-2">
+
+                                    <li>Minimum 8 characters</li>
+
+                                    <li>Cannot be too similar to your personal information</li>
+
+                                    <li>Cannot be a common password</li>
+
+                                    <li>Cannot be entirely numeric</li>
+
+                                </ul>
+
+                            </div>
+
+                            <!-- Submit -->
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100 py-2">
+
+                                Create Account
+
+                            </button>
+
+                        </form>
+
+                        <hr>
+
+                        <p class="text-center mb-0">
+
+                            Already have an account?
+
+                            <a href="{% url 'accounts:login' %}">
+                                Login
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+function togglePassword(id, button){
+
+    const input = document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+        button.innerHTML = "🙈";
+
+    }else{
+
+        input.type = "password";
+
+        button.innerHTML = "👁";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

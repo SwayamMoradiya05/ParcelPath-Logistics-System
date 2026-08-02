@@ -1,0 +1,63 @@
+.table{
+    margin-bottom:0;
+    vertical-align:middle;
+}
+
+.table thead{
+    background:#f8f9fb;
+}
+
+.table th{
+    border-bottom:none;
+    color:#495057;
+    font-weight:600;
+    padding:16px;
+}
+
+.table td{
+    padding:16px;
+}
+
+.table-hover tbody tr{
+    transition:.25s;
+}
+
+.table-hover tbody tr:hover{
+    background:#f5f8ff;
+}
+
+.table-responsive{
+    border-radius:16px;
+}
+
+.badge{
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.status-booked{
+    background:#cff4fc;
+    color:#055160;
+}
+
+.status-transit{
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.status-delivered{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.status-cancelled{
+    background:#f8d7da;
+    color:#842029;
+}
+
+.table-actions{
+    display:flex;
+    gap:8px;
+}
