@@ -1,58 +1,131 @@
+# ==========================================================
+# ParcelPath - Django .gitignore
+# ==========================================================
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
 
 # Virtual Environment
 venv/
 env/
 ENV/
-
-# Django
-db.sqlite3
-media/
-staticfiles/
+.venv/
 
 # Environment Variables
 .env
 .env.*
 
-# VS Code
-.vscode/
+# Django
+db.sqlite3
+*.sqlite3
 
-# PyCharm
+# Django Logs
+*.log
+logs/
+
+# Static Files
+staticfiles/
+static_root/
+
+# Media Files
+media/*
+!media/.gitkeep
+!media/**/.gitkeep
+
+# IDEs
+.vscode/
 .idea/
 
-# Logs
-*.log
+# VS Code Workspace
+*.code-workspace
 
-# Coverage
+# PyCharm
+*.iml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Python Testing
+.pytest_cache/
 .coverage
 htmlcov/
-.pytest_cache/
+.tox/
+.nox/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Pyre
+.pyre/
+
+# Jupyter
+.ipynb_checkpoints/
 
 # Distribution
 build/
 dist/
 *.egg-info/
+.eggs/
 
-# OS Files
-.DS_Store
-Thumbs.db
+# Packaging
+pip-wheel-metadata/
 
-# Uploads
-static/uploads/
-
-# Node
-node_modules/
-
-# npm
-package-lock.json
-
-# Temporary
+# Temporary Files
 *.tmp
 *.bak
+*.swp
+*.swo
+*~
 
-# Migrations
-**/migrations/*.py
-!**/migrations/__init__.py
+# Generated PDFs (Optional)
+# Uncomment if labels/invoices are generated at runtime
+# *.pdf
+
+# Node (if ever used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local Configuration
+local_settings.py
+
+# Secrets
+secret_key.txt
+secrets.json
+
+# Backup Files
+*.old
+*.orig
+*.backup
+
+# OS Generated
+ehthumbs.db
+
+# Git
+.gitmodules
+
+# ==========================================================
+# Keep empty media folders
+# ==========================================================
+
+!media/documents/.gitkeep
+!media/drivers/.gitkeep
+!media/invoices/.gitkeep
+!media/parcel_images/.gitkeep
+!media/profile_pictures/.gitkeep
+!media/profiles/.gitkeep
+!media/proof_of_delivery/.gitkeep
+!media/shipping_labels/.gitkeep
+!media/signatures/.gitkeep
