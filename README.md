@@ -1,175 +1,217 @@
-# ParcelPath
+# 🚚 ParcelPath - Smart Logistics & Parcel Delivery System
 
-A production-ready Logistics, Courier, Shipment & Delivery Management System built with Django.
+# 📌 Overview
 
-ParcelPath is designed like a real logistics company software rather than a portfolio project. It supports customer shipment booking, driver management, shipment tracking, route planning, notifications, reporting, invoices, and an admin dashboard.
+ParcelPath is a full-stack logistics management system designed to streamline parcel shipping, driver assignment, shipment tracking, and customer management.
 
----
+The system supports three different user roles:
 
-# Features
+- 👨‍💼 Administrator
+- 👤 Customer
+- 🚚 Driver
 
-## Customer Portal
-
-- Register/Login
-- Dashboard
-- Book Shipment
-- Shipment History
-- Track Shipment
-- Notifications
-- Profile Management
+Each role has its own dashboard and permissions, ensuring secure and efficient management of logistics operations.
 
 ---
 
-## Driver Portal
+# ✨ Features
 
-- Driver Dashboard
-- Assigned Deliveries
-- Delivery History
-- Route Management
-- Update Shipment Status
-- Upload Delivery Proof
-
----
-
-## Admin Dashboard
+## 👨‍💼 Administrator
 
 - Dashboard Analytics
 - Customer Management
 - Driver Management
 - Shipment Management
-- Tracking Management
 - Route Management
-- Reports
-- Notifications
-- Settings
+- Driver Assignment
+- Shipment Status Updates
+- Contact Request Management
+- Notification Management
+- Shipment Labels
+- Driver Availability Monitoring
 
 ---
 
-## Shipment Management
+## 👤 Customer
 
-- Create Shipment
-- Assign Driver
-- Generate Tracking Number
-- Generate Invoice
-- Print Shipping Label
-- Shipment Timeline
-- Delivery Status
+- User Registration
+- Secure Login
+- Customer Dashboard
+- Create Shipments
+- Shipment Tracking
+- Shipment History
+- Profile Management
+- Contact Support
 
 ---
 
-## Tracking System
+## 🚚 Driver
 
-- Public Tracking
-- Live Shipment Updates
-- Tracking Timeline
+- Driver Dashboard
+- Assigned Shipments
+- Update Shipment Status
 - Delivery History
+- Revenue Statistics
+- Toggle Availability
+- Profile Management
+
+Driver Availability:
+
+- ✅ Available
+- 🚚 On Delivery
+- 🌙 Off Duty
+- 🌴 On Leave
+
+Drivers marked as **Off Duty**, **On Leave**, or **On Delivery** are automatically excluded from shipment assignment.
 
 ---
 
-## Route Management
+# 📦 Shipment Workflow
 
-- Create Routes
-- Assign Drivers
-- Route Overview
-- Stop Management
-
----
-
-## Notification System
-
-- Shipment Created
-- Driver Assigned
-- Out for Delivery
-- Delivered
-- Failed Delivery
-- System Notifications
-
----
-
-## Reports
-
-- Shipment Reports
-- Delivery Reports
-- Revenue Reports
-- Driver Reports
-- Customer Reports
+```text
+Shipment Created
+        │
+        ▼
+Pickup Assigned
+        │
+        ▼
+Picked Up
+        │
+        ▼
+In Transit
+        │
+        ▼
+Arrived at Hub
+        │
+        ▼
+Out For Delivery
+        │
+        ▼
+Delivered
+```
 
 ---
 
-# Tech Stack
+# 🏗 Project Structure
 
-Backend
+```text
+ParcelPath/
 
+├── apps/
+│   ├── accounts/
+│   ├── contact/
+│   ├── customers/
+│   ├── dashboard/
+│   ├── destinations/
+│   ├── drivers/
+│   ├── notifications/
+│   ├── routes/
+│   ├── shipments/
+│   └── tracking/
+│
+├── config/
+├── docs/
+├── media/
+├── static/
+├── templates/
+│
+├── requirements.txt
+├── manage.py
+└── README.md
+```
+
+---
+
+# 🛠 Technology Stack
+
+## Backend
+
+- Python
 - Django
-- SQLite
-- Django ORM
 
-Frontend
+## Frontend
 
 - HTML5
 - CSS3
 - Bootstrap 5
 - JavaScript
 
-Libraries
+## Database
 
-- Pillow
-- ReportLab
-- QRCode
-- Pandas
-- OpenPyXL
-- Channels
+- SQLite (Development)
 
-Deployment Ready
+## Version Control
 
-- Gunicorn
-- WhiteNoise
-- PostgreSQL Ready
-- Docker Ready
+- Git
+- GitHub
 
 ---
 
-# Project Structure
+# 🔐 User Roles
+
+| Role | Access |
+|------|--------|
+| Administrator | Full System Access |
+| Customer | Shipment Management & Tracking |
+| Driver | Assigned Deliveries & Status Updates |
+
+---
+
+# 📊 Major Modules
+
+- Authentication
+- Customer Management
+- Driver Management
+- Shipment Management
+- Route Management
+- Tracking System
+- Notification System
+- Contact Management
+- Dashboard Analytics
+
+---
+
+# 📷 Screenshots
+
+Create a folder named:
 
 ```
-ParcelPath/
+screenshots/
+```
 
-accounts/
-customers/
-drivers/
-shipments/
-tracking/
-dashboard/
-notifications/
-routes/
-contact/
-destinations/
-core/
+Recommended screenshots:
 
-templates/
+- Home Page
+- Admin Dashboard
+- Customer Dashboard
+- Driver Dashboard
+- Shipment Tracking
+- Shipment Details
+- Admin Panel
+- Contact Page
 
-static/
+Example:
 
-media/
-
-config/
-
-manage.py
-requirements.txt
-README.md
+```text
+screenshots/
+    home.png
+    admin_dashboard.png
+    customer_dashboard.png
+    driver_dashboard.png
+    tracking.png
 ```
 
 ---
 
-# Installation
+# 🚀 Installation
 
-Clone repository
+Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/ParcelPath.git
+git clone https://github.com/YOUR_USERNAME/ParcelPath.git
 ```
 
-Move inside project
+Navigate into the project
 
 ```bash
 cd ParcelPath
@@ -189,7 +231,7 @@ Windows
 venv\Scripts\activate
 ```
 
-Linux / Mac
+Linux/macOS
 
 ```bash
 source venv/bin/activate
@@ -201,25 +243,13 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Copy environment
-
-```bash
-cp .env.example .env
-```
-
-Windows
-
-```bash
-copy .env.example .env
-```
-
 Run migrations
 
 ```bash
 python manage.py migrate
 ```
 
-Create superuser
+Create admin
 
 ```bash
 python manage.py createsuperuser
@@ -234,565 +264,99 @@ python manage.py runserver
 Visit
 
 ```
-http://127.0.0.1:8000
-```
----
-
-# Default User Roles
-
-## Administrator
-
-Complete system access.
-
-Permissions
-
-- Dashboard
-- Customer Management
-- Driver Management
-- Shipment Management
-- Route Management
-- Reports
-- Notifications
-- Settings
-
----
-
-## Customer
-
-Permissions
-
-- Register
-- Login
-- Book Shipment
-- Track Shipment
-- View Shipment History
-- Edit Profile
-- Receive Notifications
-
----
-
-## Driver
-
-Permissions
-
-- Login
-- Assigned Deliveries
-- Delivery History
-- Update Delivery Status
-- Upload Delivery Proof
-- View Assigned Routes
-
----
-
-# Shipment Workflow
-
-```
-Customer
-
-↓
-
-Book Shipment
-
-↓
-
-Shipment Created
-
-↓
-
-Tracking Number Generated
-
-↓
-
-Admin Verification
-
-↓
-
-Driver Assigned
-
-↓
-
-Pickup Completed
-
-↓
-
-In Transit
-
-↓
-
-Out For Delivery
-
-↓
-
-Delivered
-
-↓
-
-Delivery Confirmation
-
-↓
-
-Invoice Completed
+http://127.0.0.1:8000/
 ```
 
 ---
 
-# Database Modules
+# 📚 Documentation
 
-```
-Accounts
+Complete project documentation is available inside the `docs/` folder.
 
-Customers
-
-Drivers
-
-Shipments
-
-Shipment Tracking
-
-Routes
-
-Notifications
-
-Dashboard
-
-Reports
-
-Settings
-
-Destinations
-```
+- Installation Guide
+- Database Documentation
+- API Documentation
+- Entity Relationship Diagram (ERD)
 
 ---
 
-# Main Features
+# 🔒 Security Features
 
-### Authentication
-
-- Secure Login
-- Registration
-- Password Reset
-- Change Password
-- User Profile
-
----
-
-### Customer
-
-- Dashboard
-- Book Shipment
-- Shipment History
-- Shipment Details
-- Notifications
+- Django Authentication
+- Role-Based Authorization
+- CSRF Protection
+- Form Validation
+- Protected Admin Panel
+- Secure Password Hashing
 
 ---
 
-### Driver
-
-- Dashboard
-- Route List
-- Delivery History
-- Proof Upload
-- Status Updates
-
----
-
-### Shipment
-
-- Create Shipment
-- Edit Shipment
-- Cancel Shipment
-- Assign Driver
-- Generate Invoice
-- Print Label
-
----
-
-### Tracking
-
-- Public Tracking
-- Internal Tracking
-- Live Status
-- Timeline History
-
----
-
-### Dashboard
-
-- Shipment Analytics
-- Revenue Statistics
-- Driver Statistics
-- Customer Statistics
-- Monthly Reports
-
----
-
-# Future Improvements
-
-- GPS Live Tracking
-
-- SMS Notifications
-
-- WhatsApp Integration
-
-- Email Automation
-
-- Payment Gateway
-
-- Customer Wallet
-
-- Multi Warehouse Support
-
-- Barcode Scanner
-
-- QR Code Scanner
-
-- AI Route Optimization
-
-- AI Delivery Prediction
-
-- Mobile Application
+# 📈 Future Improvements
 
 - REST API
-
-- GraphQL API
-
-- Multi-language Support
-
-- Multi-company Support
-
-- Audit Logs
-
-- Role Based Permissions
-
-- Two Factor Authentication
-
-- OTP Login
-
-- Digital Signature
-
-- Driver Attendance
-
-- Fleet Management
-
-- Fuel Management
-
-- Maintenance Scheduler
-
-- Business Intelligence Dashboard
-
----
-
-# Production Ready Features
-
-- Responsive UI
-
-- Modular Django Apps
-
-- Environment Variables
-
-- Static File Management
-
-- Media Management
-
-- PostgreSQL Ready
-
-- Docker Ready
-
-- Nginx Ready
-
-- Gunicorn Ready
-
-- WhiteNoise Ready
-
-- Celery Ready
-
-- Redis Ready
-
-- Django Channels Ready
-
-- Logging Ready
-
-- Secure Authentication
-
-- CSRF Protection
-
-- XSS Protection
-
-- SQL Injection Protection
-
-- Session Management
-
-- Password Hashing
-
-- Form Validation
-
----
-
-# Recommended Production Deployment
-
-## Operating System
-
-- Ubuntu 24.04 LTS
-
----
-
-## Python
-
-- Python 3.12+
-
----
-
-## Database
-
-Development
-
-- SQLite
-
-Production
-
-- PostgreSQL
-
----
-
-## Web Server
-
-- Nginx
-
----
-
-## WSGI / ASGI
-
-- Gunicorn
-- Daphne
-
----
-
-## Cache
-
-- Redis
-
----
-
-## Background Tasks
-
-- Celery
-
----
-
-## File Storage
-
-Development
-
-- Local Storage
-
-Production
-
-- AWS S3
-- DigitalOcean Spaces
-- Cloudflare R2
-
----
-
-## Monitoring
-
-- Sentry
-- Prometheus
-- Grafana
-
----
-
-## Suggested Folder Structure
-
-```
-ParcelPath/
-
-accounts/
-customers/
-drivers/
-shipments/
-tracking/
-dashboard/
-routes/
-notifications/
-contact/
-destinations/
-core/
-
-config/
-
-templates/
-static/
-media/
-
-logs/
-backups/
-
-requirements.txt
-.env
-manage.py
-README.md
-Dockerfile
-docker-compose.yml
-```
-
----
-
-# Security Checklist
-
-- Password Hashing
-- CSRF Protection
-- XSS Protection
-- SQL Injection Protection
-- Session Expiry
-- Secure Cookies
-- HTTPS Support
-- Environment Variables
-- Content Security Policy
-- Rate Limiting
-- Audit Logs
-- Login Attempt Limiting
-- Secure File Upload Validation
-
----
-
-# Performance Optimizations
-
-- Database Indexing
-- ORM Query Optimization
-- Select Related
-- Prefetch Related
-- Static File Compression
-- WhiteNoise
-- Browser Caching
-- Lazy Loading
-- Image Compression
-- Redis Cache
-- Pagination
-- Background Tasks
-- Query Caching
-
----
-
-# Planned Integrations
-
-- Google Maps API
-- Razorpay
-- Stripe
-- Twilio SMS
-- WhatsApp Business API
-- Firebase Cloud Messaging
-- SendGrid
-- Gmail SMTP
-- AWS S3
-- OpenStreetMap
-- Google reCAPTCHA
-- Cloudinary
-
----
-
-# Testing
-
-Run all tests
-
-```bash
-python manage.py test
-```
-
-Run a specific app
-
-```bash
-python manage.py test shipments
-```
-
-Run with coverage
-
-```bash
-coverage run manage.py test
-coverage report
-```
-
----
-
-# Contributing
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Commit your changes.
-4. Push the branch.
-5. Open a Pull Request.
-
----
-
-# License
-
-This project is released under the MIT License.
-
----
-
-# Author
-
-**ParcelPath Development Team**
-
-Built using:
-
-- Django
-- Bootstrap 5
-- HTML5
-- CSS3
-- JavaScript
-
----
-
-# Version History
-
-## v1.0.0
-
-Initial production-ready release including:
-
-- Authentication
-- Customer Portal
-- Driver Portal
-- Shipment Management
-- Tracking System
-- Route Management
-- Notifications
-- Dashboard
-- Reports
-- Invoice Generation
-- Shipping Labels
-- Responsive UI
-- Docker Ready Configuration
-- PostgreSQL Support
-- WebSocket Support
-- Production Deployment Structure
-
----
-
-## Upcoming Versions
-
-### v1.1
-
-- GPS Tracking
+- Mobile Application
+- Live GPS Tracking
+- Payment Gateway Integration
+- OTP Delivery Verification
 - Email Notifications
 - SMS Notifications
-- Advanced Reports
-
-### v1.2
-
-- Mobile API
-- Payment Gateway
-- QR Code Tracking
-- Barcode Scanner
-
-### v2.0
-
-- AI Route Optimization
-- Fleet Management
-- Warehouse Management
-- Business Intelligence Dashboard
-- Multi-company Support
-- Advanced Analytics
+- QR Code Based Parcel Tracking
+- AI-Based Route Optimization
 
 ---
 
-**Thank you for using ParcelPath!**
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+4. Push the branch
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Developer
+
+**Swayam Moradiya**
+
+- GitHub: https://github.com/SwayamMoradiya05
+- LinkedIn: https://www.linkedin.com/in/swayam-moradiya/
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
+
+It helps others discover the project and supports future development.
+
+---
+
+<div align="center">
+
+**ParcelPath — Delivering Logistics with Precision 🚚**
+
+</div>
