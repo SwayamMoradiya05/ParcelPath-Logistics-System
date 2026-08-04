@@ -8,12 +8,12 @@ Database: SQLite
 
 from pathlib import Path
 import os
-
+from dotenv import load_dotenv
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(BASE_DIR / ".env.example")
 # -----------------------------------------------------------------------------
 # Core Settings
 # -----------------------------------------------------------------------------
@@ -365,3 +365,18 @@ if not DEBUG:
         ("HTTP_X_FORWARDED_PROTO", "https")
     )
 
+# -----------------------------------------------------------------------------
+# Twilio Configuration
+# -----------------------------------------------------------------------------
+
+TWILIO_ACCOUNT_SID = os.environ.get(
+    "TWILIO_ACCOUNT_SID",
+)
+
+TWILIO_AUTH_TOKEN = os.environ.get(
+    "TWILIO_AUTH_TOKEN",
+)
+
+TWILIO_PHONE_NUMBER = os.environ.get(
+    "TWILIO_PHONE_NUMBER",
+)

@@ -496,6 +496,51 @@ Shipment Details | ParcelPath
     {% endif %}
 
     <!-- ================================================= -->
+<!-- Proof of Delivery -->
+<!-- ================================================= -->
+
+{% if shipment.proof_of_delivery %}
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-camera-fill me-2"></i>
+
+            Proof of Delivery
+
+        </h5>
+
+    </div>
+
+    <div class="card-body text-center">
+
+        <img
+            src="{{ shipment.proof_of_delivery.url }}"
+            alt="Proof of Delivery"
+            class="img-fluid rounded shadow"
+            style="max-height:400px;"
+        >
+
+        <hr>
+
+        <p class="mb-0">
+
+            <strong>Uploaded On:</strong>
+
+            {{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+    <!-- ================================================= -->
     <!-- Action Buttons -->
     <!-- ================================================= -->
 

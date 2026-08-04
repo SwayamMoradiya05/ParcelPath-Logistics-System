@@ -1,10 +1,17 @@
+import logging
+
 from django.db import transaction
 from django.urls import reverse
 
+from apps.notifications.sms_service import SMSService
+
 from .models import Notification, NotificationType
+
+logger = logging.getLogger(__name__)
 
 
 class NotificationService:
+
     @staticmethod
     @transaction.atomic
     def create(
@@ -89,6 +96,29 @@ class NotificationService:
             notification_type=notification_type,
             action_url=action_url,
         )
+
+    @staticmethod
+    def delivery_completed(customer, shipment):
+        phone = customer.user.phone
+
+        if not phone:
+            return
+
+        message = (
+            f"ParcelPath Logistics\n\n"
+            f"Hello {customer.user.first_name},\n\n"
+            f"Your parcel ({shipment.tracking_number}) "
+            f"has been delivered successfully.\n\n"
+            f"Thank you for choosing ParcelPath."
+        )
+
+        try:
+            SMSService.send(
+                phone_number=phone,
+                message=message,
+            )
+        except Exception:
+            logger.exception("SMS sending failed.")
 
     @staticmethod
     def unread_count(user):

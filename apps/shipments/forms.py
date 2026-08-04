@@ -19,6 +19,7 @@ class ShipmentForm(forms.ModelForm):
             "created_at",
             "updated_at",
             "delivered_at",
+            "proof_of_delivery",
         )
 
         widgets = {

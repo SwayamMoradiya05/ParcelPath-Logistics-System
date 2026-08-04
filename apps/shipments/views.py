@@ -632,9 +632,45 @@ def driver_update_status(request, pk):
             "Shipment cannot be updated from its current status.",
         )
 
-        return redirect(
-            "drivers:dashboard",
+        return redirect("drivers:dashboard")
+
+    # ===================================================
+    # Show upload page before marking Delivered
+    # ===================================================
+
+    if (
+        current_status == ShipmentStatus.OUT_FOR_DELIVERY
+        and request.method == "GET"
+    ):
+        return render(
+            request,
+            "shipments/driver_update_status.html",
+            {
+                "shipment": shipment,
+            },
         )
+
+    if (
+        current_status == ShipmentStatus.OUT_FOR_DELIVERY
+        and request.method == "POST"
+    ):
+
+        if not request.FILES.get("proof_of_delivery"):
+
+            messages.error(
+                request,
+                "Please upload Proof of Delivery.",
+            )
+
+            return render(
+                request,
+                "shipments/driver_update_status.html",
+                {
+                    "shipment": shipment,
+                },
+            )
+
+        shipment.proof_of_delivery = request.FILES["proof_of_delivery"]
 
     try:
 
@@ -655,9 +691,7 @@ def driver_update_status(request, pk):
             f"Unable to update shipment: {exc}",
         )
 
-    return redirect(
-        "drivers:dashboard",
-    )
+    return redirect("drivers:dashboard")
 
 
 @login_required

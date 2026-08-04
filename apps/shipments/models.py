@@ -160,7 +160,16 @@ class Shipment(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True,
     )
+    proof_of_delivery = models.ImageField(
+    upload_to="proof_of_delivery/",
+    blank=True,
+    null=True,
+    )
 
+    proof_uploaded_at = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
     class Meta:
         verbose_name = "Shipment"
         verbose_name_plural = "Shipments"
@@ -332,28 +341,55 @@ class Shipment(models.Model):
         self.status = ShipmentStatus.DELIVERED
         self.delivered_at = timezone.now()
 
+        if self.proof_of_delivery and not self.proof_uploaded_at:
+            self.proof_uploaded_at = timezone.now()
+         
         self.save(
             update_fields=[
                 "status",
                 "delivered_at",
+                "proof_uploaded_at",
+                "proof_of_delivery",
             ]
         )
 
-        if self.driver:
+        # Send SMS safely
+        try:
+            from apps.notifications.sms_service import SMSService
 
-            self.driver.status = Driver.Status.AVAILABLE
+            phone = self.customer.user.phone
 
-            self.driver.total_deliveries += 1
-            self.driver.successful_deliveries += 1
+            if phone:
+                SMSService.send(
+                    phone_number=phone,
+                    message=(
+                        f"ParcelPath Logistics\n\n"
+                        f"Hello {self.customer.user.first_name},\n\n"
+                        f"Your parcel "
+                        f"({self.tracking_number}) "
+                        f"has been delivered successfully.\n\n"
+                        f"Thank you for choosing ParcelPath."
+                    ),
+                )
 
-            self.driver.save(
-                update_fields=[
-                    "status",
-                    "total_deliveries",
-                    "successful_deliveries",
-                ]
-            )
+        except Exception:
+            # Never stop delivery because SMS failed.
+            pass
 
+            if self.driver:
+
+                self.driver.status = Driver.Status.AVAILABLE
+
+                self.driver.total_deliveries += 1
+                self.driver.successful_deliveries += 1
+
+                self.driver.save(
+                    update_fields=[
+                        "status",
+                        "total_deliveries",
+                        "successful_deliveries",
+                    ]
+                )
     def mark_cancelled(self):
 
         self.status = ShipmentStatus.CANCELLED

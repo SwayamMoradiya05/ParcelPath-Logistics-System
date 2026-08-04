@@ -3,7 +3,7 @@ from django.db.models import Count, Q, Sum
 from django.utils import timezone
 
 from apps.drivers.models import Driver
-
+from apps.notifications.services import NotificationService
 from .models import Shipment, ShipmentStatus
 
 
@@ -106,6 +106,8 @@ class ShipmentService:
                 f"to {status}."
             )
 
+        old_status = shipment.status
+
         mapping = {
             ShipmentStatus.PICKED_UP: shipment.mark_picked_up,
             ShipmentStatus.IN_TRANSIT: shipment.mark_in_transit,
@@ -121,6 +123,16 @@ class ShipmentService:
             raise ValueError("Invalid shipment status.")
 
         action()
+
+        # Send SMS ONLY when status changes to DELIVERED
+        if (
+            old_status != ShipmentStatus.DELIVERED
+            and shipment.status == ShipmentStatus.DELIVERED
+        ):
+            NotificationService.delivery_completed(
+                shipment.customer,
+                shipment,
+            )
 
         return shipment
 
