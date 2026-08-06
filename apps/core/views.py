@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
+
+from apps.notifications.models import NotificationType
+from apps.notifications.services import NotificationService
 
 
 def error_403(request, exception):
@@ -44,6 +48,27 @@ def contact(request):
                 contact.user = request.user
 
             contact.save()
+
+            User = get_user_model()
+
+            admins = User.objects.filter(
+                is_superuser=True,
+            )
+
+            for admin in admins:
+
+                NotificationService.create(
+                    user=admin,
+                    title="New Contact Message",
+                    message=(
+                        f"From: {contact.name}\n"
+                        f"Email: {contact.email}\n"
+                        f"Subject: {contact.subject}\n\n"
+                        f"Message:\n{contact.message}"
+                    ),
+                    notification_type=NotificationType.INFO,
+                    action_url=f"/contact/{contact.pk}/",
+                )
 
             messages.success(
                 request,
