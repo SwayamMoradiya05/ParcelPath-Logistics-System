@@ -228,3 +228,39 @@ def change_password_view(request):
             "form": form,
         },
     )
+
+from django.http import HttpResponse
+from .models import User, UserRole
+
+
+def create_render_admin(request):
+
+    SECRET = "parcelpath-create-admin-2026"
+
+    if request.GET.get("key") != SECRET:
+        return HttpResponse(
+            "Unauthorized",
+            status=403,
+        )
+
+    email = "admin@gmail.com"
+
+    if User.objects.filter(email=email).exists():
+        return HttpResponse(
+            "Admin already exists.",
+        )
+
+    admin = User.objects.create_superuser(
+        username="admin",
+        email=email,
+        password="Admin@12345",
+    )
+
+    admin.role = UserRole.ADMIN
+    admin.is_staff = True
+    admin.is_superuser = True
+    admin.save()
+
+    return HttpResponse(
+        "Superuser created successfully."
+    )
