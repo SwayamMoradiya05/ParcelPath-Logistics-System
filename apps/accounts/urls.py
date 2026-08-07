@@ -82,10 +82,5 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path(
-    "create-render-admin/",
-    views.create_render_admin,
-    name="create_render_admin",
-    ),
 
 ]
