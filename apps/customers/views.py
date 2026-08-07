@@ -7,7 +7,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from apps.shipments.models import Shipment, ShipmentStatus
 from apps.accounts.models import UserRole
-
+from apps.shipments.services import ShipmentService
 from .forms import CustomerForm
 from .models import Customer
 from django.shortcuts import get_object_or_404
@@ -330,4 +330,104 @@ def dashboard(request):
             "delivered_shipments": delivered_shipments,
             "recent_shipments": recent_shipments,
         },
+    )
+
+@login_required
+def cancel_shipment(request, pk):
+
+    customer = get_object_or_404(
+        Customer,
+        user=request.user,
+    )
+
+    shipment = get_object_or_404(
+        Shipment,
+        pk=pk,
+        customer=customer,
+    )
+
+    if shipment.status not in [
+        ShipmentStatus.PENDING,
+        ShipmentStatus.CONFIRMED,
+    ]:
+
+        messages.error(
+            request,
+            "This shipment can no longer be cancelled.",
+        )
+
+        return redirect(
+            "customers:dashboard",
+        )
+
+    try:
+
+        ShipmentService.update_status(
+            shipment,
+            ShipmentStatus.CANCELLED,
+        )
+
+        messages.success(
+            request,
+            "Shipment cancelled successfully.",
+        )
+
+    except Exception as exc:
+
+        messages.error(
+            request,
+            str(exc),
+        )
+
+    return redirect(
+        "customers:dashboard",
+    )
+
+
+@login_required
+def return_shipment(request, pk):
+
+    customer = get_object_or_404(
+        Customer,
+        user=request.user,
+    )
+
+    shipment = get_object_or_404(
+        Shipment,
+        pk=pk,
+        customer=customer,
+    )
+
+    if shipment.status != ShipmentStatus.DELIVERED:
+
+        messages.error(
+            request,
+            "Only delivered shipments can be returned.",
+        )
+
+        return redirect(
+            "customers:dashboard",
+        )
+
+    try:
+
+        ShipmentService.update_status(
+            shipment,
+            ShipmentStatus.RETURNED,
+        )
+
+        messages.success(
+            request,
+            "Return request submitted successfully.",
+        )
+
+    except Exception as exc:
+
+        messages.error(
+            request,
+            str(exc),
+        )
+
+    return redirect(
+        "customers:dashboard",
     )

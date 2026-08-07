@@ -247,13 +247,45 @@ Customer Dashboard | ParcelPath
                                     <td class="text-end">
 
                                         <a href="{% url 'shipments:shipment_detail' shipment.id %}"
-                                           class="btn btn-outline-primary btn-sm">
+                                        class="btn btn-outline-primary btn-sm">
 
                                             <i class="bi bi-eye"></i>
 
                                             View
 
                                         </a>
+
+                                        {% if shipment.status == "PENDING" or shipment.status == "CONFIRMED" %}
+
+                                            <a
+                                                href="{% url 'customers:cancel_shipment' shipment.id %}"
+                                                class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('Are you sure you want to cancel this shipment?');"
+                                            >
+
+                                                <i class="bi bi-x-circle"></i>
+
+                                                Cancel
+
+                                            </a>
+
+                                        {% endif %}
+
+                                        {% if shipment.status == "DELIVERED" %}
+
+                                            <a
+                                                href="{% url 'customers:return_shipment' shipment.id %}"
+                                                class="btn btn-outline-warning btn-sm"
+                                                onclick="return confirm('Do you want to return this shipment?');"
+                                            >
+
+                                                <i class="bi bi-arrow-return-left"></i>
+
+                                                Return
+
+                                            </a>
+
+                                        {% endif %}
 
                                     </td>
 

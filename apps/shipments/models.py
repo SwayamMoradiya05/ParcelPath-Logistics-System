@@ -300,6 +300,9 @@ class Shipment(models.Model):
 
             ShipmentStatus.OUT_FOR_DELIVERY: [
                 ShipmentStatus.DELIVERED,
+            ],
+
+            ShipmentStatus.DELIVERED: [
                 ShipmentStatus.RETURNED,
             ],
 
