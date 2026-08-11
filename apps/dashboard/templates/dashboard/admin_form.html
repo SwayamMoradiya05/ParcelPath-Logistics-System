@@ -1,0 +1,170 @@
+{% extends "dashboard/admin_base.html" %}
+
+{% block admin_content %}
+
+<div class="admin-form-page">
+
+    <!-- Page Header -->
+    <div class="admin-form-header d-flex justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <div class="admin-form-eyebrow">
+                PARCELPATH OPERATIONS
+            </div>
+
+            <h2 class="admin-form-title mb-1">
+                {{ title }}
+            </h2>
+
+            <p class="admin-form-subtitle mb-0">
+                Use the form below to safely manage this record.
+            </p>
+        </div>
+
+        {% if object %}
+        <div class="admin-record-badge">
+            <i class="bi bi-pencil-square me-1"></i>
+            Editing Record #{{ object.pk }}
+        </div>
+        {% else %}
+        <div class="admin-record-badge">
+            <i class="bi bi-plus-circle me-1"></i>
+            New Record
+        </div>
+        {% endif %}
+    </div>
+
+
+    <!-- Form Card -->
+    <div class="pp-admin-card admin-form-card">
+
+        <div class="admin-form-card-header">
+            <div class="admin-form-card-icon">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+
+            <div>
+                <h5 class="mb-1">
+                    Record Information
+                </h5>
+
+                <p class="mb-0">
+                    Enter or update the information below.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="admin-form-card-body">
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger admin-form-alert" role="alert">
+                    <div class="fw-semibold mb-1">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        Please correct the following:
+                    </div>
+
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            <form
+                method="post"
+                enctype="multipart/form-data"
+                class="admin-managed-form"
+                novalidate
+            >
+
+                {% csrf_token %}
+
+
+                {% for field in form %}
+
+                    <div class="admin-field-group
+                        {% if field.errors %}admin-field-error{% endif %}
+                    ">
+
+                        <label
+                            for="{{ field.id_for_label }}"
+                            class="admin-field-label"
+                        >
+                            {{ field.label }}
+
+                            {% if field.field.required %}
+                                <span class="admin-required">*</span>
+                            {% endif %}
+                        </label>
+
+
+                        <div class="admin-field-control">
+
+                            {{ field }}
+
+                        </div>
+
+
+                        {% if field.help_text %}
+                            <div class="admin-field-help">
+                                <i class="bi bi-info-circle me-1"></i>
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+
+
+                        {% if field.errors %}
+                            <div class="admin-field-errors">
+                                {% for error in field.errors %}
+                                    <div>
+                                        <i class="bi bi-exclamation-circle me-1"></i>
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+
+                <!-- Form Actions -->
+                <div class="admin-form-actions">
+
+                    <div class="admin-form-actions-left">
+                        <span>
+                            <i class="bi bi-shield-check me-1"></i>
+                            Changes are securely saved.
+                        </span>
+                    </div>
+
+                    <div class="admin-form-actions-right">
+
+                        <a
+                            class="btn admin-btn-cancel"
+                            href="{% if object %}{% url 'dashboard:model_detail' model_key object.pk %}{% else %}{% url 'dashboard:model_list' model_key %}{% endif %}"
+                        >
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn admin-btn-save"
+                        >
+                            <i class="bi bi-check2-circle me-1"></i>
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

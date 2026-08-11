@@ -1,0 +1,773 @@
+{% extends "dashboard/admin_base.html" %}
+
+{% block admin_content %}
+
+<!-- ==========================================================
+     PAGE HEADER
+========================================================== -->
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+    <div>
+        <div class="small text-uppercase text-muted fw-semibold">
+            Operations Overview
+        </div>
+
+        <h2 class="admin-title mb-1">
+            Dashboard
+        </h2>
+
+        <p class="text-muted mb-0">
+            Monitor shipments, drivers, payments and daily operations.
+        </p>
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a
+            href="{% url 'dashboard:model_list' 'shipments' %}"
+            class="btn btn-outline-primary"
+        >
+            <i class="bi bi-box-seam me-1"></i>
+            View Shipments
+        </a>
+
+        <a
+            href="{% url 'dashboard:model_create' 'shipments' %}"
+            class="btn btn-primary"
+        >
+            <i class="bi bi-plus-lg me-1"></i>
+            New Shipment
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     KPI CARDS
+========================================================== -->
+
+<div class="row g-3 mb-4">
+
+    <!-- Pending -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="pp-admin-card pp-stat h-100">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <span
+                    class="pp-stat-icon text-warning"
+                    style="background:#fff7e6"
+                >
+                    <i class="bi bi-hourglass-split"></i>
+                </span>
+
+                <span class="badge bg-warning-subtle text-warning">
+                    Action
+                </span>
+
+            </div>
+
+            <div class="pp-stat-label mt-3">
+                Pending Shipments
+            </div>
+
+            <div class="pp-stat-value">
+                {{ pending|default:0 }}
+            </div>
+
+            <a
+                href="{% url 'dashboard:model_list' 'shipments' %}"
+                class="small text-decoration-none"
+            >
+                View shipments
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- In Transit -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="pp-admin-card pp-stat h-100">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <span
+                    class="pp-stat-icon text-info"
+                    style="background:#e8f8ff"
+                >
+                    <i class="bi bi-truck"></i>
+                </span>
+
+                <span class="badge bg-info-subtle text-info">
+                    Live
+                </span>
+
+            </div>
+
+            <div class="pp-stat-label mt-3">
+                In Transit
+            </div>
+
+            <div class="pp-stat-value">
+                {{ active|default:0 }}
+            </div>
+
+            <a
+                href="{% url 'dashboard:model_list' 'shipments' %}"
+                class="small text-decoration-none"
+            >
+                Monitor shipments
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Revenue -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="pp-admin-card pp-stat h-100">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <span
+                    class="pp-stat-icon text-success"
+                    style="background:#eaf8ef"
+                >
+                    <i class="bi bi-currency-rupee"></i>
+                </span>
+
+                <span class="badge bg-success-subtle text-success">
+                    Revenue
+                </span>
+
+            </div>
+
+            <div class="pp-stat-label mt-3">
+                Total Revenue
+            </div>
+
+            <div class="pp-stat-value">
+                ₹{{ total_revenue|default:0|floatformat:0 }}
+            </div>
+
+            <a
+                href="{% url 'dashboard:model_list' 'payments' %}"
+                class="small text-decoration-none"
+            >
+                View payments
+                <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Drivers -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="pp-admin-card pp-stat h-100">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <span
+                    class="pp-stat-icon text-primary"
+                    style="background:#edf4ff"
+                >
+                    <i class="bi bi-person-badge"></i>
+                </span>
+
+                <span class="badge bg-primary-subtle text-primary">
+                    Fleet
+                </span>
+
+            </div>
+
+            <div class="pp-stat-label mt-3">
+                Available Drivers
+            </div>
+
+            <div class="pp-stat-value">
+                {{ available_drivers|default:0 }}
+            </div>
+
+            <div class="small text-muted mt-1">
+                of {{ total_drivers|default:0 }} total drivers
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     DRIVER OPERATIONS + SUPPORT
+========================================================== -->
+
+<div class="row g-3 mb-4">
+
+    <!-- Driver Operations -->
+
+    <div class="col-xl-5">
+
+        <div class="pp-admin-card h-100">
+
+            <div class="p-3 border-bottom">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <strong>
+                            <i class="bi bi-truck me-2"></i>
+                            Driver Operations
+                        </strong>
+
+                        <div class="small pp-muted mt-1">
+                            Current fleet availability
+                        </div>
+                    </div>
+
+                    <a
+                        href="{% url 'dashboard:model_list' 'drivers' %}"
+                        class="btn btn-sm btn-outline-primary"
+                    >
+                        Manage
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-3">
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <span>
+                        <i class="bi bi-circle-fill text-success me-2"
+                           style="font-size:8px"></i>
+                        Available
+                    </span>
+
+                    <strong class="text-success">
+                        {{ available_drivers|default:0 }}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="progress mb-4"
+                    style="height:8px"
+                >
+
+                    <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="{% if total_drivers %}{% widthratio available_drivers total_drivers 100 %}{% else %}0{% endif %}"
+                        data-width="{% if total_drivers %}{% widthratio available_drivers total_drivers 100 %}{% else %}0{% endif %}"
+                    ></div>
+
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.querySelectorAll('[data-width]').forEach(function (element) {
+                            const width = element.getAttribute('data-width');
+                            if (width !== null) {
+                                element.style.width = width + '%';
+                            }
+                        });
+                    });
+                </script>
+
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <span>
+                        <i class="bi bi-truck me-2 text-info"></i>
+                        On Delivery
+                    </span>
+
+                    <strong>
+                        {{ busy_drivers|default:0 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="d-flex justify-content-between mb-3">
+
+                    <span>
+                        <i class="bi bi-patch-check me-2 text-primary"></i>
+                        Verified Drivers
+                    </span>
+
+                    <strong>
+                        {{ verified_drivers|default:0 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="border-top pt-3 mt-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span class="text-muted small">
+                            Fleet utilisation
+                        </span>
+
+                        <strong>
+
+                            {% if total_drivers %}
+
+                                {% widthratio busy_drivers total_drivers 100 %}%
+
+                            {% else %}
+
+                                0%
+
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Support & Alerts -->
+
+    <div class="col-xl-7">
+
+        <div class="pp-admin-card h-100">
+
+            <div class="p-3 border-bottom">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <strong>
+                            <i class="bi bi-bell me-2"></i>
+                            Support & Alerts
+                        </strong>
+
+                        <div class="small pp-muted mt-1">
+                            Items requiring administrator attention
+                        </div>
+                    </div>
+
+                    <a
+                        href="{% url 'dashboard:model_list' 'contacts' %}"
+                        class="btn btn-sm btn-outline-primary"
+                    >
+                        Open Support
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-3">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded-3 p-3 h-100">
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <div>
+
+                                    <div class="text-muted small">
+                                        Pending Contact Requests
+                                    </div>
+
+                                    <div class="fs-3 fw-bold mt-1">
+                                        {{ pending_contacts|default:0 }}
+                                    </div>
+
+                                </div>
+
+                                <span
+                                    class="rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width:42px;height:42px;background:#fff7e6"
+                                >
+                                    <i class="bi bi-chat-left-text text-warning"></i>
+                                </span>
+
+                            </div>
+
+                            <a
+                                href="{% url 'dashboard:model_list' 'contacts' %}"
+                                class="small text-decoration-none"
+                            >
+                                Review requests
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded-3 p-3 h-100">
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <div>
+
+                                    <div class="text-muted small">
+                                        Unread Notifications
+                                    </div>
+
+                                    <div class="fs-3 fw-bold mt-1">
+                                        {{ unread_notifications|default:0 }}
+                                    </div>
+
+                                </div>
+
+                                <span
+                                    class="rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width:42px;height:42px;background:#fff0f0"
+                                >
+                                    <i class="bi bi-bell text-danger"></i>
+                                </span>
+
+                            </div>
+
+                            <a
+                                href="{% url 'dashboard:model_list' 'notifications' %}"
+                                class="small text-decoration-none"
+                            >
+                                Open notifications
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-3">
+
+                    <a
+                        href="{% url 'dashboard:model_list' 'notifications' %}"
+                        class="btn btn-outline-primary w-100"
+                    >
+                        <i class="bi bi-bell me-2"></i>
+                        Open Notification Center
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     QUICK OPERATIONS
+========================================================== -->
+
+<div class="pp-admin-card mb-4">
+
+    <div class="p-3 border-bottom">
+
+        <strong>
+            <i class="bi bi-lightning-charge me-2"></i>
+            Quick Operations
+        </strong>
+
+        <div class="small pp-muted mt-1">
+            Frequently used administration tools
+        </div>
+
+    </div>
+
+
+    <div class="p-3">
+
+        <div class="row g-3">
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'shipments' %}"
+                    class="btn btn-light border w-100 text-start p-3 h-100"
+                >
+
+                    <i class="bi bi-box-seam fs-4 text-primary"></i>
+
+                    <div class="fw-semibold mt-2">
+                        Shipment Management
+                    </div>
+
+                    <div class="small text-muted">
+                        View, edit and manage shipments
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'payments' %}"
+                    class="btn btn-light border w-100 text-start p-3 h-100"
+                >
+
+                    <i class="bi bi-credit-card fs-4 text-success"></i>
+
+                    <div class="fw-semibold mt-2">
+                        Payment Management
+                    </div>
+
+                    <div class="small text-muted">
+                        Review payment records
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'drivers' %}"
+                    class="btn btn-light border w-100 text-start p-3 h-100"
+                >
+
+                    <i class="bi bi-truck fs-4 text-info"></i>
+
+                    <div class="fw-semibold mt-2">
+                        Driver Management
+                    </div>
+
+                    <div class="small text-muted">
+                        Manage and verify drivers
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'customers' %}"
+                    class="btn btn-light border w-100 text-start p-3 h-100"
+                >
+
+                    <i class="bi bi-people fs-4 text-warning"></i>
+
+                    <div class="fw-semibold mt-2">
+                        Customer Management
+                    </div>
+
+                    <div class="small text-muted">
+                        View and manage customers
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     SECURITY / ADMINISTRATION
+========================================================== -->
+
+<div class="pp-admin-card">
+
+    <div class="p-3 border-bottom">
+
+        <strong>
+            <i class="bi bi-shield-check me-2"></i>
+            Administration & Security
+        </strong>
+
+        <div class="small pp-muted mt-1">
+            Access control, verification and system records
+        </div>
+
+    </div>
+
+
+    <div class="p-3">
+
+        <div class="row g-3">
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'users' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-people-fill text-primary me-2"></i>
+
+                    <strong>Users</strong>
+
+                    <div class="small text-muted mt-1">
+                        Manage accounts and access
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'login-history' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-shield-lock text-danger me-2"></i>
+
+                    <strong>Login History</strong>
+
+                    <div class="small text-muted mt-1">
+                        Review account activity
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'email-verification-tokens' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-envelope-check text-success me-2"></i>
+
+                    <strong>Email Verification</strong>
+
+                    <div class="small text-muted mt-1">
+                        Review verification records
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'password-reset-tokens' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-key text-warning me-2"></i>
+
+                    <strong>Password Reset</strong>
+
+                    <div class="small text-muted mt-1">
+                        Review reset records
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'notifications' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-bell text-info me-2"></i>
+
+                    <strong>Notifications</strong>
+
+                    <div class="small text-muted mt-1">
+                        Manage system notifications
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <a
+                    href="{% url 'dashboard:model_list' 'contacts' %}"
+                    class="btn btn-light border w-100 text-start p-3"
+                >
+
+                    <i class="bi bi-headset text-primary me-2"></i>
+
+                    <strong>Support</strong>
+
+                    <div class="small text-muted mt-1">
+                        Manage customer requests
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

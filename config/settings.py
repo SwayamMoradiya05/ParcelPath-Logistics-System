@@ -288,6 +288,12 @@ SECURE_BROWSER_XSS_FILTER = True
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+# ==========================================================
+# Razorpay Checkout
+# ==========================================================
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+
 
 # -----------------------------------------------------------------------------
 # Project Information
@@ -388,4 +394,19 @@ TWILIO_AUTH_TOKEN = os.environ.get(
 
 TWILIO_PHONE_NUMBER = os.environ.get(
     "TWILIO_PHONE_NUMBER",
+)
+
+
+#-------------------------------------------------------------------------------
+#Razorpay Configuration
+#-------------------------------------------------------------------------------
+
+RAZORPAY_KEY_ID = os.environ.get(
+    "RAZORPAY_KEY_ID",
+    "",
+)
+
+RAZORPAY_KEY_SECRET = os.environ.get(
+    "RAZORPAY_KEY_SECRET",
+    "",
 )

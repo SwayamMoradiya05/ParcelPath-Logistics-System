@@ -1,0 +1,376 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Payment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h4 class="mb-0">
+                        <i class="bi bi-credit-card me-2"></i>
+                        Shipment Payment
+                    </h4>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+
+                        <p class="mb-2">
+                            <strong>Tracking Number:</strong>
+                            {{ shipment.tracking_number }}
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Receiver:</strong>
+                            {{ shipment.receiver_name }}
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Shipping Cost:</strong>
+                            ₹{{ shipment.shipping_cost }}
+                        </p>
+
+                    </div>
+
+                    <hr>
+
+                    <div
+                        id="payment-message"
+                        class="alert d-none">
+                    </div>
+
+                    <button
+                        id="pay-button"
+                        type="button"
+                        class="btn btn-primary w-100 py-3">
+
+                        <i class="bi bi-lock-fill me-2"></i>
+
+                        Pay ₹{{ shipment.shipping_cost }}
+
+                    </button>
+
+                    <div class="text-center mt-3">
+
+                        <a
+                            href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                            class="text-decoration-none">
+
+                            Back to Shipment
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+const payButton = document.getElementById("pay-button");
+const paymentMessage = document.getElementById("payment-message");
+
+function showMessage(message, type) {
+
+    paymentMessage.className =
+        "alert alert-" + type;
+
+    paymentMessage.textContent =
+        message;
+}
+
+function getCookie(name) {
+
+    let cookieValue = null;
+
+    if (document.cookie && document.cookie !== "") {
+
+        const cookies =
+            document.cookie.split(";");
+
+        for (let cookie of cookies) {
+
+            cookie = cookie.trim();
+
+            if (
+                cookie.substring(
+                    0,
+                    name.length + 1
+                ) === name + "="
+            ) {
+
+                cookieValue =
+                    decodeURIComponent(
+                        cookie.substring(
+                            name.length + 1
+                        )
+                    );
+
+                break;
+            }
+        }
+    }
+
+    return cookieValue;
+}
+
+payButton.addEventListener(
+    "click",
+    function () {
+
+        payButton.disabled = true;
+
+        payButton.innerHTML =
+            "Opening Payment...";
+
+        const options = {
+
+            key: "{{ razorpay_key_id }}",
+
+            amount:
+                "{{ payment.amount|floatformat:2 }}",
+
+            currency: "INR",
+
+            name: "ParcelPath",
+
+            description:
+                "Shipment {{ shipment.tracking_number }}",
+
+            order_id:
+                "{{ payment.razorpay_order_id }}",
+
+            prefill: {
+
+                name:
+                    "{{ request.user.full_name|escapejs }}",
+
+                email:
+                    "{{ request.user.email|escapejs }}",
+
+                contact:
+                    "{{ request.user.phone|default:''|escapejs }}"
+
+            },
+
+            theme: {
+
+                color: "#0d6efd"
+
+            },
+
+            handler: function (response) {
+
+                showMessage(
+                    "Verifying payment...",
+                    "info"
+                );
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "razorpay_order_id",
+                    response.razorpay_order_id
+                );
+
+                formData.append(
+                    "razorpay_payment_id",
+                    response.razorpay_payment_id
+                );
+
+                formData.append(
+                    "razorpay_signature",
+                    response.razorpay_signature
+                );
+
+                fetch(
+                    "{% url 'shipments:verify_shipment_payment' shipment.pk %}",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "X-CSRFToken":
+                                getCookie("csrftoken")
+
+                        },
+
+                        body: formData
+
+                    }
+                )
+                .then(
+                    response =>
+                        response.json()
+                )
+                .then(
+                    data => {
+
+                        if (data.success) {
+
+                            showMessage(
+                                "Payment Successful! Your shipment has been confirmed.",
+                                "success"
+                            );
+
+                            setTimeout(
+                                function () {
+
+                                    window.location.href =
+                                        data.redirect_url;
+
+                                },
+                                1500
+                            );
+
+                        } else {
+
+                            showMessage(
+                                data.message ||
+                                "Payment verification failed.",
+                                "danger"
+                            );
+
+                            payButton.disabled =
+                                false;
+
+                            payButton.innerHTML =
+                                "Try Payment Again";
+
+                        }
+
+                    }
+                )
+                .catch(
+                    function () {
+
+                        showMessage(
+                            "Unable to verify payment. Please contact support.",
+                            "danger"
+                        );
+
+                        payButton.disabled =
+                            false;
+
+                        payButton.innerHTML =
+                            "Try Payment Again";
+
+                    }
+                );
+
+            },
+
+            modal: {
+
+                ondismiss: function () {
+
+                    payButton.disabled =
+                        false;
+
+                    payButton.innerHTML =
+                        '<i class="bi bi-lock-fill me-2"></i> Pay ₹{{ shipment.shipping_cost }}';
+
+                }
+
+            }
+
+        };
+
+        const razorpay =
+            new Razorpay(options);
+
+        razorpay.on(
+            "payment.failed",
+            function (response) {
+
+                console.error(
+                    "RAZORPAY PAYMENT FAILED:",
+                    response
+                );
+
+                const error =
+                    response.error || {};
+
+                console.error(
+                    "Error Code:",
+                    error.code
+                );
+
+                console.error(
+                    "Error Description:",
+                    error.description
+                );
+
+                console.error(
+                    "Error Source:",
+                    error.source
+                );
+
+                console.error(
+                    "Error Step:",
+                    error.step
+                );
+
+                console.error(
+                    "Error Reason:",
+                    error.reason
+                );
+
+                const description =
+                    error.description ||
+                    "Unknown Razorpay payment error.";
+
+                const reason =
+                    error.reason || "";
+
+                showMessage(
+                    "Payment failed: " +
+                    description +
+                    (
+                        reason
+                            ? " (" + reason + ")"
+                            : ""
+                    ),
+                    "danger"
+                );
+
+                payButton.disabled = false;
+
+                payButton.innerHTML =
+                    '<i class="bi bi-credit-card me-2"></i>' +
+                    'Try Payment Again';
+
+            }
+        );
+
+        razorpay.open();
+
+    }
+);
+
+</script>
+
+{% endblock %}

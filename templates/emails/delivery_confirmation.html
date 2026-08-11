@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Shipment Delivered | ParcelPath</title>
+</head>
+
+<body
+    style="
+        margin:0;
+        padding:0;
+        background:#f1f5f9;
+        font-family:Arial,Helvetica,sans-serif;
+        color:#172033;
+    "
+>
+
+<table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="background:#f1f5f9;padding:30px 10px;"
+>
+
+<tr>
+<td align="center">
+
+<table
+    width="680"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="
+        max-width:680px;
+        width:100%;
+        background:#ffffff;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 8px 30px rgba(15,23,42,0.10);
+    "
+>
+
+<!-- ===================================================== -->
+<!-- HEADER -->
+<!-- ===================================================== -->
+
+<tr>
+<td
+    style="
+        background:linear-gradient(
+            135deg,
+            #0f2a44,
+            #164e63
+        );
+        padding:30px;
+        text-align:center;
+    "
+>
+
+<div
+    style="
+        color:#ffffff;
+        font-size:26px;
+        font-weight:700;
+        letter-spacing:-0.5px;
+    "
+>
+    Parcel<span style="color:#38bdf8;">Path</span>
+</div>
+
+<div
+    style="
+        margin-top:6px;
+        color:#cbd5e1;
+        font-size:12px;
+        letter-spacing:2px;
+        text-transform:uppercase;
+    "
+>
+    Smart Logistics
+</div>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- SUCCESS -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:35px 35px 15px;text-align:center;">
+
+<div
+    style="
+        width:64px;
+        height:64px;
+        margin:auto;
+        background:#dcfce7;
+        border-radius:50%;
+        line-height:64px;
+        color:#16a34a;
+        font-size:32px;
+        font-weight:bold;
+    "
+>
+    ✓
+</div>
+
+<h1
+    style="
+        margin:18px 0 8px;
+        font-size:25px;
+        color:#102a43;
+    "
+>
+    Shipment Delivered Successfully
+</h1>
+
+<p
+    style="
+        margin:0;
+        color:#64748b;
+        font-size:14px;
+        line-height:1.7;
+    "
+>
+    Hello {{ customer_name }},
+    your shipment has been successfully delivered.
+</p>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- TRACKING NUMBER -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:20px 35px;">
+
+<div
+    style="
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:20px;
+        text-align:center;
+    "
+>
+
+<div
+    style="
+        color:#64748b;
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:1px;
+    "
+>
+    Tracking Number
+</div>
+
+<div
+    style="
+        margin-top:8px;
+        color:#0f2a44;
+        font-size:20px;
+        font-weight:700;
+        letter-spacing:1px;
+    "
+>
+    {{ shipment.tracking_number }}
+</div>
+
+<div
+    style="
+        display:inline-block;
+        margin-top:12px;
+        padding:6px 14px;
+        border-radius:30px;
+        background:#dcfce7;
+        color:#15803d;
+        font-size:12px;
+        font-weight:700;
+    "
+>
+    DELIVERED
+</div>
+
+</div>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- DELIVERY INFORMATION -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:0 35px 20px;">
+
+<h2
+    style="
+        margin:10px 0 15px;
+        color:#102a43;
+        font-size:18px;
+    "
+>
+    Delivery Information
+</h2>
+
+<table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    style="border-collapse:collapse;"
+>
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+        width:45%;
+    "
+>
+    Delivered At
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    {{ delivered_at|date:"d M Y, h:i A" }}
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+    "
+>
+    Expected Delivery
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    {% if shipment.expected_delivery %}
+        {{ shipment.expected_delivery|date:"d M Y" }}
+    {% else %}
+        —
+    {% endif %}
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+    "
+>
+    Package Type
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    {{ shipment.package_type }}
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+    "
+>
+    Weight
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    {{ shipment.weight }} kg
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+    "
+>
+    Dimensions
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    {{ shipment.length }}
+    ×
+    {{ shipment.width }}
+    ×
+    {{ shipment.height }}
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        color:#64748b;
+    "
+>
+    Declared Value
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        border-bottom:1px solid #e5e7eb;
+        font-weight:600;
+    "
+>
+    ₹{{ shipment.declared_value }}
+</td>
+</tr>
+
+
+<tr>
+<td
+    style="
+        padding:12px 0;
+        color:#64748b;
+    "
+>
+    Shipping Cost
+</td>
+
+<td
+    style="
+        padding:12px 0;
+        font-weight:700;
+        color:#0f2a44;
+    "
+>
+    ₹{{ shipment.shipping_cost }}
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- SENDER / RECEIVER -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:0 35px 25px;">
+
+<table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+>
+
+<tr>
+
+<td
+    width="48%"
+    valign="top"
+    style="
+        background:#f8fafc;
+        border-radius:12px;
+        padding:18px;
+    "
+>
+
+<div
+    style="
+        color:#64748b;
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:1px;
+        margin-bottom:8px;
+    "
+>
+    Sender
+</div>
+
+<strong>
+    {{ shipment.sender_name }}
+</strong>
+
+<div
+    style="
+        margin-top:7px;
+        color:#64748b;
+        font-size:13px;
+        line-height:1.6;
+    "
+>
+    {{ shipment.sender_address }}<br>
+    {{ shipment.sender_phone }}
+</div>
+
+</td>
+
+<td width="4%"></td>
+
+<td
+    width="48%"
+    valign="top"
+    style="
+        background:#f8fafc;
+        border-radius:12px;
+        padding:18px;
+    "
+>
+
+<div
+    style="
+        color:#64748b;
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:1px;
+        margin-bottom:8px;
+    "
+>
+    Receiver
+</div>
+
+<strong>
+    {{ shipment.receiver_name }}
+</strong>
+
+<div
+    style="
+        margin-top:7px;
+        color:#64748b;
+        font-size:13px;
+        line-height:1.6;
+    "
+>
+    {{ shipment.receiver_address }}<br>
+    {{ shipment.receiver_phone }}
+</div>
+
+</td>
+
+</tr>
+
+</table>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- DRIVER -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:0 35px 25px;">
+
+<h2
+    style="
+        margin:0 0 15px;
+        color:#102a43;
+        font-size:18px;
+    "
+>
+    Delivery Partner
+</h2>
+
+<div
+    style="
+        background:#f0fdf4;
+        border:1px solid #bbf7d0;
+        border-radius:12px;
+        padding:18px;
+    "
+>
+
+<strong>
+    {{ driver_name }}
+</strong>
+
+<div
+    style="
+        margin-top:7px;
+        color:#64748b;
+        font-size:13px;
+    "
+>
+
+{% if vehicle_number %}
+Vehicle: {{ vehicle_number }}
+{% endif %}
+
+{% if driver_phone %}
+&nbsp;&nbsp; | &nbsp;&nbsp;
+Phone: {{ driver_phone }}
+{% endif %}
+
+</div>
+
+</div>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- PROOF -->
+<!-- ===================================================== -->
+
+<tr>
+<td style="padding:0 35px 25px;">
+
+<div
+    style="
+        background:#eff6ff;
+        border:1px solid #bfdbfe;
+        border-radius:12px;
+        padding:18px;
+    "
+>
+
+<strong
+    style="color:#1d4ed8;"
+>
+    ✓ Proof of Delivery Recorded
+</strong>
+
+<p
+    style="
+        margin:8px 0 0;
+        color:#64748b;
+        font-size:13px;
+        line-height:1.6;
+    "
+>
+    {% if shipment.proof_uploaded_at %}
+        Proof of delivery was uploaded on
+        {{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}.
+    {% else %}
+        Proof of delivery has been recorded for this shipment.
+    {% endif %}
+</p>
+
+<p
+    style="
+        margin:8px 0 0;
+        color:#64748b;
+        font-size:12px;
+    "
+>
+    The proof of delivery image is attached to this email.
+</p>
+
+</div>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- TRACK BUTTON -->
+<!-- ===================================================== -->
+
+<tr>
+<td
+    align="center"
+    style="padding:5px 35px 35px;"
+>
+
+<a
+    href="{{ tracking_url }}"
+    style="
+        display:inline-block;
+        background:#2563eb;
+        color:#ffffff;
+        text-decoration:none;
+        padding:13px 28px;
+        border-radius:8px;
+        font-size:14px;
+        font-weight:700;
+    "
+>
+    Track Shipment
+</a>
+
+</td>
+</tr>
+
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
+<tr>
+<td
+    style="
+        background:#0f2a44;
+        padding:25px 35px;
+        text-align:center;
+    "
+>
+
+<div
+    style="
+        color:#ffffff;
+        font-size:16px;
+        font-weight:700;
+    "
+>
+    ParcelPath Logistics
+</div>
+
+<div
+    style="
+        margin-top:7px;
+        color:#94a3b8;
+        font-size:12px;
+        line-height:1.6;
+    "
+>
+    Smart logistics. Reliable delivery.
+</div>
+
+{% if support_email %}
+
+<div
+    style="
+        margin-top:10px;
+        color:#cbd5e1;
+        font-size:12px;
+    "
+>
+    Support:
+    {{ support_email }}
+</div>
+
+{% endif %}
+
+<div
+    style="
+        margin-top:15px;
+        color:#64748b;
+        font-size:10px;
+    "
+>
+    This is an automated delivery confirmation from ParcelPath.
+    Please do not reply to this email.
+</div>
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+
+</table>
+
+</body>
+</html>

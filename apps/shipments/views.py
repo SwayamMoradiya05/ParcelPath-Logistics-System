@@ -5,17 +5,26 @@ from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-
+from reportlab.lib import colors
 from apps.customers.models import Customer
 from apps.drivers.models import Driver
-
+from reportlab.lib.pagesizes import A4
 from .forms import ShipmentForm
-from .models import Shipment, ShipmentStatus
+from .models import Shipment, ShipmentStatus, Payment, PaymentStatus
 from .services import ShipmentService
 from django.shortcuts import redirect, render
 from django.http import HttpResponseForbidden,JsonResponse
 from apps.accounts.models import UserRole
-
+from reportlab.lib.styles import getSampleStyleSheet
+import razorpay
+from django.conf import settings
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Table,
+    TableStyle,
+    Paragraph,
+    Spacer,
+)
 
 
 
@@ -174,11 +183,21 @@ def shipment_detail(request, pk):
         )
         return redirect("shipments:shipment_list")
 
+    paid_payment = (
+            Payment.objects.filter(
+                shipment=shipment,
+                status=PaymentStatus.PAID,
+            )
+            .order_by("-paid_at", "-created_at")
+            .first()
+        ) 
+
     return render(
         request,
         "shipments/shipment_detail.html",
         {
             "shipment": shipment,
+            "paid_payment": paid_payment,
         },
     )
 
@@ -276,7 +295,10 @@ def shipment_create(request):
                     "Shipment created successfully.",
                 )
 
-                return redirect("shipments:shipment_list")
+                return redirect(
+                        "shipments:shipment_detail",
+                        shipment.pk,
+                    )
 
             except Exception as e:
                 messages.error(
@@ -303,6 +325,567 @@ def shipment_create(request):
             "title": "Create Shipment",
         },
     )
+
+# ==========================================================
+# Payment
+# ==========================================================
+
+@login_required
+def shipment_payment(request, pk):
+
+    shipment = get_object_or_404(
+        Shipment,
+        pk=pk,
+        customer__user=request.user,
+    )
+
+    if shipment.status != ShipmentStatus.PENDING:
+        messages.warning(
+            request,
+            "This shipment is not available for payment.",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+    existing_paid_payment = Payment.objects.filter(
+        shipment=shipment,
+        status=PaymentStatus.PAID,
+    ).first()
+
+    if existing_paid_payment:
+        messages.info(
+            request,
+            "This shipment has already been paid.",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+    if shipment.shipping_cost <= 0:
+        messages.error(
+            request,
+            "Payment cannot be processed because the shipping cost is invalid.",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+    try:
+        client = razorpay.Client(
+            auth=(
+                settings.RAZORPAY_KEY_ID,
+                settings.RAZORPAY_KEY_SECRET,
+            )
+        )
+
+        amount_paise = int(
+            shipment.shipping_cost * 100
+        )
+
+        razorpay_order = client.order.create(
+            {
+                "amount": amount_paise,
+                "currency": "INR",
+                "receipt": (
+                    f"shipment_{shipment.pk}"
+                ),
+            }
+        )
+
+        payment = Payment.objects.create(
+            shipment=shipment,
+            razorpay_order_id=razorpay_order["id"],
+            amount=shipment.shipping_cost,
+            currency="INR",
+            status=PaymentStatus.CREATED,
+        )
+
+        return render(
+            request,
+            "shipments/payment.html",
+            {
+                "shipment": shipment,
+                "payment": payment,
+                "razorpay_key_id": settings.RAZORPAY_KEY_ID,
+            },
+        )
+
+    except Exception as exc:
+
+        messages.error(
+            request,
+            f"Unable to start payment: {exc}",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+
+@login_required
+def verify_shipment_payment(request, pk):
+
+    if request.method != "POST":
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Invalid request method.",
+            },
+            status=405,
+        )
+
+    shipment = get_object_or_404(
+        Shipment,
+        pk=pk,
+        customer__user=request.user,
+    )
+
+    razorpay_order_id = request.POST.get(
+        "razorpay_order_id"
+    )
+
+    razorpay_payment_id = request.POST.get(
+        "razorpay_payment_id"
+    )
+
+    razorpay_signature = request.POST.get(
+        "razorpay_signature"
+    )
+
+    if not all(
+        [
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+        ]
+    ):
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Incomplete payment information.",
+            },
+            status=400,
+        )
+
+    payment = get_object_or_404(
+        Payment,
+        shipment=shipment,
+        razorpay_order_id=razorpay_order_id,
+    )
+
+    if payment.status == PaymentStatus.PAID:
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Payment already completed.",
+            }
+        )
+
+    try:
+
+        client = razorpay.Client(
+            auth=(
+                settings.RAZORPAY_KEY_ID,
+                settings.RAZORPAY_KEY_SECRET,
+            )
+        )
+
+        client.utility.verify_payment_signature(
+            {
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": razorpay_payment_id,
+                "razorpay_signature": razorpay_signature,
+            }
+        )
+
+        with transaction.atomic():
+
+            payment.razorpay_payment_id = (
+                razorpay_payment_id
+            )
+
+            payment.razorpay_signature = (
+                razorpay_signature
+            )
+
+            payment.status = PaymentStatus.PAID
+
+            payment.paid_at = timezone.now()
+
+            payment.save(
+                update_fields=[
+                    "razorpay_payment_id",
+                    "razorpay_signature",
+                    "status",
+                    "paid_at",
+                    "updated_at",
+                ]
+            )
+
+            shipment.status = ShipmentStatus.CONFIRMED
+
+            shipment.save(
+                update_fields=[
+                    "status",
+                    "updated_at",
+                ]
+            )
+
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Payment successful!",
+                "redirect_url": (
+                    f"/shipments/{shipment.pk}/"
+                ),
+            }
+        )
+
+    except razorpay.errors.SignatureVerificationError:
+
+        payment.status = PaymentStatus.FAILED
+
+        payment.save(
+            update_fields=[
+                "status",
+                "updated_at",
+            ]
+        )
+
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Payment verification failed.",
+            },
+            status=400,
+        )
+
+    except Exception as exc:
+
+        return JsonResponse(
+            {
+                "success": False,
+                "message": str(exc),
+            },
+            status=400,
+        )
+
+# ==========================================================
+# Payment Receipt
+# ==========================================================
+
+@login_required
+def payment_receipt(request, pk):
+
+    shipment = get_object_or_404(
+        Shipment.objects.select_related(
+            "customer",
+            "customer__user",
+        ),
+        pk=pk,
+    )
+
+    if request.user.is_superuser or request.user.role == UserRole.ADMIN:
+        pass
+
+    elif (
+        request.user.role == UserRole.CUSTOMER
+        and shipment.customer.user == request.user
+    ):
+        pass
+
+    else:
+        return HttpResponseForbidden(
+            "You do not have permission to view this receipt."
+        )
+
+    payment = (
+        Payment.objects.filter(
+            shipment=shipment,
+            status=PaymentStatus.PAID,
+        )
+        .order_by("-paid_at", "-created_at")
+        .first()
+    )
+
+    if not payment:
+        messages.error(
+            request,
+            "Payment receipt is not available because this shipment has not been paid.",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+    return render(
+        request,
+        "shipments/payment_receipt.html",
+        {
+            "shipment": shipment,
+            "payment": payment,
+        },
+    )
+
+
+@login_required
+def payment_receipt_pdf(request, pk):
+
+    shipment = get_object_or_404(
+        Shipment.objects.select_related(
+            "customer",
+            "customer__user",
+        ),
+        pk=pk,
+    )
+
+    if request.user.is_superuser or request.user.role == UserRole.ADMIN:
+        pass
+
+    elif (
+        request.user.role == UserRole.CUSTOMER
+        and shipment.customer.user == request.user
+    ):
+        pass
+
+    else:
+        return HttpResponseForbidden(
+            "You do not have permission to download this receipt."
+        )
+
+    payment = (
+        Payment.objects.filter(
+            shipment=shipment,
+            status=PaymentStatus.PAID,
+        )
+        .order_by("-paid_at", "-created_at")
+        .first()
+    )
+
+    if not payment:
+        messages.error(
+            request,
+            "Payment receipt is not available because this shipment has not been paid.",
+        )
+
+        return redirect(
+            "shipments:shipment_detail",
+            shipment.pk,
+        )
+
+    response = HttpResponse(
+        content_type="application/pdf",
+    )
+
+    response["Content-Disposition"] = (
+        f'attachment; filename="ParcelPath_Payment_Receipt_'
+        f'{shipment.tracking_number}.pdf"'
+    )
+
+    document = SimpleDocTemplate(
+        response,
+        pagesize=A4,
+        rightMargin=40,
+        leftMargin=40,
+        topMargin=40,
+        bottomMargin=40,
+    )
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    # ======================================================
+    # Header
+    # ======================================================
+
+    elements.append(
+        Paragraph(
+            "<b><font size='24'>ParcelPath</font></b>",
+            styles["Title"],
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            "Payment Receipt",
+            styles["Heading2"],
+        )
+    )
+
+    elements.append(
+        Spacer(
+            1,
+            20,
+        )
+    )
+
+    # ======================================================
+    # Receipt Number
+    # ======================================================
+
+    receipt_number = (
+        f"PP-RCP-{payment.pk:08d}"
+    )
+
+    # ======================================================
+    # Receipt Details
+    # ======================================================
+
+    customer_name = (
+        shipment.customer.user.get_full_name()
+        or shipment.customer.user.email
+    )
+
+    payment_date = (
+        payment.paid_at.strftime(
+            "%d %B %Y, %I:%M %p"
+        )
+        if payment.paid_at
+        else "-"
+    )
+
+    data = [
+        ["Receipt Number", receipt_number],
+        ["Payment Date", payment_date],
+        ["Customer", customer_name],
+        ["Email", shipment.customer.user.email],
+        ["Tracking Number", shipment.tracking_number],
+        ["Amount Paid", f"₹ {payment.amount}"],
+        ["Currency", payment.currency],
+        ["Payment Method", "Razorpay"],
+        [
+            "Razorpay Order ID",
+            payment.razorpay_order_id or "-",
+        ],
+        [
+            "Razorpay Payment ID",
+            payment.razorpay_payment_id or "-",
+        ],
+        ["Payment Status", "PAID"],
+    ]
+
+    table = Table(
+        data,
+        colWidths=[
+            160,
+            330,
+        ],
+    )
+
+    table.setStyle(
+        TableStyle(
+            [
+                (
+                    "BACKGROUND",
+                    (0, 0),
+                    (0, -1),
+                    colors.HexColor("#f2f4f7"),
+                ),
+                (
+                    "TEXTCOLOR",
+                    (0, 0),
+                    (0, -1),
+                    colors.HexColor("#333333"),
+                ),
+                (
+                    "FONTNAME",
+                    (0, 0),
+                    (0, -1),
+                    "Helvetica-Bold",
+                ),
+                (
+                    "FONTNAME",
+                    (1, 0),
+                    (1, -1),
+                    "Helvetica",
+                ),
+                (
+                    "FONTSIZE",
+                    (0, 0),
+                    (-1, -1),
+                    10,
+                ),
+                (
+                    "GRID",
+                    (0, 0),
+                    (-1, -1),
+                    0.5,
+                    colors.HexColor("#cccccc"),
+                ),
+                (
+                    "VALIGN",
+                    (0, 0),
+                    (-1, -1),
+                    "MIDDLE",
+                ),
+                (
+                    "TOPPADDING",
+                    (0, 0),
+                    (-1, -1),
+                    9,
+                ),
+                (
+                    "BOTTOMPADDING",
+                    (0, 0),
+                    (-1, -1),
+                    9,
+                ),
+            ]
+        )
+    )
+
+    elements.append(table)
+
+    elements.append(
+        Spacer(
+            1,
+            30,
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            "<b>Payment Status: PAID</b>",
+            styles["Heading3"],
+        )
+    )
+
+    elements.append(
+        Spacer(
+            1,
+            15,
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            "Thank you for choosing ParcelPath.",
+            styles["Normal"],
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            "This receipt confirms that the above shipment payment "
+            "was successfully processed.",
+            styles["Normal"],
+        )
+    )
+
+    document.build(elements)
+
+    return response
+
 # ==========================================================
 # Update Shipment
 # ==========================================================

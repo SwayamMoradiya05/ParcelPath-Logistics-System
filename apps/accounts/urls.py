@@ -83,4 +83,16 @@ urlpatterns = [
         name="password_reset_complete",
     ),
 
+    path(
+        "verify-email/",
+        views.verify_email_view,
+        name="verify_email",
+    ),
+
+    path(
+        "resend-verification-otp/",
+        views.resend_verification_otp,
+        name="resend_verification_otp",
+    ),
+
 ]

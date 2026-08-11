@@ -59,7 +59,7 @@ urlpatterns = [
         "<int:pk>/label/",
         views.shipment_label,
         name="shipment_label",
-),
+    ),
     path(
         "track/<str:tracking_number>/",
         views.track_shipment,
@@ -69,5 +69,28 @@ urlpatterns = [
     "<int:pk>/label/pdf/",
     views.shipment_label_pdf,
     name="shipment_label_pdf",
+    ),
+    path(
+    "<int:pk>/pay/",
+    views.shipment_payment,
+    name="shipment_payment",
+    ),
+
+    path(
+        "<int:pk>/verify-payment/",
+        views.verify_shipment_payment,
+        name="verify_shipment_payment",
+        ),
+
+    path(
+    "<int:pk>/receipt/",
+    views.payment_receipt,
+    name="payment_receipt",
 ),
+
+    path(
+        "<int:pk>/receipt/pdf/",
+        views.payment_receipt_pdf,
+        name="payment_receipt_pdf",
+    ),
 ]

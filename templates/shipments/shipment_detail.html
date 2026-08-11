@@ -7,6 +7,189 @@ Shipment Details | ParcelPath
 
 {% block content %}
 
+<style>
+    /* =========================================================
+       Payment Section
+       Only applies to the payment button/card
+       ========================================================= */
+
+    .payment-required-card {
+        width: 100%;
+        padding: 24px;
+        margin-bottom: 20px;
+        border: 1px solid #20a464;
+        border-radius: 12px;
+        background: #f4fff8;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .payment-required-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+    }
+
+    .payment-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+    }
+
+    .payment-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #dff7e9;
+        color: #159447;
+        font-size: 24px;
+    }
+
+    .payment-info h5 {
+        color: #128744;
+        font-weight: 700;
+    }
+
+    .payment-info p {
+        color: #5f6b66;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .payment-amount {
+        text-align: center;
+        min-width: 140px;
+    }
+
+    .payment-amount small {
+        display: block;
+        color: #59635e;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .payment-amount strong {
+        display: block;
+        color: #159447;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .payment-action {
+        min-width: 280px;
+    }
+
+    .payment-button {
+        width: 100%;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        padding: 14px 22px;
+        transition: all 0.2s ease;
+    }
+
+    .payment-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(25, 135, 84, 0.25);
+    }
+
+    .payment-security {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 20px;
+        color: #178c4b;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .payment-security span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .payment-divider {
+        color: #adb5bd;
+    }
+
+    @media (max-width: 992px) {
+
+        .payment-required-content {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .payment-info {
+            justify-content: center;
+            text-align: left;
+        }
+
+        .payment-amount {
+            margin: 5px auto;
+        }
+
+        .payment-action {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .payment-button {
+            width: 100%;
+        }
+
+    }
+
+    @media (max-width: 576px) {
+
+        .payment-required-card {
+            padding: 18px;
+        }
+
+        .payment-info {
+            align-items: flex-start;
+        }
+
+        .payment-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            font-size: 20px;
+        }
+
+        .payment-amount strong {
+            font-size: 24px;
+        }
+
+        .payment-button {
+            font-size: 16px;
+            min-height: 52px;
+        }
+
+        .payment-security {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .payment-divider {
+            display: none !important;
+        }
+
+    }
+</style>
+
 <div class="container py-5">
 
     <!-- ================================================= -->
@@ -123,53 +306,80 @@ Shipment Details | ParcelPath
                         <tbody>
 
                             <tr>
+
                                 <th width="35%">Tracking Number</th>
+
                                 <td>{{ shipment.tracking_number }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Package Type</th>
+
                                 <td>{{ shipment.package_type }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Weight</th>
+
                                 <td>{{ shipment.weight }} kg</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Dimensions</th>
+
                                 <td>
+
                                     {{ shipment.length }}
                                     ×
                                     {{ shipment.width }}
                                     ×
                                     {{ shipment.height }}
                                     cm
+
                                 </td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Volume</th>
+
                                 <td>{{ shipment.volume }} cm³</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Chargeable Weight</th>
+
                                 <td>{{ shipment.chargeable_weight }} kg</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Declared Value</th>
+
                                 <td>₹ {{ shipment.declared_value }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Shipping Cost</th>
+
                                 <td>₹ {{ shipment.shipping_cost }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Expected Delivery</th>
 
                                 <td>
@@ -229,33 +439,51 @@ Shipment Details | ParcelPath
                         <tbody>
 
                             <tr>
+
                                 <th width="35%">Sender</th>
+
                                 <td>{{ shipment.sender_name }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Sender Phone</th>
+
                                 <td>{{ shipment.sender_phone }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Sender Address</th>
+
                                 <td>{{ shipment.sender_address }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Receiver</th>
+
                                 <td>{{ shipment.receiver_name }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Receiver Phone</th>
+
                                 <td>{{ shipment.receiver_phone }}</td>
+
                             </tr>
 
                             <tr>
+
                                 <th>Receiver Address</th>
+
                                 <td>{{ shipment.receiver_address }}</td>
+
                             </tr>
 
                         </tbody>
@@ -267,7 +495,8 @@ Shipment Details | ParcelPath
             </div>
 
         </div>
-                <!-- ================================================= -->
+
+        <!-- ================================================= -->
         <!-- Driver Information -->
         <!-- ================================================= -->
 
@@ -416,45 +645,73 @@ Shipment Details | ParcelPath
             <div class="d-flex flex-wrap justify-content-between text-center">
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'PENDING' %}bg-primary{% else %}bg-success{% endif %}">
+
                         Pending
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'CONFIRMED' %}bg-primary{% elif current == 'PENDING' %}bg-secondary{% else %}bg-success{% endif %}">
+
                         Confirmed
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'PICKUP_ASSIGNED' %}bg-primary{% elif current == 'PENDING' or current == 'CONFIRMED' %}bg-secondary{% else %}bg-success{% endif %}">
+
                         Pickup Assigned
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'PICKED_UP' %}bg-primary{% elif current in 'PENDING CONFIRMED PICKUP_ASSIGNED' %}bg-secondary{% else %}bg-success{% endif %}">
+
                         Picked Up
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'IN_TRANSIT' %}bg-primary{% elif current == 'OUT_FOR_DELIVERY' or current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
                         In Transit
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'OUT_FOR_DELIVERY' %}bg-primary{% elif current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
                         Out For Delivery
+
                     </span>
+
                 </div>
 
                 <div class="flex-fill mb-3">
+
                     <span class="badge {% if current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
                         Delivered
+
                     </span>
+
                 </div>
 
             </div>
@@ -496,10 +753,163 @@ Shipment Details | ParcelPath
     {% endif %}
 
     <!-- ================================================= -->
-<!-- Proof of Delivery -->
-<!-- ================================================= -->
+    <!-- Proof of Delivery -->
+    <!-- ================================================= -->
 
-{% if shipment.proof_of_delivery %}
+    {% if shipment.proof_of_delivery %}
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-camera-fill me-2"></i>
+
+                Proof of Delivery
+
+            </h5>
+
+        </div>
+
+        <div class="card-body text-center">
+
+            <img
+                src="{{ shipment.proof_of_delivery.url }}"
+                alt="Proof of Delivery"
+                class="img-fluid rounded shadow"
+                style="max-height:400px;"
+            >
+
+            <hr>
+
+            <p class="mb-0">
+
+                <strong>Uploaded On:</strong>
+
+                {{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- ================================================= -->
+    <!-- Payment -->
+    <!-- ================================================= -->
+
+    {% if request.user.role == "CUSTOMER" and shipment.status == "PENDING" %}
+
+        {% if shipment.shipping_cost and not shipment.is_paid %}
+
+        <div class="payment-required-card">
+
+            <div class="payment-required-content">
+
+                <div class="payment-info">
+
+                    <div class="payment-icon">
+
+                        <i class="bi bi-wallet2"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="mb-1">
+
+                            Payment Required
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            Complete the payment to confirm your shipment
+                            and start the delivery process.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="payment-amount">
+
+                    <small>
+                        Total Amount
+                    </small>
+
+                    <strong>
+                        ₹{{ shipment.shipping_cost }}
+                    </strong>
+
+                </div>
+
+                <div class="payment-action">
+
+                    <a
+                        href="{% url 'shipments:shipment_payment' shipment.pk %}"
+                        class="btn btn-success payment-button"
+                    >
+
+                        <i class="bi bi-credit-card me-2"></i>
+
+                        Pay ₹{{ shipment.shipping_cost }}
+
+                        <i class="bi bi-arrow-right ms-3"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="payment-security">
+
+                <span>
+
+                    <i class="bi bi-lock-fill"></i>
+
+                    Secure Payment
+
+                </span>
+
+                <span class="payment-divider">|</span>
+
+                <span>
+
+                    <i class="bi bi-lightning-charge-fill"></i>
+
+                    Instant Confirmation
+
+                </span>
+
+                <span class="payment-divider">|</span>
+
+                <span>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    100% Safe &amp; Secure
+
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    <!-- ================================================= -->
+    <!-- Action Buttons -->
+    <!-- ================================================= -->
+
+    {% if paid_payment %}
 
 <div class="card shadow-sm border-0 mb-4">
 
@@ -507,32 +917,63 @@ Shipment Details | ParcelPath
 
         <h5 class="mb-0">
 
-            <i class="bi bi-camera-fill me-2"></i>
+            <i class="bi bi-receipt me-2"></i>
 
-            Proof of Delivery
+            Payment Receipt
 
         </h5>
 
     </div>
 
-    <div class="card-body text-center">
+    <div class="card-body">
 
-        <img
-            src="{{ shipment.proof_of_delivery.url }}"
-            alt="Proof of Delivery"
-            class="img-fluid rounded shadow"
-            style="max-height:400px;"
-        >
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-        <hr>
+            <div>
 
-        <p class="mb-0">
+                <h6 class="fw-bold mb-1">
 
-            <strong>Uploaded On:</strong>
+                    Payment Successful
 
-            {{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}
+                </h6>
 
-        </p>
+                <p class="text-muted mb-0">
+
+                    ₹{{ paid_payment.amount }}
+
+                    paid successfully via Razorpay.
+
+                </p>
+
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a
+                    href="{% url 'shipments:payment_receipt' shipment.pk %}"
+                    class="btn btn-outline-success"
+                >
+
+                    <i class="bi bi-receipt me-2"></i>
+
+                    View Receipt
+
+                </a>
+
+                <a
+                    href="{% url 'shipments:payment_receipt_pdf' shipment.pk %}"
+                    class="btn btn-success"
+                >
+
+                    <i class="bi bi-download me-2"></i>
+
+                    Download Receipt
+
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -540,14 +981,12 @@ Shipment Details | ParcelPath
 
 {% endif %}
 
-    <!-- ================================================= -->
-    <!-- Action Buttons -->
-    <!-- ================================================= -->
-
     <div class="d-flex justify-content-between flex-wrap gap-2">
 
-        <a href="{% url 'shipments:shipment_list' %}"
-           class="btn btn-outline-secondary">
+        <a
+            href="{% url 'shipments:shipment_list' %}"
+            class="btn btn-outline-secondary"
+        >
 
             <i class="bi bi-arrow-left me-2"></i>
 
@@ -557,8 +996,10 @@ Shipment Details | ParcelPath
 
         {% if request.user.role == "ADMIN" %}
 
-        <a href="{% url 'shipments:shipment_update' shipment.pk %}"
-           class="btn btn-primary">
+        <a
+            href="{% url 'shipments:shipment_update' shipment.pk %}"
+            class="btn btn-primary"
+        >
 
             <i class="bi bi-pencil-square me-2"></i>
 

@@ -346,17 +346,37 @@ class Shipment(models.Model):
 
         if self.proof_of_delivery and not self.proof_uploaded_at:
             self.proof_uploaded_at = timezone.now()
-         
+
         self.save(
             update_fields=[
                 "status",
                 "delivered_at",
                 "proof_uploaded_at",
                 "proof_of_delivery",
+                "updated_at",
             ]
         )
 
-        # Send SMS safely
+        # ========================================================
+        # SEND DELIVERY EMAIL
+        # ========================================================
+
+        try:
+            from apps.notifications.email_service import EmailService
+
+            EmailService.send_delivery_confirmation(
+                self
+            )
+
+        except Exception:
+            # Never block successful delivery because
+            # email notification failed.
+            pass
+
+        # ========================================================
+        # SEND SMS
+        # ========================================================
+
         try:
             from apps.notifications.sms_service import SMSService
 
@@ -367,7 +387,8 @@ class Shipment(models.Model):
                     phone_number=phone,
                     message=(
                         f"ParcelPath Logistics\n\n"
-                        f"Hello {self.customer.user.first_name},\n\n"
+                        f"Hello "
+                        f"{self.customer.user.first_name},\n\n"
                         f"Your parcel "
                         f"({self.tracking_number}) "
                         f"has been delivered successfully.\n\n"
@@ -379,41 +400,46 @@ class Shipment(models.Model):
             # Never stop delivery because SMS failed.
             pass
 
-            if self.driver:
-
-                self.driver.status = Driver.Status.AVAILABLE
-
-                self.driver.total_deliveries += 1
-                self.driver.successful_deliveries += 1
-
-                self.driver.save(
-                    update_fields=[
-                        "status",
-                        "total_deliveries",
-                        "successful_deliveries",
-                    ]
-                )
-    def mark_cancelled(self):
-
-        self.status = ShipmentStatus.CANCELLED
-
-        self.save(
-            update_fields=[
-                "status",
-            ]
-        )
+        # ========================================================
+        # UPDATE DRIVER
+        # ========================================================
 
         if self.driver:
 
             self.driver.status = Driver.Status.AVAILABLE
-            self.driver.cancelled_deliveries += 1
+
+            self.driver.total_deliveries += 1
+
+            self.driver.successful_deliveries += 1
 
             self.driver.save(
                 update_fields=[
                     "status",
-                    "cancelled_deliveries",
+                    "total_deliveries",
+                    "successful_deliveries",
                 ]
             )
+    def mark_cancelled(self):
+
+            self.status = ShipmentStatus.CANCELLED
+
+            self.save(
+                update_fields=[
+                    "status",
+                ]
+            )
+
+            if self.driver:
+
+                self.driver.status = Driver.Status.AVAILABLE
+                self.driver.cancelled_deliveries += 1
+
+                self.driver.save(
+                    update_fields=[
+                        "status",
+                        "cancelled_deliveries",
+                    ]
+                )
 
     def mark_returned(self):
 
@@ -434,3 +460,80 @@ class Shipment(models.Model):
                     "status",
                 ]
             )
+
+
+class PaymentStatus(models.TextChoices):
+    CREATED = "CREATED", "Created"
+    PAID = "PAID", "Paid"
+    FAILED = "FAILED", "Failed"
+
+
+class Payment(models.Model):
+
+    shipment = models.ForeignKey(
+        Shipment,
+        on_delete=models.CASCADE,
+        related_name="payments",
+    )
+
+    razorpay_order_id = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    razorpay_payment_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+    )
+
+    razorpay_signature = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+    )
+
+    currency = models.CharField(
+        max_length=10,
+        default="INR",
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=PaymentStatus.choices,
+        default=PaymentStatus.CREATED,
+        db_index=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    paid_at = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(fields=["shipment"]),
+            models.Index(fields=["status"]),
+            models.Index(fields=["created_at"]),
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.shipment.tracking_number} - "
+            f"{self.status} - ₹{self.amount}"
+        )
