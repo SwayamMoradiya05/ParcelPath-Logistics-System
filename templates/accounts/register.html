@@ -7,305 +7,2281 @@ Register | ParcelPath
 
 {% block content %}
 
-<section class="py-5">
+<style>
 
-    <div class="container">
+/* =========================================================
+   PARCELPATH REGISTRATION PAGE
+   Complete self-contained premium styling
+   ========================================================= */
 
-        <div class="row justify-content-center">
+.pp-register-page {
+    position: relative;
+    min-height: calc(100vh - 80px);
 
-            <div class="col-lg-7">
+    padding: 45px 0 55px;
 
-                <div class="card shadow-lg border-0">
+    overflow: hidden;
 
-                    <div class="card-body p-5">
+    background:
+        radial-gradient(
+            circle at 5% 10%,
+            rgba(59, 130, 246, 0.13),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 80%,
+            rgba(14, 165, 233, 0.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #f4f8ff 0%,
+            #edf5ff 48%,
+            #f9fcff 100%
+        );
+}
 
-                        <div class="text-center mb-4">
 
-                            <h2 class="fw-bold">
-                                Create Account
-                            </h2>
+/* Soft background glow */
 
-                            <p class="text-muted">
-                                Join ParcelPath today
-                            </p>
+.pp-register-page::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    top: -270px;
+    left: -130px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.12) 0%,
+            rgba(59, 130, 246, 0.04) 40%,
+            transparent 72%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Bottom-right glow */
+
+.pp-register-page::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    right: -200px;
+    bottom: -250px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(14, 165, 233, 0.11) 0%,
+            rgba(14, 165, 233, 0.04) 42%,
+            transparent 72%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Main container */
+
+.pp-register-container {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+   ========================================================= */
+
+.pp-register-left {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-height: 700px;
+
+    padding: 35px 35px 35px 5px;
+}
+
+
+/* Small brand heading */
+
+.pp-register-kicker {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: fit-content;
+
+    margin-bottom: 17px;
+
+    color: #1677df;
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+}
+
+.pp-register-kicker::before {
+    content: "";
+
+    width: 28px;
+    height: 3px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1677df,
+            #38bdf8
+        );
+}
+
+
+/* Main heading */
+
+.pp-register-heading {
+    margin: 0;
+
+    max-width: 650px;
+
+    color: #09264a;
+
+    font-size: clamp(
+        3.2rem,
+        5vw,
+        5.1rem
+    );
+
+    line-height: 0.91;
+
+    font-weight: 900;
+
+    letter-spacing: -0.055em;
+
+    text-transform: uppercase;
+}
+
+
+/* Blue heading portion */
+
+.pp-register-heading .blue {
+    display: block;
+
+    color: #1677df;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1269d7,
+            #20a5f3
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+}
+
+
+/* Description */
+
+.pp-register-description {
+    max-width: 590px;
+
+    margin: 26px 0 25px;
+
+    color: #526b87;
+
+    font-size: 0.88rem;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BENEFITS
+   ========================================================= */
+
+.pp-register-benefits {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px 24px;
+
+    max-width: 630px;
+
+    margin-bottom: 28px;
+}
+
+
+.pp-register-benefit {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 38px;
+
+    color: #203b59;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+}
+
+
+/* Benefit icon */
+
+.pp-register-benefit-icon {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: #1677df;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e5f3ff,
+            #cfe9ff
+        );
+
+    border: 1px solid
+        rgba(37, 125, 220, 0.17);
+
+    box-shadow:
+        0 5px 13px
+        rgba(37, 99, 235, 0.08);
+
+    font-size: 0.9rem;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.pp-register-benefit:hover
+.pp-register-benefit-icon {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(37, 99, 235, 0.14);
+}
+
+
+/* SVG icons */
+
+.pp-register-benefit-icon svg {
+    width: 17px;
+    height: 17px;
+
+    stroke: currentColor;
+
+    fill: none;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.pp-register-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    max-width: 570px;
+
+    margin: 3px 0 25px;
+
+    padding: 16px 0;
+
+    border-top:
+        1px solid rgba(
+            41,
+            102,
+            164,
+            0.14
+        );
+
+    border-bottom:
+        1px solid rgba(
+            41,
+            102,
+            164,
+            0.14
+        );
+}
+
+
+.pp-register-stat {
+    position: relative;
+
+    padding-left: 18px;
+}
+
+
+.pp-register-stat:first-child {
+    padding-left: 0;
+}
+
+
+.pp-register-stat:not(:first-child)::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 5px;
+
+    width: 1px;
+    height: 34px;
+
+    background:
+        rgba(
+            41,
+            102,
+            164,
+            0.18
+        );
+}
+
+
+.pp-register-stat strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #092b52;
+
+    font-size: 0.95rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.02em;
+}
+
+
+.pp-register-stat span {
+    color: #6c829a;
+
+    font-size: 0.65rem;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   LIVE LOGISTICS CARD
+   ========================================================= */
+
+.pp-register-live-card {
+    position: relative;
+
+    width: min(100%, 570px);
+
+    padding: 17px 19px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #123d68,
+            #092f53
+        );
+
+    border:
+        1px solid
+        rgba(82, 176, 255, 0.35);
+
+    box-shadow:
+        0 16px 35px
+        rgba(19, 62, 104, 0.18);
+
+    overflow: hidden;
+}
+
+
+/* Card glow */
+
+.pp-register-live-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    top: -120px;
+    right: -50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(52, 180, 255, 0.15);
+
+    filter: blur(8px);
+}
+
+
+/* Header */
+
+.pp-register-live-header {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+
+.pp-register-live-title {
+    color: #fff;
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+
+/* Online status */
+
+.pp-register-live-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    color: #35e69b;
+
+    background:
+        rgba(
+            16,
+            185,
+            129,
+            0.10
+        );
+
+    border:
+        1px solid
+        rgba(
+            52,
+            211,
+            153,
+            0.25
+        );
+
+    font-size: 0.58rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+
+.pp-register-live-status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #31d391;
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            49,
+            211,
+            145,
+            0.8
+        );
+}
+
+
+/* Route */
+
+.pp-register-route {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        70px 1fr 70px;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.pp-register-location small {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #83a9ca;
+
+    font-size: 0.55rem;
+
+    text-transform: uppercase;
+}
+
+
+.pp-register-location strong {
+    color: #fff;
+
+    font-size: 0.7rem;
+}
+
+
+/* Route line */
+
+.pp-register-route-line {
+    position: relative;
+
+    height: 2px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #25a9f2 0,
+            #25a9f2 7px,
+            transparent 7px,
+            transparent 13px
+        );
+}
+
+
+/* Moving package */
+
+.pp-register-route-marker {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 8px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0ea5e9,
+            #1677df
+        );
+
+    box-shadow:
+        0 5px 14px
+        rgba(
+            14,
+            165,
+            233,
+            0.35
+        );
+}
+
+
+.pp-register-route-marker svg {
+    width: 16px;
+    height: 16px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   RIGHT REGISTRATION CARD
+   ========================================================= */
+
+.pp-register-card {
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+    padding: 34px 36px 30px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.94
+        );
+
+    border:
+        1px solid
+        rgba(
+            148,
+            181,
+            216,
+            0.30
+        );
+
+    box-shadow:
+        0 22px 55px
+        rgba(
+            30,
+            75,
+            125,
+            0.13
+        );
+
+    backdrop-filter: blur(14px);
+
+    -webkit-backdrop-filter: blur(14px);
+
+    overflow: hidden;
+}
+
+
+/* Top accent */
+
+.pp-register-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1269d7,
+            #24a9f2
+        );
+}
+
+
+/* Card heading */
+
+.pp-register-card-title {
+    margin: 0;
+
+    color: #0b294d;
+
+    font-size: 1.65rem;
+
+    font-weight: 850;
+
+    letter-spacing: -0.025em;
+}
+
+
+.pp-register-card-title-line {
+    width: 38px;
+    height: 4px;
+
+    margin-top: 10px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1677df,
+            #38bdf8
+        );
+}
+
+
+.pp-register-card-subtitle {
+    margin: 10px 0 25px;
+
+    color: #657d98;
+
+    font-size: 0.78rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   ========================================================= */
+
+.pp-register-message {
+    border-radius: 10px;
+
+    font-size: 0.78rem;
+
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.pp-register-form-row {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+.pp-register-field {
+    margin-bottom: 17px;
+}
+
+
+.pp-register-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #102d4e;
+
+    font-size: 0.72rem;
+
+    font-weight: 750;
+}
+
+
+.pp-register-required {
+    color: #ef4444;
+
+    margin-left: 2px;
+}
+
+
+/* Inputs */
+
+.pp-register-input,
+.pp-register-select {
+    width: 100%;
+
+    min-height: 47px;
+
+    padding: 0 14px;
+
+    color: #183653;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.92
+        );
+
+    border:
+        1px solid
+        #cbd9e8;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 0.78rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.pp-register-input::placeholder {
+    color: #91a5bc;
+}
+
+
+.pp-register-input:hover,
+.pp-register-select:hover {
+    border-color: #a9c4df;
+}
+
+
+.pp-register-input:focus,
+.pp-register-select:focus {
+    border-color: #2587e8;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            37,
+            135,
+            232,
+            0.11
+        );
+}
+
+
+/* Invalid */
+
+.pp-register-input.is-invalid,
+.pp-register-select.is-invalid {
+    border-color: #ef4444;
+}
+
+
+.pp-register-input.is-invalid:focus,
+.pp-register-select.is-invalid:focus {
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            239,
+            68,
+            68,
+            0.10
+        );
+}
+
+
+/* Django errors */
+
+.pp-register-error {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #dc2626;
+
+    font-size: 0.67rem;
+
+    line-height: 1.4;
+}
+
+
+/* Password wrapper */
+
+.pp-register-password-wrap {
+    position: relative;
+}
+
+
+.pp-register-password-wrap
+.pp-register-input {
+    padding-right: 45px;
+}
+
+
+/* Password eye */
+
+.pp-password-toggle {
+    position: absolute;
+
+    right: 9px;
+    top: 50%;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform:
+        translateY(-50%);
+
+    border: 0;
+
+    border-radius: 7px;
+
+    color: #6c829a;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.pp-password-toggle:hover {
+    color: #1677df;
+
+    background:
+        #edf6ff;
+}
+
+
+.pp-password-toggle svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.pp-register-submit {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 51px;
+
+    margin-top: 5px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1269d7,
+            #168ff0
+        );
+
+    box-shadow:
+        0 10px 24px
+        rgba(
+            22,
+            119,
+            223,
+            0.22
+        );
+
+    font-size: 0.78rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+.pp-register-submit::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.22),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.55s ease;
+}
+
+
+.pp-register-submit:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 30px
+        rgba(
+            22,
+            119,
+            223,
+            0.28
+        );
+
+    filter: brightness(1.03);
+}
+
+
+.pp-register-submit:hover::before {
+    left: 130%;
+}
+
+
+.pp-register-submit:active {
+    transform: translateY(0);
+}
+
+
+.pp-register-submit svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
+
+.pp-register-login {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    text-align: center;
+
+    border-top:
+        1px solid
+        #e1eaf3;
+
+    color: #71859b;
+
+    font-size: 0.75rem;
+}
+
+
+.pp-register-login a {
+    color: #1269d7;
+
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+
+.pp-register-login a:hover {
+    color: #0b57b8;
+
+    text-decoration: underline;
+}
+
+
+/* Security text */
+
+.pp-register-security {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 13px;
+
+    color: #8296aa;
+
+    font-size: 0.63rem;
+}
+
+
+.pp-register-security svg {
+    width: 13px;
+    height: 13px;
+
+    fill: none;
+
+    stroke: #10b981;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .pp-register-heading {
+        font-size: clamp(
+            3rem,
+            5vw,
+            4.5rem
+        );
+    }
+
+    .pp-register-left {
+        padding-right: 20px;
+    }
+
+}
+
+
+@media (max-width: 991px) {
+
+    .pp-register-page {
+        padding:
+            35px 0 45px;
+    }
+
+    .pp-register-left {
+        min-height: auto;
+
+        padding:
+            20px 10px 35px;
+    }
+
+    .pp-register-heading {
+        max-width: 650px;
+
+        font-size:
+            clamp(
+                3rem,
+                8vw,
+                4.5rem
+            );
+    }
+
+    .pp-register-card {
+        max-width: 700px;
+
+        margin: 0 auto;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .pp-register-benefits {
+        grid-template-columns: 1fr;
+
+        max-width: 500px;
+    }
+
+    .pp-register-stats {
+        max-width: 500px;
+    }
+
+    .pp-register-live-card {
+        max-width: 500px;
+    }
+
+    .pp-register-card {
+        padding:
+            30px 24px 27px;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+
+    .pp-register-page {
+        padding:
+            25px 0 35px;
+    }
+
+    .pp-register-left {
+        padding:
+            15px 5px 30px;
+    }
+
+    .pp-register-kicker {
+        font-size: 0.65rem;
+    }
+
+    .pp-register-heading {
+        font-size: 2.8rem;
+
+        line-height: 0.94;
+    }
+
+    .pp-register-description {
+        font-size: 0.8rem;
+
+        margin:
+            20px 0;
+    }
+
+    .pp-register-form-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .pp-register-stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .pp-register-stat {
+        padding-left: 10px;
+    }
+
+    .pp-register-stat strong {
+        font-size: 0.8rem;
+    }
+
+    .pp-register-stat span {
+        font-size: 0.55rem;
+    }
+
+    .pp-register-live-card {
+        padding:
+            15px;
+    }
+
+    .pp-register-route {
+        grid-template-columns:
+            55px 1fr 55px;
+    }
+
+    .pp-register-card {
+        padding:
+            27px 20px 24px;
+
+        border-radius: 16px;
+    }
+
+    .pp-register-card-title {
+        font-size: 1.45rem;
+    }
+
+}
+
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pp-register-benefit-icon,
+    .pp-register-submit {
+        transition: none;
+    }
+
+    .pp-register-submit::before {
+        display: none;
+    }
+
+}
+
+</style>
+
+
+<section class="pp-register-page">
+
+    <div class="container pp-register-container">
+
+        <div class="row align-items-center g-4 g-lg-5">
+
+
+            <!-- =================================================
+                 LEFT PROMOTIONAL SECTION
+                 ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="pp-register-left">
+
+
+                    <div class="pp-register-kicker">
+                        ParcelPath Smart Logistics
+                    </div>
+
+
+                    <h1 class="pp-register-heading">
+
+                        Start
+                        <br>
+
+                        Shipping.
+
+                        <span class="blue">
+                            Move
+                            <br>
+                            Forward.
+                        </span>
+
+                    </h1>
+
+
+                    <p class="pp-register-description">
+
+                        Create your ParcelPath account and bring
+                        shipments, deliveries, drivers and logistics
+                        operations together on one reliable platform.
+
+                    </p>
+
+
+                    <!-- Benefits -->
+
+                    <div class="pp-register-benefits">
+
+
+                        <!-- Shipment -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 8l-9-5-9 5 9 5 9-5z"/>
+                                    <path d="M3 8v8l9 5 9-5V8"/>
+                                    <path d="M12 13v8"/>
+                                    <path d="M7.5 5.5l9 5"/>
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Create and manage shipments easily
+                            </span>
 
                         </div>
 
-                        <!-- Success / Error Messages -->
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button"
-                                            class="btn-close"
-                                            data-bs-dismiss="alert">
-                                    </button>
+
+                        <!-- Tracking -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="8"
+                                    />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2"
+                                    />
+                                    <path d="M12 4V2"/>
+                                    <path d="M12 22v-2"/>
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Track deliveries in real time
+                            </span>
+
+                        </div>
+
+
+                        <!-- Drivers -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 7h11v10H3z"/>
+                                    <path d="M14 10h4l3 3v4h-7z"/>
+                                    <circle
+                                        cx="7"
+                                        cy="19"
+                                        r="2"
+                                    />
+                                    <circle
+                                        cx="18"
+                                        cy="19"
+                                        r="2"
+                                    />
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Connect with verified drivers
+                            </span>
+
+                        </div>
+
+
+                        <!-- Payments -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <rect
+                                        x="3"
+                                        y="5"
+                                        width="18"
+                                        height="14"
+                                        rx="2"
+                                    />
+                                    <path d="M3 10h18"/>
+                                    <path d="M7 15h3"/>
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Manage shipping and payment records
+                            </span>
+
+                        </div>
+
+
+                        <!-- Alerts -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                                    <path d="M10 21h4"/>
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Stay updated with shipment alerts
+                            </span>
+
+                        </div>
+
+
+                        <!-- Security -->
+
+                        <div class="pp-register-benefit">
+
+                            <span class="pp-register-benefit-icon">
+
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"/>
+                                    <path d="M9 12l2 2 4-4"/>
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Keep account and delivery data protected
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Stats -->
+
+                    <div class="pp-register-stats">
+
+
+                        <div class="pp-register-stat">
+
+                            <strong>
+                                24/7
+                            </strong>
+
+                            <span>
+                                Shipment visibility
+                            </span>
+
+                        </div>
+
+
+                        <div class="pp-register-stat">
+
+                            <strong>
+                                LIVE
+                            </strong>
+
+                            <span>
+                                Delivery tracking
+                            </span>
+
+                        </div>
+
+
+                        <div class="pp-register-stat">
+
+                            <strong>
+                                SECURE
+                            </strong>
+
+                            <span>
+                                Account protection
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Live logistics -->
+
+                    <div class="pp-register-live-card">
+
+
+                        <div class="pp-register-live-header">
+
+                            <span class="pp-register-live-title">
+                                Live Logistics Network
+                            </span>
+
+                            <span class="pp-register-live-status">
+                                System Online
+                            </span>
+
+                        </div>
+
+
+                        <div class="pp-register-route">
+
+
+                            <div class="pp-register-location">
+
+                                <small>
+                                    Pickup
+                                </small>
+
+                                <strong>
+                                    Surat
+                                </strong>
+
+                            </div>
+
+
+                            <div class="pp-register-route-line">
+
+                                <div
+                                    class="pp-register-route-marker"
+                                >
+
+                                    <svg viewBox="0 0 24 24">
+
+                                        <path
+                                            d="M3 7h11v10H3z"
+                                        />
+
+                                        <path
+                                            d="M14 10h4l3 3v4h-7z"
+                                        />
+
+                                        <circle
+                                            cx="7"
+                                            cy="19"
+                                            r="2"
+                                        />
+
+                                        <circle
+                                            cx="18"
+                                            cy="19"
+                                            r="2"
+                                        />
+
+                                    </svg>
+
                                 </div>
+
+                            </div>
+
+
+                            <div
+                                class="pp-register-location"
+                                style="text-align:right;"
+                            >
+
+                                <small>
+                                    Delivery
+                                </small>
+
+                                <strong>
+                                    Mumbai
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 REGISTRATION FORM
+                 ================================================= -->
+
+            <div class="col-lg-6">
+
+
+                <div class="pp-register-card">
+
+
+                    <h2 class="pp-register-card-title">
+                        Create Account
+                    </h2>
+
+
+                    <div
+                        class="pp-register-card-title-line"
+                    ></div>
+
+
+                    <p class="pp-register-card-subtitle">
+
+                        Join ParcelPath and start managing
+                        your logistics.
+
+                    </p>
+
+
+                    <!-- Django Messages -->
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div
+                                class="alert
+                                alert-{{ message.tags }}
+                                alert-dismissible
+                                fade show
+                                pp-register-message"
+                                role="alert"
+                            >
+
+                                {{ message }}
+
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <!-- Non-field errors -->
+
+                    {% if form.non_field_errors %}
+
+                        <div
+                            class="alert
+                            alert-danger
+                            pp-register-message"
+                        >
+
+                            {% for error in form.non_field_errors %}
+
+                                <div>
+                                    {{ error }}
+                                </div>
+
                             {% endfor %}
-                        {% endif %}
 
-                        <!-- Form Errors -->
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger">
-                                {% for error in form.non_field_errors %}
-                                    <div>{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                        </div>
 
-                        <form method="post" novalidate>
+                    {% endif %}
 
-                            {% csrf_token %}
 
-                            <!-- First Name + Last Name -->
+                    <form
+                        method="post"
+                        novalidate
+                        id="registerForm"
+                    >
 
-                            <div class="row">
+                        {% csrf_token %}
 
-                                <div class="col-md-6 mb-3">
 
-                                    <label class="form-label">
-                                        First Name
-                                    </label>
+                        <!-- ==============================
+                             FIRST + LAST NAME
+                             ============================== -->
 
-                                    <input
-                                        type="text"
-                                        name="first_name"
-                                        value="{{ form.first_name.value|default:'' }}"
-                                        class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
-                                        placeholder="Enter First Name"
-                                        required>
+                        <div class="pp-register-form-row">
 
-                                    {% for error in form.first_name.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
 
-                                </div>
+                            <!-- First Name -->
 
-                                <div class="col-md-6 mb-3">
+                            <div class="pp-register-field">
 
-                                    <label class="form-label">
-                                        Last Name
-                                    </label>
+                                <label
+                                    class="pp-register-label"
+                                    for="id_first_name"
+                                >
 
-                                    <input
-                                        type="text"
-                                        name="last_name"
-                                        value="{{ form.last_name.value|default:'' }}"
-                                        class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
-                                        placeholder="Enter Last Name"
-                                        required>
+                                    First Name
 
-                                    {% for error in form.last_name.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
+                                    <span
+                                        class="pp-register-required"
+                                    >
+                                        *
+                                    </span>
 
-                                </div>
-
-                            </div>
-
-                            <!-- Email -->
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Email Address
                                 </label>
 
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ form.email.value|default:'' }}"
-                                    class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                                    placeholder="example@gmail.com"
-                                    required>
-
-                                {% for error in form.email.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
-
-                            </div>
-
-                            <!-- Phone -->
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-                                    Phone Number
-                                </label>
 
                                 <input
                                     type="text"
-                                    name="phone"
-                                    value="{{ form.phone.value|default:'' }}"
-                                    class="form-control {% if form.phone.errors %}is-invalid{% endif %}"
-                                    placeholder="9876543210"
-                                    required>
+                                    id="id_first_name"
+                                    name="first_name"
+                                    value="{{ form.first_name.value|default:'' }}"
+                                    class="pp-register-input {% if form.first_name.errors %}is-invalid{% endif %}"
+                                    placeholder="Enter first name"
+                                    autocomplete="given-name"
+                                    required
+                                >
 
-                                {% for error in form.phone.errors %}
-                                    <div class="invalid-feedback d-block">
+
+                                {% for error in form.first_name.errors %}
+
+                                    <span
+                                        class="pp-register-error"
+                                    >
                                         {{ error }}
-                                    </div>
+                                    </span>
+
                                 {% endfor %}
 
                             </div>
 
-                            <!-- Role -->
 
-                            <div class="mb-3">
+                            <!-- Last Name -->
 
-                                <label class="form-label">
-                                    Account Type
+                            <div class="pp-register-field">
+
+                                <label
+                                    class="pp-register-label"
+                                    for="id_last_name"
+                                >
+
+                                    Last Name
+
+                                    <span
+                                        class="pp-register-required"
+                                    >
+                                        *
+                                    </span>
+
                                 </label>
 
+
+                                <input
+                                    type="text"
+                                    id="id_last_name"
+                                    name="last_name"
+                                    value="{{ form.last_name.value|default:'' }}"
+                                    class="pp-register-input {% if form.last_name.errors %}is-invalid{% endif %}"
+                                    placeholder="Enter last name"
+                                    autocomplete="family-name"
+                                    required
+                                >
+
+
+                                {% for error in form.last_name.errors %}
+
+                                    <span
+                                        class="pp-register-error"
+                                    >
+                                        {{ error }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ==============================
+                             EMAIL
+                             ============================== -->
+
+                        <div class="pp-register-field">
+
+                            <label
+                                class="pp-register-label"
+                                for="id_email"
+                            >
+
+                                Email Address
+
+                                <span
+                                    class="pp-register-required"
+                                >
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="id_email"
+                                name="email"
+                                value="{{ form.email.value|default:'' }}"
+                                class="pp-register-input {% if form.email.errors %}is-invalid{% endif %}"
+                                placeholder="example@gmail.com"
+                                autocomplete="email"
+                                required
+                            >
+
+
+                            {% for error in form.email.errors %}
+
+                                <span
+                                    class="pp-register-error"
+                                >
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- ==============================
+                             PHONE + ROLE
+                             ============================== -->
+
+                        <div class="pp-register-form-row">
+
+
+                            <!-- Phone -->
+
+                            <div class="pp-register-field">
+
+                                <label
+                                    class="pp-register-label"
+                                    for="id_phone"
+                                >
+
+                                    Phone Number
+
+                                    <span
+                                        class="pp-register-required"
+                                    >
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <input
+                                    type="tel"
+                                    id="id_phone"
+                                    name="phone"
+                                    value="{{ form.phone.value|default:'' }}"
+                                    class="pp-register-input {% if form.phone.errors %}is-invalid{% endif %}"
+                                    placeholder="Enter phone number"
+                                    autocomplete="tel"
+                                    inputmode="numeric"
+                                    maxlength="15"
+                                    required
+                                >
+
+
+                                {% for error in form.phone.errors %}
+
+                                    <span
+                                        class="pp-register-error"
+                                    >
+                                        {{ error }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            <!-- Account Type -->
+
+                            <div class="pp-register-field">
+
+                                <label
+                                    class="pp-register-label"
+                                    for="id_role"
+                                >
+
+                                    Account Type
+
+                                    <span
+                                        class="pp-register-required"
+                                    >
+                                        *
+                                    </span>
+
+                                </label>
+
+
                                 <select
+                                    id="id_role"
                                     name="role"
-                                    class="form-select {% if form.role.errors %}is-invalid{% endif %}"
-                                    required>
+                                    class="pp-register-select {% if form.role.errors %}is-invalid{% endif %}"
+                                    required
+                                >
 
-                                    <option value="">Select Role</option>
-
-                                    <option value="CUSTOMER"
-                                        {% if form.role.value == "CUSTOMER" %}selected{% endif %}>
-                                        Customer
+                                    <option value="">
+                                        Select Role
                                     </option>
 
-                                    <option value="DRIVER"
-                                        {% if form.role.value == "DRIVER" %}selected{% endif %}>
-                                        Driver
-                                    </option>
+                                    {% for value, label in form.role.field.choices %}
+
+                                        {% if value %}
+
+                                            <option
+                                                value="{{ value }}"
+                                                {% if form.role.value|stringformat:"s" == value|stringformat:"s" %}
+                                                    selected
+                                                {% endif %}
+                                            >
+                                                {{ label }}
+                                            </option>
+
+                                        {% endif %}
+
+                                    {% endfor %}
 
                                 </select>
 
+
                                 {% for error in form.role.errors %}
-                                    <div class="invalid-feedback d-block">
+
+                                    <span
+                                        class="pp-register-error"
+                                    >
                                         {{ error }}
-                                    </div>
+                                    </span>
+
                                 {% endfor %}
 
                             </div>
-                                                        <!-- Password -->
 
-                            <div class="row">
+                        </div>
 
-                                <div class="col-md-6 mb-3">
 
-                                    <label class="form-label">
-                                        Password
-                                    </label>
+                        <!-- ==============================
+                            PASSWORD + CONFIRM PASSWORD
+                            ============================== -->
 
-                                    <div class="input-group">
+                        <div class="pp-register-form-row">
 
-                                        <input
-                                            type="password"
-                                            id="password1"
-                                            name="password1"
-                                            class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
-                                            required>
+                            <!-- Password -->
+                            <div class="pp-register-field">
 
-                                        <button
-                                            class="btn btn-outline-secondary"
-                                            type="button"
-                                            onclick="togglePassword('password1', this)">
+                                <label
+                                    class="pp-register-label"
+                                    for="id_password1"
+                                >
+                                    Password
 
-                                            👁
+                                    <span class="pp-register-required">
+                                        *
+                                    </span>
+                                </label>
 
-                                        </button>
+                                <div class="pp-register-password-wrap">
 
-                                    </div>
+                                    <input
+                                        type="password"
+                                        id="id_password1"
+                                        name="password1"
+                                        class="pp-register-input {% if form.password1.errors %}is-invalid{% endif %}"
+                                        placeholder="Create password"
+                                        autocomplete="new-password"
+                                        required
+                                    >
 
-                                    {% for error in form.password1.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
-
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-
-                                    <label class="form-label">
-                                        Confirm Password
-                                    </label>
-
-                                    <div class="input-group">
-
-                                        <input
-                                            type="password"
-                                            id="password2"
-                                            name="password2"
-                                            class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
-                                            required>
-
-                                        <button
-                                            class="btn btn-outline-secondary"
-                                            type="button"
-                                            onclick="togglePassword('password2', this)">
-
-                                            👁
-
-                                        </button>
-
-                                    </div>
-
-                                    {% for error in form.password2.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {{ error }}
-                                        </div>
-                                    {% endfor %}
+                                    <button
+                                        type="button"
+                                        class="pp-password-toggle"
+                                        onclick="toggleRegisterPassword(
+                                            'id_password1',
+                                            this
+                                        )"
+                                        aria-label="Show password"
+                                    >
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                                            />
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="3"
+                                            />
+                                        </svg>
+                                    </button>
 
                                 </div>
 
-                            </div>
-
-                            <!-- Password Help -->
-
-                            <div class="alert alert-light border small">
-
-                                <strong>Password must contain:</strong>
-
-                                <ul class="mb-0 mt-2">
-
-                                    <li>Minimum 8 characters</li>
-
-                                    <li>Cannot be too similar to your personal information</li>
-
-                                    <li>Cannot be a common password</li>
-
-                                    <li>Cannot be entirely numeric</li>
-
-                                </ul>
+                                {% for error in form.password1.errors %}
+                                    <span class="pp-register-error">
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
 
                             </div>
 
-                            <!-- Submit -->
 
-                            <button
-                                type="submit"
-                                class="btn btn-primary w-100 py-2">
+                            <!-- Confirm Password -->
+                            <div class="pp-register-field">
 
-                                Create Account
+                                <label
+                                    class="pp-register-label"
+                                    for="id_password2"
+                                >
+                                    Confirm Password
 
-                            </button>
+                                    <span class="pp-register-required">
+                                        *
+                                    </span>
+                                </label>
 
-                        </form>
+                                <div class="pp-register-password-wrap">
 
-                        <hr>
+                                    <input
+                                        type="password"
+                                        id="id_password2"
+                                        name="password2"
+                                        class="pp-register-input {% if form.password2.errors %}is-invalid{% endif %}"
+                                        placeholder="Confirm password"
+                                        autocomplete="new-password"
+                                        required
+                                    >
 
-                        <p class="text-center mb-0">
+                                    <button
+                                        type="button"
+                                        class="pp-password-toggle"
+                                        onclick="toggleRegisterPassword(
+                                            'id_password2',
+                                            this
+                                        )"
+                                        aria-label="Show password"
+                                    >
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                                            />
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="3"
+                                            />
+                                        </svg>
+                                    </button>
 
-                            Already have an account?
+                                </div>
 
-                            <a href="{% url 'accounts:login' %}">
-                                Login
-                            </a>
+                                {% for error in form.password2.errors %}
+                                    <span class="pp-register-error">
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
 
-                        </p>
+                            </div>
+
+                        </div>
+
+                        <!-- ==============================
+                             SUBMIT
+                             ============================== -->
+
+                        <button
+                            type="submit"
+                            class="pp-register-submit"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                            >
+
+                                <path
+                                    d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                                />
+
+                                <circle
+                                    cx="9"
+                                    cy="7"
+                                    r="4"
+                                />
+
+                                <path
+                                    d="M19 8v6"
+                                />
+
+                                <path
+                                    d="M22 11h-6"
+                                />
+
+                            </svg>
+
+
+                            <span>
+                                Create ParcelPath Account
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- Login -->
+
+                    <div class="pp-register-login">
+
+                        Already have an account?
+
+                        <a
+                            href="{% url 'accounts:login' %}"
+                        >
+                            Log In
+                        </a>
+
+                    </div>
+
+
+                    <!-- Security -->
+
+                    <div class="pp-register-security">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"
+                            />
+
+                            <path
+                                d="M9 12l2 2 4-4"
+                            />
+
+                        </svg>
+
+                        <span>
+                            Your information is protected by ParcelPath
+                        </span>
 
                     </div>
 
@@ -319,27 +2295,279 @@ Register | ParcelPath
 
 </section>
 
+
 <script>
 
-function togglePassword(id, button){
+/* =========================================================
+   PASSWORD TOGGLE
+   ========================================================= */
 
-    const input = document.getElementById(id);
+function toggleRegisterPassword(fieldId, button) {
 
-    if(input.type === "password"){
+    const field = document.getElementById(fieldId);
 
-        input.type = "text";
+    if (!field) {
+        return;
+    }
 
-        button.innerHTML = "🙈";
+    if (field.type === "password") {
 
-    }else{
+        field.type = "text";
 
-        input.type = "password";
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
 
-        button.innerHTML = "👁";
+        button.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M3 3l18 18"
+                />
+                <path
+                    d="M10.6 10.6a2 2 0 0 0 2.8 2.8"
+                />
+                <path
+                    d="M9.9 4.2A10.5 10.5 0 0 1 12 4c6.5 0 10 8 10 8a18.8 18.8 0 0 1-3.2 4.5"
+                />
+                <path
+                    d="M6.1 6.1C3.4 8.1 2 12 2 12s3.5 8 10 8a10.8 10.8 0 0 0 4.1-.8"
+                />
+            </svg>
+        `;
+
+    } else {
+
+        field.type = "password";
+
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+        button.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                />
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                />
+            </svg>
+        `;
 
     }
 
 }
+
+
+/* =========================================================
+   PHONE NUMBER
+   Only digits are accepted while typing/pasting.
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const phone =
+            document.getElementById("id_phone");
+
+        if (!phone) {
+            return;
+        }
+
+
+        phone.addEventListener(
+            "input",
+            function () {
+
+                const cursorPosition =
+                    this.selectionStart;
+
+                const oldValue =
+                    this.value;
+
+                this.value =
+                    this.value.replace(
+                        /[^0-9]/g,
+                        ""
+                    );
+
+                if (
+                    oldValue !== this.value &&
+                    cursorPosition !== null
+                ) {
+
+                    const removedBeforeCursor =
+                        oldValue
+                            .slice(
+                                0,
+                                cursorPosition
+                            )
+                            .replace(
+                                /[0-9]/g,
+                                ""
+                            ).length;
+
+                    this.setSelectionRange(
+                        cursorPosition -
+                        removedBeforeCursor,
+                        cursorPosition -
+                        removedBeforeCursor
+                    );
+
+                }
+
+            }
+        );
+
+
+        phone.addEventListener(
+            "keydown",
+            function (event) {
+
+                const allowedKeys = [
+                    "Backspace",
+                    "Delete",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "ArrowUp",
+                    "ArrowDown",
+                    "Tab",
+                    "Home",
+                    "End"
+                ];
+
+                if (
+                    allowedKeys.includes(
+                        event.key
+                    )
+                ) {
+                    return;
+                }
+
+
+                if (
+                    event.ctrlKey ||
+                    event.metaKey
+                ) {
+                    return;
+                }
+
+
+                if (
+                    !/^[0-9]$/.test(
+                        event.key
+                    )
+                ) {
+
+                    event.preventDefault();
+
+                }
+
+            }
+        );
+
+
+        phone.addEventListener(
+            "paste",
+            function (event) {
+
+                event.preventDefault();
+
+                const pastedText =
+                    (
+                        event.clipboardData ||
+                        window.clipboardData
+                    ).getData("text");
+
+                const digits =
+                    pastedText.replace(
+                        /[^0-9]/g,
+                        ""
+                    );
+
+                const start =
+                    this.selectionStart;
+
+                const end =
+                    this.selectionEnd;
+
+                const current =
+                    this.value;
+
+                this.value =
+                    current.slice(
+                        0,
+                        start
+                    ) +
+                    digits +
+                    current.slice(
+                        end
+                    );
+
+                this.dispatchEvent(
+                    new Event(
+                        "input",
+                        {
+                            bubbles: true
+                        }
+                    )
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   FORM SUBMIT PROTECTION
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "registerForm"
+            );
+
+        if (!form) {
+            return;
+        }
+
+
+        form.addEventListener(
+            "submit",
+            function () {
+
+                const submitButton =
+                    form.querySelector(
+                        ".pp-register-submit"
+                    );
+
+                if (!submitButton) {
+                    return;
+                }
+
+
+                /*
+                 * Do not disable the button here.
+                 * Django validation errors should be able
+                 * to return the user to the form normally.
+                 */
+
+            }
+        );
+
+    }
+);
 
 </script>
 

@@ -1,5 +1,5 @@
 from functools import wraps
-
+from datetime import timedelta
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -524,7 +524,20 @@ def dashboard(request):
     This view is ADMIN-only.
     Customer and driver dashboards are handled by
     apps/dashboard/views.py.
+
+    Dashboard includes:
+    - Operational KPIs
+    - Revenue information
+    - Customer and driver statistics
+    - Shipment performance
+    - Six-month revenue trend
+    - Business overview chart data
+    - Recent operational records
     """
+
+    # ========================================================
+    # SHIPMENT STATISTICS
+    # ========================================================
 
     total_shipments = Shipment.objects.count()
 
@@ -571,23 +584,36 @@ def dashboard(request):
             ShipmentStatus.PICKED_UP,
             ShipmentStatus.IN_TRANSIT,
             ShipmentStatus.OUT_FOR_DELIVERY,
-        ]
+        ],
     ).count()
+
+    # ========================================================
+    # REVENUE
+    # ========================================================
 
     total_revenue = (
         Payment.objects.filter(
             status="PAID",
-        ).aggregate(
+        )
+        .aggregate(
             total=Sum("amount"),
         )["total"]
         or 0
     )
+
+    # ========================================================
+    # CUSTOMER STATISTICS
+    # ========================================================
 
     total_customers = Customer.objects.count()
 
     verified_customers = Customer.objects.filter(
         is_verified=True,
     ).count()
+
+    # ========================================================
+    # DRIVER STATISTICS
+    # ========================================================
 
     total_drivers = Driver.objects.count()
 
@@ -603,11 +629,19 @@ def dashboard(request):
         status=Driver.Status.ON_DELIVERY,
     ).count()
 
+    # ========================================================
+    # USER STATISTICS
+    # ========================================================
+
     total_users = User.objects.count()
 
     active_users = User.objects.filter(
         is_active=True,
     ).count()
+
+    # ========================================================
+    # NOTIFICATIONS / SUPPORT
+    # ========================================================
 
     unread_notifications = Notification.objects.filter(
         user=request.user,
@@ -618,6 +652,144 @@ def dashboard(request):
         status=ContactStatus.PENDING,
     ).count()
 
+    # ========================================================
+    # SIX-MONTH REVENUE TREND
+    # ========================================================
+
+    revenue_labels = []
+    revenue_data = []
+
+    shipment_labels = []
+    shipment_volume_data = []
+
+    current_month = timezone.localtime().replace(
+        day=1,
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+
+    month_cursor = current_month
+
+    # Build the last 6 months from oldest -> newest.
+    months = []
+
+    for _ in range(6):
+        months.append(month_cursor)
+
+        previous_day = month_cursor - timedelta(days=1)
+
+        month_cursor = previous_day.replace(
+            day=1,
+            hour=0,
+            minute=0,
+            second=0,
+            microsecond=0,
+        )
+
+    months.reverse()
+
+    for month_start in months:
+
+        # Calculate the beginning of the next month.
+        if month_start.month == 12:
+            next_month = month_start.replace(
+                year=month_start.year + 1,
+                month=1,
+            )
+        else:
+            next_month = month_start.replace(
+                month=month_start.month + 1,
+            )
+
+        month_revenue = (
+            Payment.objects.filter(
+                status="PAID",
+                created_at__gte=month_start,
+                created_at__lt=next_month,
+            )
+            .aggregate(
+                total=Sum("amount"),
+            )["total"]
+            or 0
+        )
+
+        month_shipments = Shipment.objects.filter(
+            created_at__gte=month_start,
+            created_at__lt=next_month,
+        ).count()
+
+        revenue_labels.append(
+            month_start.strftime("%b %Y")
+        )
+
+        revenue_data.append(
+            float(month_revenue)
+        )
+
+        shipment_labels.append(
+            month_start.strftime("%b")
+        )
+
+        shipment_volume_data.append(
+            month_shipments
+        )
+
+    # ========================================================
+    # SHIPMENT PERFORMANCE CHART
+    # ========================================================
+
+    shipment_status_labels = [
+        "Pending",
+        "Confirmed",
+        "Pickup Assigned",
+        "Picked Up",
+        "In Transit",
+        "Out for Delivery",
+        "Delivered",
+        "Cancelled",
+        "Returned",
+    ]
+
+    shipment_status_data = [
+        pending,
+        confirmed,
+        pickup_assigned,
+        picked_up,
+        in_transit,
+        out_for_delivery,
+        delivered,
+        cancelled,
+        returned,
+    ]
+
+    # ========================================================
+    # BUSINESS OVERVIEW CHART
+    # ========================================================
+
+    business_overview_labels = [
+        "Customers",
+        "Drivers",
+        "Verified Drivers",
+        "Shipments",
+        "Delivered",
+        "Active Shipments",
+    ]
+
+    business_overview_data = [
+        total_customers,
+        total_drivers,
+        verified_drivers,
+        total_shipments,
+        delivered,
+        active_shipments,
+    ]
+
+    # ========================================================
+    # RECENT SHIPMENTS
+    # ========================================================
+
     recent_shipments = (
         Shipment.objects
         .select_related(
@@ -627,11 +799,19 @@ def dashboard(request):
         .order_by("-created_at")[:10]
     )
 
+    # ========================================================
+    # RECENT PAYMENTS
+    # ========================================================
+
     recent_payments = (
         Payment.objects
         .select_related("shipment")
         .order_by("-created_at")[:5]
     )
+
+    # ========================================================
+    # RECENT CONTACTS
+    # ========================================================
 
     recent_contacts = (
         Contact.objects
@@ -639,39 +819,100 @@ def dashboard(request):
         .order_by("-created_at")[:5]
     )
 
+    # ========================================================
+    # DASHBOARD CONTEXT
+    # ========================================================
+
     context = {
+
+        # ----------------------------------------------------
+        # Shipment KPIs
+        # ----------------------------------------------------
+
         "total_shipments": total_shipments,
 
         "pending": pending,
         "confirmed": confirmed,
         "pickup_assigned": pickup_assigned,
         "picked_up": picked_up,
+
         "active": active_shipments,
+
         "in_transit": in_transit,
         "out_for_delivery": out_for_delivery,
         "delivered": delivered,
         "cancelled": cancelled,
         "returned": returned,
 
+        # ----------------------------------------------------
+        # Revenue
+        # ----------------------------------------------------
+
         "total_revenue": total_revenue,
+
+        # ----------------------------------------------------
+        # Customers
+        # ----------------------------------------------------
 
         "total_customers": total_customers,
         "verified_customers": verified_customers,
+
+        # ----------------------------------------------------
+        # Drivers
+        # ----------------------------------------------------
 
         "total_drivers": total_drivers,
         "verified_drivers": verified_drivers,
         "available_drivers": available_drivers,
         "busy_drivers": busy_drivers,
 
+        # ----------------------------------------------------
+        # Users
+        # ----------------------------------------------------
+
         "total_users": total_users,
         "active_users": active_users,
+
+        # ----------------------------------------------------
+        # Notifications / Support
+        # ----------------------------------------------------
 
         "unread_notifications": unread_notifications,
         "pending_contacts": pending_contacts,
 
+        # ----------------------------------------------------
+        # Recent records
+        # ----------------------------------------------------
+
         "recent_shipments": recent_shipments,
         "recent_payments": recent_payments,
         "recent_contacts": recent_contacts,
+
+        # ----------------------------------------------------
+        # Chart 1 - Revenue Trend
+        # ----------------------------------------------------
+
+        "revenue_labels": revenue_labels,
+        "revenue_data": revenue_data,
+
+        # Shipment volume is also available if we want
+        # to display it later without another database query.
+        "shipment_volume_data": shipment_volume_data,
+        "shipment_volume_labels": shipment_labels,
+
+        # ----------------------------------------------------
+        # Chart 2 - Shipment Performance
+        # ----------------------------------------------------
+
+        "shipment_status_labels": shipment_status_labels,
+        "shipment_status_data": shipment_status_data,
+
+        # ----------------------------------------------------
+        # Chart 3 - Business Overview
+        # ----------------------------------------------------
+
+        "business_overview_labels": business_overview_labels,
+        "business_overview_data": business_overview_data,
     }
 
     return render(
@@ -679,7 +920,6 @@ def dashboard(request):
         "dashboard/admin_dashboard.html",
         context,
     )
-
 
 # ============================================================
 # GENERIC MODEL LIST

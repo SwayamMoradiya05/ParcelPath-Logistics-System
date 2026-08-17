@@ -117,12 +117,19 @@ class UserRegistrationForm(UserCreationForm):
     )
 
     phone = forms.CharField(
-        max_length=15,
-        error_messages={
-            "required": "Phone number is required.",
-        },
+        required=True,
+        max_length=10,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter 10-digit phone number",
+                "inputmode": "numeric",
+                "pattern": "[0-9]*",
+                "maxlength": "10",
+                "autocomplete": "tel",
+            }
+        ),
     )
-
     role = forms.ChoiceField(
         choices=[
             (UserRole.CUSTOMER, "Customer"),
@@ -220,11 +227,15 @@ class UserRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        user.email = self.cleaned_data["email"].lower()
+        user.email = self.cleaned_data["email"].lower().strip()
         user.phone = self.cleaned_data["phone"]
         user.role = self.cleaned_data["role"]
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
+
+        # Generate username automatically from email
+        if not user.username:
+            user.username = user.email.split("@", 1)[0]
 
         if commit:
             user.save()
@@ -257,7 +268,16 @@ class ProfileUpdateForm(forms.ModelForm):
                 attrs={"class": "form-control"}
             ),
             "phone": forms.TextInput(
-                attrs={"class": "form-control"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Phone Number",
+                    "inputmode": "numeric",
+                    "autocomplete": "tel",
+                    "maxlength": "15",
+                    "onkeydown": "return (event.key >= '0' && event.key <= '9') || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(event.key);",
+                    "oninput": "this.value = this.value.replace(/[^0-9]/g, '');",
+                    "onpaste": "setTimeout(() => { this.value = this.value.replace(/[^0-9]/g, ''); }, 0);",
+                }
             ),
             "address": forms.Textarea(
                 attrs={

@@ -1,355 +1,530 @@
 {% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    Operations Dashboard | ParcelPath
+{% endblock %}
+
 
 {% block admin_content %}
 
-<!-- ==========================================================
-     PAGE HEADER
-========================================================== -->
+<div class="pp-dashboard">
 
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <!-- ==========================================================
+         DASHBOARD HEADER
+    ========================================================== -->
 
-    <div>
-        <div class="small text-uppercase text-muted fw-semibold">
-            Operations Overview
-        </div>
+    <div class="pp-dashboard-heading">
 
-        <h2 class="admin-title mb-1">
-            Dashboard
-        </h2>
+        <div>
 
-        <p class="text-muted mb-0">
-            Monitor shipments, drivers, payments and daily operations.
-        </p>
-    </div>
-
-    <div class="d-flex gap-2">
-
-        <a
-            href="{% url 'dashboard:model_list' 'shipments' %}"
-            class="btn btn-outline-primary"
-        >
-            <i class="bi bi-box-seam me-1"></i>
-            View Shipments
-        </a>
-
-        <a
-            href="{% url 'dashboard:model_create' 'shipments' %}"
-            class="btn btn-primary"
-        >
-            <i class="bi bi-plus-lg me-1"></i>
-            New Shipment
-        </a>
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================================
-     KPI CARDS
-========================================================== -->
-
-<div class="row g-3 mb-4">
-
-    <!-- Pending -->
-
-    <div class="col-xl-3 col-md-6">
-
-        <div class="pp-admin-card pp-stat h-100">
-
-            <div class="d-flex justify-content-between align-items-start">
-
-                <span
-                    class="pp-stat-icon text-warning"
-                    style="background:#fff7e6"
-                >
-                    <i class="bi bi-hourglass-split"></i>
-                </span>
-
-                <span class="badge bg-warning-subtle text-warning">
-                    Action
-                </span>
-
+            <div class="pp-dashboard-eyebrow">
+                OPERATIONS OVERVIEW
             </div>
 
-            <div class="pp-stat-label mt-3">
-                Pending Shipments
-            </div>
+            <h1>
+                Dashboard
+            </h1>
 
-            <div class="pp-stat-value">
-                {{ pending|default:0 }}
-            </div>
-
-            <a
-                href="{% url 'dashboard:model_list' 'shipments' %}"
-                class="small text-decoration-none"
-            >
-                View shipments
-                <i class="bi bi-arrow-right ms-1"></i>
-            </a>
+            <p>
+                Monitor shipments, customers, revenue and daily logistics
+                performance from one place.
+            </p>
 
         </div>
 
     </div>
 
 
-    <!-- In Transit -->
+    <!-- ==========================================================
+         KPI CARDS
+    ========================================================== -->
 
-    <div class="col-xl-3 col-md-6">
+    <div class="row g-3 mb-4">
 
-        <div class="pp-admin-card pp-stat h-100">
 
-            <div class="d-flex justify-content-between align-items-start">
+        <!-- Total Shipments -->
 
-                <span
-                    class="pp-stat-icon text-info"
-                    style="background:#e8f8ff"
-                >
-                    <i class="bi bi-truck"></i>
-                </span>
+        <div class="col-xl-3 col-md-6">
 
-                <span class="badge bg-info-subtle text-info">
-                    Live
-                </span>
+            <div class="pp-dashboard-kpi pp-kpi-blue">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Overall
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Total Shipments
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ total_shipments|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    All registered shipments
+                </div>
 
             </div>
 
-            <div class="pp-stat-label mt-3">
-                In Transit
+        </div>
+
+
+        <!-- Active Shipments -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-cyan">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Live
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Active Shipments
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ active_shipments|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Currently moving through network
+                </div>
+
             </div>
 
-            <div class="pp-stat-value">
-                {{ active|default:0 }}
+        </div>
+
+
+        <!-- Delivered -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-green">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Completed
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Delivered
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ delivered|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Successfully completed deliveries
+                </div>
+
             </div>
 
-            <a
-                href="{% url 'dashboard:model_list' 'shipments' %}"
-                class="small text-decoration-none"
-            >
-                Monitor shipments
-                <i class="bi bi-arrow-right ms-1"></i>
-            </a>
+        </div>
+
+
+        <!-- Revenue -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-purple">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-currency-rupee"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Revenue
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Total Revenue
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    ₹{{ total_revenue|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Total paid shipment amount
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- Revenue -->
+    <!-- ==========================================================
+         BUSINESS PERFORMANCE
+    ========================================================== -->
 
-    <div class="col-xl-3 col-md-6">
-
-        <div class="pp-admin-card pp-stat h-100">
-
-            <div class="d-flex justify-content-between align-items-start">
-
-                <span
-                    class="pp-stat-icon text-success"
-                    style="background:#eaf8ef"
-                >
-                    <i class="bi bi-currency-rupee"></i>
-                </span>
-
-                <span class="badge bg-success-subtle text-success">
-                    Revenue
-                </span>
-
-            </div>
-
-            <div class="pp-stat-label mt-3">
-                Total Revenue
-            </div>
-
-            <div class="pp-stat-value">
-                ₹{{ total_revenue|default:0|floatformat:0 }}
-            </div>
-
-            <a
-                href="{% url 'dashboard:model_list' 'payments' %}"
-                class="small text-decoration-none"
-            >
-                View payments
-                <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-
-        </div>
-
-    </div>
+    <div class="row g-3 mb-4">
 
 
-    <!-- Drivers -->
+        <!-- Revenue Performance -->
 
-    <div class="col-xl-3 col-md-6">
+        <div class="col-xl-8">
 
-        <div class="pp-admin-card pp-stat h-100">
+            <div class="pp-dashboard-panel">
 
-            <div class="d-flex justify-content-between align-items-start">
-
-                <span
-                    class="pp-stat-icon text-primary"
-                    style="background:#edf4ff"
-                >
-                    <i class="bi bi-person-badge"></i>
-                </span>
-
-                <span class="badge bg-primary-subtle text-primary">
-                    Fleet
-                </span>
-
-            </div>
-
-            <div class="pp-stat-label mt-3">
-                Available Drivers
-            </div>
-
-            <div class="pp-stat-value">
-                {{ available_drivers|default:0 }}
-            </div>
-
-            <div class="small text-muted mt-1">
-                of {{ total_drivers|default:0 }} total drivers
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ==========================================================
-     DRIVER OPERATIONS + SUPPORT
-========================================================== -->
-
-<div class="row g-3 mb-4">
-
-    <!-- Driver Operations -->
-
-    <div class="col-xl-5">
-
-        <div class="pp-admin-card h-100">
-
-            <div class="p-3 border-bottom">
-
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="pp-dashboard-panel-header">
 
                     <div>
-                        <strong>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-graph-up-arrow me-2"></i>
+                            Revenue Performance
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Paid revenue generated over the last six months
+                        </div>
+
+                    </div>
+
+
+                    <span class="pp-chart-badge pp-chart-badge-green">
+                        Revenue
+                    </span>
+
+                </div>
+
+
+                <div class="pp-dashboard-chart">
+
+                    <canvas id="revenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Business Overview -->
+
+        <div class="col-xl-4">
+
+            <div class="pp-dashboard-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-pie-chart-fill me-2"></i>
+                            Business Overview
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Customers, fleet and shipment scale
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pp-business-chart">
+
+                    <canvas id="businessChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         SHIPMENT PERFORMANCE
+    ========================================================== -->
+
+    <div class="pp-dashboard-panel mb-4">
+
+        <div class="pp-dashboard-panel-header">
+
+            <div>
+
+                <div class="pp-dashboard-panel-title">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Shipment Performance
+                </div>
+
+                <div class="pp-dashboard-panel-subtitle">
+                    Current distribution across the complete shipment lifecycle
+                </div>
+
+            </div>
+
+
+            <span class="pp-chart-badge pp-chart-badge-blue">
+                Live
+            </span>
+
+        </div>
+
+
+        <div class="pp-dashboard-chart pp-shipment-chart">
+
+            <canvas id="shipmentChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         OPERATIONAL SUMMARY
+    ========================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- Customers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-blue">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Customers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ total_customers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Registered customers
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Drivers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-cyan">
+                    <i class="bi bi-truck"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Drivers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ total_drivers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Registered delivery drivers
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Verified Drivers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-green">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Verified Drivers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ verified_drivers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Drivers approved for operations
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         OPERATIONAL STATUS
+    ========================================================== -->
+
+    <div class="row g-3">
+
+
+        <!-- Driver Operations -->
+
+        <div class="col-xl-6">
+
+            <div class="pp-dashboard-panel pp-operation-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
                             <i class="bi bi-truck me-2"></i>
                             Driver Operations
-                        </strong>
-
-                        <div class="small pp-muted mt-1">
-                            Current fleet availability
                         </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Fleet availability and verification status
+                        </div>
+
                     </div>
+
 
                     <a
                         href="{% url 'dashboard:model_list' 'drivers' %}"
-                        class="btn btn-sm btn-outline-primary"
+                        class="pp-panel-action"
                     >
                         Manage
                     </a>
 
                 </div>
 
-            </div>
+
+                <div class="pp-operation-body">
 
 
-            <div class="p-3">
+                    <div class="pp-operation-stat">
 
-                <div class="d-flex justify-content-between mb-2">
+                        <div class="pp-operation-stat-icon pp-summary-green">
+                            <i class="bi bi-person-check"></i>
+                        </div>
 
-                    <span>
-                        <i class="bi bi-circle-fill text-success me-2"
-                           style="font-size:8px"></i>
-                        Available
-                    </span>
+                        <div>
 
-                    <strong class="text-success">
-                        {{ available_drivers|default:0 }}
-                    </strong>
+                            <strong>
+                                {{ verified_drivers|default:"0" }}
+                            </strong>
 
-                </div>
+                            <span>
+                                Verified Drivers
+                            </span>
 
+                        </div>
 
-                <div
-                    class="progress mb-4"
-                    style="height:8px"
-                >
-
-                    <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        aria-valuenow="{% if total_drivers %}{% widthratio available_drivers total_drivers 100 %}{% else %}0{% endif %}"
-                        data-width="{% if total_drivers %}{% widthratio available_drivers total_drivers 100 %}{% else %}0{% endif %}"
-                    ></div>
-
-                </div>
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        document.querySelectorAll('[data-width]').forEach(function (element) {
-                            const width = element.getAttribute('data-width');
-                            if (width !== null) {
-                                element.style.width = width + '%';
-                            }
-                        });
-                    });
-                </script>
+                    </div>
 
 
-                <div class="d-flex justify-content-between mb-3">
+                    <div class="pp-operation-stat">
 
-                    <span>
-                        <i class="bi bi-truck me-2 text-info"></i>
-                        On Delivery
-                    </span>
+                        <div class="pp-operation-stat-icon pp-summary-blue">
+                            <i class="bi bi-people"></i>
+                        </div>
 
-                    <strong>
-                        {{ busy_drivers|default:0 }}
-                    </strong>
+                        <div>
 
-                </div>
+                            <strong>
+                                {{ total_drivers|default:"0" }}
+                            </strong>
 
+                            <span>
+                                Total Drivers
+                            </span>
 
-                <div class="d-flex justify-content-between mb-3">
+                        </div>
 
-                    <span>
-                        <i class="bi bi-patch-check me-2 text-primary"></i>
-                        Verified Drivers
-                    </span>
-
-                    <strong>
-                        {{ verified_drivers|default:0 }}
-                    </strong>
-
-                </div>
+                    </div>
 
 
-                <div class="border-top pt-3 mt-3">
+                    <div class="pp-operation-stat">
 
-                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="pp-operation-stat-icon pp-summary-cyan">
+                            <i class="bi bi-activity"></i>
+                        </div>
 
-                        <span class="text-muted small">
-                            Fleet utilisation
-                        </span>
+                        <div>
 
-                        <strong>
+                            <strong>
+                                {{ active_shipments|default:"0" }}
+                            </strong>
 
-                            {% if total_drivers %}
+                            <span>
+                                Active Assignments
+                            </span>
 
-                                {% widthratio busy_drivers total_drivers 100 %}%
-
-                            {% else %}
-
-                                0%
-
-                            {% endif %}
-
-                        </strong>
+                        </div>
 
                     </div>
 
@@ -359,137 +534,103 @@
 
         </div>
 
-    </div>
 
+        <!-- Support & Alerts -->
 
-    <!-- Support & Alerts -->
+        <div class="col-xl-6">
 
-    <div class="col-xl-7">
+            <div class="pp-dashboard-panel pp-operation-panel">
 
-        <div class="pp-admin-card h-100">
-
-            <div class="p-3 border-bottom">
-
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="pp-dashboard-panel-header">
 
                     <div>
-                        <strong>
-                            <i class="bi bi-bell me-2"></i>
-                            Support & Alerts
-                        </strong>
 
-                        <div class="small pp-muted mt-1">
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-bell-fill me-2"></i>
+                            Support & Alerts
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
                             Items requiring administrator attention
                         </div>
-                    </div>
-
-                    <a
-                        href="{% url 'dashboard:model_list' 'contacts' %}"
-                        class="btn btn-sm btn-outline-primary"
-                    >
-                        Open Support
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="p-3">
-
-                <div class="row g-3">
-
-                    <div class="col-md-6">
-
-                        <div class="border rounded-3 p-3 h-100">
-
-                            <div class="d-flex justify-content-between align-items-start">
-
-                                <div>
-
-                                    <div class="text-muted small">
-                                        Pending Contact Requests
-                                    </div>
-
-                                    <div class="fs-3 fw-bold mt-1">
-                                        {{ pending_contacts|default:0 }}
-                                    </div>
-
-                                </div>
-
-                                <span
-                                    class="rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width:42px;height:42px;background:#fff7e6"
-                                >
-                                    <i class="bi bi-chat-left-text text-warning"></i>
-                                </span>
-
-                            </div>
-
-                            <a
-                                href="{% url 'dashboard:model_list' 'contacts' %}"
-                                class="small text-decoration-none"
-                            >
-                                Review requests
-                                <i class="bi bi-arrow-right ms-1"></i>
-                            </a>
-
-                        </div>
 
                     </div>
 
-
-                    <div class="col-md-6">
-
-                        <div class="border rounded-3 p-3 h-100">
-
-                            <div class="d-flex justify-content-between align-items-start">
-
-                                <div>
-
-                                    <div class="text-muted small">
-                                        Unread Notifications
-                                    </div>
-
-                                    <div class="fs-3 fw-bold mt-1">
-                                        {{ unread_notifications|default:0 }}
-                                    </div>
-
-                                </div>
-
-                                <span
-                                    class="rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width:42px;height:42px;background:#fff0f0"
-                                >
-                                    <i class="bi bi-bell text-danger"></i>
-                                </span>
-
-                            </div>
-
-                            <a
-                                href="{% url 'dashboard:model_list' 'notifications' %}"
-                                class="small text-decoration-none"
-                            >
-                                Open notifications
-                                <i class="bi bi-arrow-right ms-1"></i>
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="mt-3">
 
                     <a
                         href="{% url 'dashboard:model_list' 'notifications' %}"
-                        class="btn btn-outline-primary w-100"
+                        class="pp-panel-action"
                     >
-                        <i class="bi bi-bell me-2"></i>
-                        Open Notification Center
+                        Open
                     </a>
+
+                </div>
+
+
+                <div class="pp-operation-body">
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-orange">
+                            <i class="bi bi-chat-left-text"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ pending_contacts|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Pending Contact Requests
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-purple">
+                            <i class="bi bi-bell"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ unread_notifications|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Unread Notifications
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-red">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ cancelled|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Cancelled Shipments
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -503,271 +644,1944 @@
 
 
 <!-- ==========================================================
-     QUICK OPERATIONS
-========================================================== -->
+     DJANGO DATA
+     
+     IMPORTANT:
+     Django variables stay here, outside JavaScript.
+     ========================================================== -->
 
-<div class="pp-admin-card mb-4">
+<div
+    id="dashboard-data"
 
-    <div class="p-3 border-bottom">
+    data-pending="{{ pending|default:'0' }}"
+    data-confirmed="{{ confirmed|default:'0' }}"
+    data-pickup-assigned="{{ pickup_assigned|default:'0' }}"
+    data-picked-up="{{ picked_up|default:'0' }}"
+    data-in-transit="{{ in_transit|default:'0' }}"
+    data-out-for-delivery="{{ out_for_delivery|default:'0' }}"
+    data-delivered="{{ delivered|default:'0' }}"
+    data-cancelled="{{ cancelled|default:'0' }}"
+    data-returned="{{ returned|default:'0' }}"
 
-        <strong>
-            <i class="bi bi-lightning-charge me-2"></i>
-            Quick Operations
-        </strong>
-
-        <div class="small pp-muted mt-1">
-            Frequently used administration tools
-        </div>
-
-    </div>
-
-
-    <div class="p-3">
-
-        <div class="row g-3">
-
-            <div class="col-xl-3 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'shipments' %}"
-                    class="btn btn-light border w-100 text-start p-3 h-100"
-                >
-
-                    <i class="bi bi-box-seam fs-4 text-primary"></i>
-
-                    <div class="fw-semibold mt-2">
-                        Shipment Management
-                    </div>
-
-                    <div class="small text-muted">
-                        View, edit and manage shipments
-                    </div>
-
-                </a>
-
-            </div>
-
-
-            <div class="col-xl-3 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'payments' %}"
-                    class="btn btn-light border w-100 text-start p-3 h-100"
-                >
-
-                    <i class="bi bi-credit-card fs-4 text-success"></i>
-
-                    <div class="fw-semibold mt-2">
-                        Payment Management
-                    </div>
-
-                    <div class="small text-muted">
-                        Review payment records
-                    </div>
-
-                </a>
-
-            </div>
-
-
-            <div class="col-xl-3 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'drivers' %}"
-                    class="btn btn-light border w-100 text-start p-3 h-100"
-                >
-
-                    <i class="bi bi-truck fs-4 text-info"></i>
-
-                    <div class="fw-semibold mt-2">
-                        Driver Management
-                    </div>
-
-                    <div class="small text-muted">
-                        Manage and verify drivers
-                    </div>
-
-                </a>
-
-            </div>
-
-
-            <div class="col-xl-3 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'customers' %}"
-                    class="btn btn-light border w-100 text-start p-3 h-100"
-                >
-
-                    <i class="bi bi-people fs-4 text-warning"></i>
-
-                    <div class="fw-semibold mt-2">
-                        Customer Management
-                    </div>
-
-                    <div class="small text-muted">
-                        View and manage customers
-                    </div>
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
+    data-total-shipments="{{ total_shipments|default:'0' }}"
+    data-total-customers="{{ total_customers|default:'0' }}"
+    data-total-drivers="{{ total_drivers|default:'0' }}"
+    data-verified-drivers="{{ verified_drivers|default:'0' }}"
+    data-active-shipments="{{ active_shipments|default:'0' }}"
+    data-total-revenue="{{ total_revenue|default:'0' }}"
+>
 </div>
 
 
 <!-- ==========================================================
-     SECURITY / ADMINISTRATION
-========================================================== -->
+     CHART.JS
+     ========================================================== -->
 
-<div class="pp-admin-card">
-
-    <div class="p-3 border-bottom">
-
-        <strong>
-            <i class="bi bi-shield-check me-2"></i>
-            Administration & Security
-        </strong>
-
-        <div class="small pp-muted mt-1">
-            Access control, verification and system records
-        </div>
-
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
 
-    <div class="p-3">
+<script>
 
-        <div class="row g-3">
+document.addEventListener("DOMContentLoaded", function () {
 
-            <div class="col-lg-4 col-md-6">
+    /* ==========================================================
+       GET DASHBOARD DATA
+       ========================================================== */
 
-                <a
-                    href="{% url 'dashboard:model_list' 'users' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
-
-                    <i class="bi bi-people-fill text-primary me-2"></i>
-
-                    <strong>Users</strong>
-
-                    <div class="small text-muted mt-1">
-                        Manage accounts and access
-                    </div>
-
-                </a>
-
-            </div>
+    const dashboardData =
+        document.getElementById("dashboard-data");
 
 
-            <div class="col-lg-4 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'login-history' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
-
-                    <i class="bi bi-shield-lock text-danger me-2"></i>
-
-                    <strong>Login History</strong>
-
-                    <div class="small text-muted mt-1">
-                        Review account activity
-                    </div>
-
-                </a>
-
-            </div>
+    if (!dashboardData) {
+        return;
+    }
 
 
-            <div class="col-lg-4 col-md-6">
+    /* ==========================================================
+       HELPER
+       ========================================================== */
 
-                <a
-                    href="{% url 'dashboard:model_list' 'email-verification-tokens' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
+    function numberValue(value) {
 
-                    <i class="bi bi-envelope-check text-success me-2"></i>
+        const number =
+            Number(value);
 
-                    <strong>Email Verification</strong>
-
-                    <div class="small text-muted mt-1">
-                        Review verification records
-                    </div>
-
-                </a>
-
-            </div>
+        return Number.isFinite(number)
+            ? number
+            : 0;
+    }
 
 
-            <div class="col-lg-4 col-md-6">
+    /* ==========================================================
+       DASHBOARD VALUES
+       ========================================================== */
 
-                <a
-                    href="{% url 'dashboard:model_list' 'password-reset-tokens' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
-
-                    <i class="bi bi-key text-warning me-2"></i>
-
-                    <strong>Password Reset</strong>
-
-                    <div class="small text-muted mt-1">
-                        Review reset records
-                    </div>
-
-                </a>
-
-            </div>
+    const pending =
+        numberValue(
+            dashboardData.dataset.pending
+        );
 
 
-            <div class="col-lg-4 col-md-6">
-
-                <a
-                    href="{% url 'dashboard:model_list' 'notifications' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
-
-                    <i class="bi bi-bell text-info me-2"></i>
-
-                    <strong>Notifications</strong>
-
-                    <div class="small text-muted mt-1">
-                        Manage system notifications
-                    </div>
-
-                </a>
-
-            </div>
+    const confirmed =
+        numberValue(
+            dashboardData.dataset.confirmed
+        );
 
 
-            <div class="col-lg-4 col-md-6">
+    const pickupAssigned =
+        numberValue(
+            dashboardData.dataset.pickupAssigned
+        );
 
-                <a
-                    href="{% url 'dashboard:model_list' 'contacts' %}"
-                    class="btn btn-light border w-100 text-start p-3"
-                >
 
-                    <i class="bi bi-headset text-primary me-2"></i>
+    const pickedUp =
+        numberValue(
+            dashboardData.dataset.pickedUp
+        );
 
-                    <strong>Support</strong>
 
-                    <div class="small text-muted mt-1">
-                        Manage customer requests
-                    </div>
+    const inTransit =
+        numberValue(
+            dashboardData.dataset.inTransit
+        );
 
-                </a>
 
-            </div>
+    const outForDelivery =
+        numberValue(
+            dashboardData.dataset.outForDelivery
+        );
 
-        </div>
 
-    </div>
+    const delivered =
+        numberValue(
+            dashboardData.dataset.delivered
+        );
 
-</div>
 
+    const cancelled =
+        numberValue(
+            dashboardData.dataset.cancelled
+        );
+
+
+    const returned =
+        numberValue(
+            dashboardData.dataset.returned
+        );
+
+
+    const totalShipments =
+        numberValue(
+            dashboardData.dataset.totalShipments
+        );
+
+
+    const totalCustomers =
+        numberValue(
+            dashboardData.dataset.totalCustomers
+        );
+
+
+    const totalDrivers =
+        numberValue(
+            dashboardData.dataset.totalDrivers
+        );
+
+
+    const verifiedDrivers =
+        numberValue(
+            dashboardData.dataset.verifiedDrivers
+        );
+
+
+    const activeShipments =
+        numberValue(
+            dashboardData.dataset.activeShipments
+        );
+
+
+    const totalRevenue =
+        numberValue(
+            dashboardData.dataset.totalRevenue
+        );
+
+
+    /* ==========================================================
+       GLOBAL CHART SETTINGS
+       ========================================================== */
+
+    Chart.defaults.font.family =
+        "'Poppins', Arial, sans-serif";
+
+
+    Chart.defaults.color =
+        "#40566c";
+
+
+    /* ==========================================================
+       REVENUE CHART
+       ========================================================== */
+
+    const revenueCanvas =
+        document.getElementById("revenueChart");
+
+
+    if (revenueCanvas) {
+
+        const revenueContext =
+            revenueCanvas.getContext("2d");
+
+
+        const revenueGradient =
+            revenueContext.createLinearGradient(
+                0,
+                0,
+                0,
+                320
+            );
+
+
+        revenueGradient.addColorStop(
+            0,
+            "rgba(5, 150, 105, 0.30)"
+        );
+
+
+        revenueGradient.addColorStop(
+            0.55,
+            "rgba(16, 185, 129, 0.12)"
+        );
+
+
+        revenueGradient.addColorStop(
+            1,
+            "rgba(16, 185, 129, 0.015)"
+        );
+
+
+        new Chart(
+            revenueCanvas,
+            {
+
+                type: "line",
+
+
+                data: {
+
+                    labels: [
+                        "Mar 2026",
+                        "Apr 2026",
+                        "May 2026",
+                        "Jun 2026",
+                        "Jul 2026",
+                        "Aug 2026"
+                    ],
+
+
+                    datasets: [
+
+                        {
+
+                            label: "Revenue",
+
+                            data: [
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                totalRevenue
+                            ],
+
+                            borderColor:
+                                "#059669",
+
+                            backgroundColor:
+                                revenueGradient,
+
+                            fill:
+                                true,
+
+                            borderWidth:
+                                3.5,
+
+                            tension:
+                                0.42,
+
+                            pointRadius:
+                                4,
+
+                            pointHoverRadius:
+                                7,
+
+                            pointBackgroundColor:
+                                "#ffffff",
+
+                            pointBorderColor:
+                                "#059669",
+
+                            pointBorderWidth:
+                                2
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    interaction: {
+
+                        intersect:
+                            false,
+
+                        mode:
+                            "index"
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#102a43",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#e2e8f0",
+
+                            borderColor:
+                                "#2b6cb0",
+
+                            borderWidth:
+                                1,
+
+                            padding:
+                                12,
+
+                            displayColors:
+                                false,
+
+
+                            callbacks: {
+
+                                label:
+                                    function (context) {
+
+                                        return " ₹" +
+                                            Number(
+                                                context.parsed.y || 0
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#40566c",
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "700"
+
+                                }
+
+                            }
+
+                        },
+
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+
+                            grid: {
+
+                                color:
+                                    "#dbe5ef",
+
+                                lineWidth:
+                                    1
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#52677d",
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "600"
+
+                                },
+
+
+                                callback:
+                                    function (value) {
+
+                                        return "₹" +
+                                            Number(
+                                                value
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ==========================================================
+       BUSINESS OVERVIEW CHART
+       ========================================================== */
+
+    const businessCanvas =
+        document.getElementById("businessChart");
+
+
+    if (businessCanvas) {
+
+        new Chart(
+            businessCanvas,
+            {
+
+                type:
+                    "doughnut",
+
+
+                data: {
+
+                    labels: [
+
+                        "Customers",
+                        "Drivers",
+                        "Verified Drivers",
+                        "Shipments",
+                        "Delivered",
+                        "Active Shipments"
+
+                    ],
+
+
+                    datasets: [
+
+                        {
+
+                            data: [
+
+                                totalCustomers,
+                                totalDrivers,
+                                verifiedDrivers,
+                                totalShipments,
+                                delivered,
+                                activeShipments
+
+                            ],
+
+
+                            backgroundColor: [
+
+                                "#2563eb",
+                                "#0891b2",
+                                "#7c3aed",
+                                "#f59e0b",
+                                "#16a34a",
+                                "#f97316"
+
+                            ],
+
+
+                            borderWidth:
+                                3,
+
+
+                            borderColor:
+                                "#f1f6fb",
+
+
+                            hoverOffset:
+                                9
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    cutout:
+                        "66%",
+
+
+                    plugins: {
+
+                        legend: {
+
+                            position:
+                                "bottom",
+
+
+                            labels: {
+
+                                color:
+                                    "#40566c",
+
+                                padding:
+                                    14,
+
+                                usePointStyle:
+                                    true,
+
+                                pointStyle:
+                                    "circle",
+
+
+                                font: {
+
+                                    size:
+                                        10,
+
+                                    weight:
+                                        "700"
+
+                                }
+
+                            }
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#102a43",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#e2e8f0",
+
+                            padding:
+                                11,
+
+                            displayColors:
+                                true
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ==========================================================
+       SHIPMENT PERFORMANCE CHART
+       ========================================================== */
+
+    const shipmentCanvas =
+        document.getElementById("shipmentChart");
+
+
+    if (shipmentCanvas) {
+
+        const shipmentLabels = [
+
+            "Pending",
+            "Confirmed",
+            "Pickup Assigned",
+            "Picked Up",
+            "In Transit",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled",
+            "Returned"
+
+        ];
+
+
+        const shipmentValues = [
+
+            pending,
+            confirmed,
+            pickupAssigned,
+            pickedUp,
+            inTransit,
+            outForDelivery,
+            delivered,
+            cancelled,
+            returned
+
+        ];
+
+
+        new Chart(
+            shipmentCanvas,
+            {
+
+                type:
+                    "bar",
+
+
+                data: {
+
+                    labels:
+                        shipmentLabels,
+
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Shipments",
+
+
+                            data:
+                                shipmentValues,
+
+
+                            backgroundColor: [
+
+                                "#f59e0b",
+                                "#64748b",
+                                "#2563eb",
+                                "#0891b2",
+                                "#0284c7",
+                                "#f97316",
+                                "#16a34a",
+                                "#ef4444",
+                                "#334155"
+
+                            ],
+
+
+                            borderRadius:
+                                8,
+
+
+                            borderSkipped:
+                                false,
+
+
+                            maxBarThickness:
+                                42
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#102a43",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#e2e8f0",
+
+                            padding:
+                                11,
+
+                            displayColors:
+                                true
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#40566c",
+
+
+                                font: {
+
+                                    size:
+                                        10,
+
+                                    weight:
+                                        "700"
+
+                                },
+
+
+                                maxRotation:
+                                    0,
+
+
+                                minRotation:
+                                    0
+
+                            }
+
+                        },
+
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+
+                            grid: {
+
+                                color:
+                                    "#dbe5ef",
+
+                                lineWidth:
+                                    1
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#52677d",
+
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "600"
+
+                                },
+
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+<style>
+
+/* ==========================================================
+   PREMIUM PARCELPATH ADMIN DASHBOARD
+   ========================================================== */
+
+.pp-dashboard {
+
+    padding: 6px 2px 45px;
+
+    color: #102a43;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD HEADING
+   ========================================================== */
+
+.pp-dashboard-heading {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+
+}
+
+
+.pp-dashboard-eyebrow {
+
+    color: #1677d2;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.pp-dashboard-heading h1 {
+
+    margin: 0;
+
+    color: #102a43;
+
+    font-size: 31px;
+
+    font-weight: 850;
+
+    letter-spacing: -0.8px;
+
+}
+
+
+.pp-dashboard-heading p {
+
+    margin: 7px 0 0;
+
+    color: #61758a;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+}
+
+
+/* ==========================================================
+   KPI CARDS
+   ========================================================== */
+
+.pp-dashboard-kpi {
+
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 154px;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+        #f4f8fd 0%,
+        #e7f0f9 100%
+        );
+
+    border: 1px solid #d7e4f0;
+    border-color: #c7d8e8;
+
+    box-shadow:
+        0 8px 24px rgba(20, 55, 90, 0.10);
+
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease;
+
+}
+
+
+.pp-dashboard-kpi::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    right: 0;
+
+    height: 3px;
+
+    opacity: .9;
+
+}
+
+
+.pp-kpi-blue::before {
+
+    background:
+        linear-gradient(
+            90deg,
+            #1769e0,
+            #38bdf8
+        );
+
+}
+
+
+.pp-kpi-cyan::before {
+
+    background:
+        linear-gradient(
+            90deg,
+            #0891b2,
+            #22d3ee
+        );
+
+}
+
+
+.pp-kpi-green::before {
+
+    background:
+        linear-gradient(
+            90deg,
+            #059669,
+            #34d399
+        );
+
+}
+
+
+.pp-kpi-purple::before {
+
+    background:
+        linear-gradient(
+            90deg,
+            #7c3aed,
+            #a78bfa
+        );
+
+}
+
+
+.pp-dashboard-kpi::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+
+    height: 100px;
+
+    right: -38px;
+
+    bottom: -45px;
+
+    border-radius: 50%;
+
+    opacity: .65;
+
+    transition:
+        transform .35s ease;
+
+}
+
+
+.pp-kpi-blue::after {
+
+    background: #dbeafe;
+
+}
+
+
+.pp-kpi-cyan::after {
+
+    background: #cffafe;
+
+}
+
+
+.pp-kpi-green::after {
+
+    background: #dcfce7;
+
+}
+
+
+.pp-kpi-purple::after {
+
+    background: #ede9fe;
+
+}
+
+
+.pp-dashboard-kpi:hover {
+
+    transform:
+        translateY(-5px);
+
+    border-color:
+        #b8cee2;
+
+    box-shadow:
+        0 16px 35px
+        rgba(25, 61, 95, 0.13);
+
+}
+
+
+.pp-dashboard-kpi:hover::after {
+
+    transform:
+        scale(1.3);
+
+}
+
+
+/* ==========================================================
+   KPI TOP
+   ========================================================== */
+
+.pp-kpi-top {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+
+}
+
+
+.pp-kpi-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 16px;
+
+    transition:
+        transform .25s ease;
+
+}
+
+
+.pp-dashboard-kpi:hover .pp-kpi-icon {
+
+    transform:
+        scale(1.08)
+        rotate(-4deg);
+
+}
+
+
+.pp-kpi-blue .pp-kpi-icon {
+
+    color: #2563eb;
+
+    background: #dbeafe;
+
+}
+
+
+.pp-kpi-cyan .pp-kpi-icon {
+
+    color: #0891b2;
+
+    background: #cffafe;
+
+}
+
+
+.pp-kpi-green .pp-kpi-icon {
+
+    color: #059669;
+
+    background: #dcfce7;
+
+}
+
+
+.pp-kpi-purple .pp-kpi-icon {
+
+    color: #7c3aed;
+
+    background: #ede9fe;
+
+}
+
+
+.pp-kpi-badge {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+}
+
+
+.pp-kpi-blue .pp-kpi-badge {
+
+    color: #2563eb;
+
+    background: #dbeafe;
+
+}
+
+
+.pp-kpi-cyan .pp-kpi-badge {
+
+    color: #087f9c;
+
+    background: #cffafe;
+
+}
+
+
+.pp-kpi-green .pp-kpi-badge {
+
+    color: #087f5b;
+
+    background: #dcfce7;
+
+}
+
+
+.pp-kpi-purple .pp-kpi-badge {
+
+    color: #6d28d9;
+
+    background: #ede9fe;
+
+}
+
+
+/* ==========================================================
+   KPI TEXT
+   ========================================================== */
+
+.pp-kpi-label {
+
+    position: relative;
+
+    z-index: 2;
+
+    color: #52677d;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    margin-bottom: 3px;
+
+}
+
+
+.pp-kpi-value {
+
+    position: relative;
+
+    z-index: 2;
+
+    color: #102a43;
+
+    font-size: 29px;
+
+    line-height: 1.2;
+
+    font-weight: 850;
+
+    letter-spacing: -.7px;
+
+}
+
+
+.pp-kpi-description {
+
+    position: relative;
+
+    z-index: 2;
+
+    color: #8192a3;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+    margin-top: 5px;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD PANELS
+   ========================================================== */
+
+.pp-dashboard-panel {
+
+    overflow: hidden;
+
+    border-radius: 15px;
+    border-color: #c4d6e6;
+
+    background:
+        linear-gradient(
+            145deg,
+        #f1f6fb 0%,
+        #e3edf7 100%
+        );
+
+    border: 1px solid #d7e4f0;
+
+    box-shadow:
+        0 9px 28px rgba(20, 55, 90, 0.10);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+
+}
+
+
+.pp-dashboard-panel:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 13px 32px
+        rgba(25, 61, 95, 0.10);
+
+}
+
+
+/* ==========================================================
+   PANEL HEADER
+   ========================================================== */
+
+.pp-dashboard-panel-header {
+
+    min-height: 66px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 14px 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+        #dce9f5,
+        #eaf2f9
+        );
+
+    border-bottom:
+        1px solid #c7d8e8;
+
+}
+
+
+.pp-dashboard-panel-title {
+
+    color: #12395d;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+}
+
+
+.pp-dashboard-panel-title i {
+
+    color: #1976d2;
+
+}
+
+
+.pp-dashboard-panel-subtitle {
+
+    margin-top: 3px;
+
+    color: #71859a;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+}
+
+
+.pp-chart-badge {
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+}
+
+
+.pp-chart-badge-green {
+
+    color: #087f5b;
+
+    background: #dff6eb;
+
+}
+
+
+.pp-chart-badge-blue {
+
+    color: #1769e0;
+
+    background: #dbeafe;
+
+}
+
+
+/* ==========================================================
+   CHART AREA
+   ========================================================== */
+
+.pp-dashboard-chart {
+
+    height: 285px;
+
+    padding: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+        #e8f1f9 0%,
+        #f0f5fa 100%
+        );
+
+}
+
+
+.pp-shipment-chart {
+
+    height: 300px;
+
+}
+
+
+.pp-business-chart {
+
+    height: 285px;
+
+    padding: 18px;
+
+}
+
+
+/* ==========================================================
+   SUMMARY CARDS
+   ========================================================== */
+
+.pp-summary-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 105px;
+
+    padding: 17px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+        #f3f8fc,
+        #e5eef7
+        );
+
+    border:
+        1px solid #c8d9e8;
+
+    box-shadow:
+        0 7px 20px
+        rgba(25, 61, 95, .055);
+
+    transition:
+        all .25s ease;
+
+}
+
+
+.pp-summary-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 12px 28px
+        rgba(25, 61, 95, .10);
+
+    border-color:
+        #bfd3e6;
+
+}
+
+
+.pp-summary-icon {
+
+    width: 43px;
+
+    height: 43px;
+
+    flex: 0 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+
+}
+
+
+.pp-summary-blue {
+
+    color: #2563eb;
+
+    background: #dbeafe;
+
+}
+
+
+.pp-summary-cyan {
+
+    color: #0891b2;
+
+    background: #cffafe;
+
+}
+
+
+.pp-summary-green {
+
+    color: #168348;
+
+    background: #dcfce7;
+
+}
+
+
+.pp-summary-orange {
+
+    color: #ea580c;
+
+    background: #ffedd5;
+
+}
+
+
+.pp-summary-purple {
+
+    color: #7c3aed;
+
+    background: #ede9fe;
+
+}
+
+
+.pp-summary-red {
+
+    color: #dc2626;
+
+    background: #fee2e2;
+
+}
+
+
+.pp-summary-label {
+
+    color: #63788e;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.pp-summary-value {
+
+    color: #102a43;
+
+    font-size: 22px;
+
+    font-weight: 850;
+
+    line-height: 1.25;
+
+}
+
+
+.pp-summary-description {
+
+    color: #8192a3;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+}
+
+
+/* ==========================================================
+   OPERATION PANELS
+   ========================================================== */
+
+.pp-operation-panel {
+
+    min-height: 190px;
+
+}
+
+
+.pp-panel-action {
+
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    color: #1769e0;
+
+    border: 1px solid #82b5ee;
+
+    background: #f4f9ff;
+
+    text-decoration: none;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    transition:
+        all .2s ease;
+
+}
+
+
+.pp-panel-action:hover {
+
+    color: #ffffff;
+
+    background: #1769e0;
+
+    border-color: #1769e0;
+
+}
+
+
+.pp-operation-body {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    padding: 17px;
+
+}
+
+
+.pp-operation-stat {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background: #e6eff7;
+
+    border: 1px solid #c8d9e8;
+
+    transition:
+        all .22s ease;
+
+}
+
+
+.pp-operation-stat:hover {
+
+    background: #f4f8fc;
+
+    border-color: #c5d7e8;
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.pp-operation-stat-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+    flex: 0 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+}
+
+
+.pp-operation-stat strong {
+
+    display: block;
+
+    color: #173b5d;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+}
+
+
+.pp-operation-stat span {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #72869a;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+}
+
+
+/* ==========================================================
+   PREMIUM SYSTEM STATUS ANIMATION
+   ========================================================== */
+
+.pp-system-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.pp-status-dot {
+
+    animation:
+        ppStatusPulse 2s infinite;
+
+}
+
+
+@keyframes ppStatusPulse {
+
+    0% {
+
+        box-shadow:
+            0 0 0 0
+            rgba(22, 163, 74, .35);
+
+    }
+
+    70% {
+
+        box-shadow:
+            0 0 0 7px
+            rgba(22, 163, 74, 0);
+
+    }
+
+    100% {
+
+        box-shadow:
+            0 0 0 0
+            rgba(22, 163, 74, 0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   SOFT ENTRY ANIMATION
+   ========================================================== */
+
+.pp-dashboard-kpi {
+
+    animation:
+        ppDashboardFade .45s ease both;
+
+}
+
+
+.pp-dashboard-panel {
+
+    animation:
+        ppDashboardFade .55s ease both;
+
+}
+
+
+.pp-summary-card {
+
+    animation:
+        ppDashboardFade .6s ease both;
+
+}
+
+
+@keyframes ppDashboardFade {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1199px) {
+
+    .pp-dashboard-heading {
+
+        align-items:
+            flex-start;
+
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .pp-dashboard-heading h1 {
+
+        font-size:
+            26px;
+
+    }
+
+
+    .pp-dashboard-chart {
+
+        height:
+            250px;
+
+        padding:
+            12px;
+
+    }
+
+
+    .pp-business-chart {
+
+        height:
+            260px;
+
+    }
+
+
+    .pp-shipment-chart {
+
+        height:
+            270px;
+
+    }
+
+
+    .pp-operation-body {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+</style>
 
 {% endblock %}

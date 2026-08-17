@@ -38,8 +38,13 @@ class ShipmentForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "Sender Phone",
+                    "inputmode": "numeric",
+                    "maxlength": "10",
+                    "pattern": "[0-9]{10}",
+                    "oninput": "this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);",
                 }
             ),
+
             "sender_address": forms.Textarea(
                 attrs={
                     "class": "form-control",
@@ -57,6 +62,10 @@ class ShipmentForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "Receiver Phone",
+                    "inputmode": "numeric",
+                    "maxlength": "10",
+                    "pattern": "[0-9]{10}",
+                    "oninput": "this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);",
                 }
             ),
             "receiver_address": forms.Textarea(
@@ -153,16 +162,24 @@ class ShipmentForm(forms.ModelForm):
         )
 
     def clean_sender_phone(self):
-        return (
-            self.cleaned_data["sender_phone"]
-            .strip()
-        )
+        phone = self.cleaned_data["sender_phone"].strip()
+
+        if not phone.isdigit() or len(phone) != 10:
+            raise ValidationError(
+                "Sender phone number must contain exactly 10 digits."
+            )
+
+        return phone
 
     def clean_receiver_phone(self):
-        return (
-            self.cleaned_data["receiver_phone"]
-            .strip()
-        )
+        phone = self.cleaned_data["receiver_phone"].strip()
+
+        if not phone.isdigit() or len(phone) != 10:
+            raise ValidationError(
+                "Receiver phone number must contain exactly 10 digits."
+            )
+
+        return phone
 
     def clean_package_type(self):
         return (

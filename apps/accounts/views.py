@@ -21,9 +21,15 @@ from apps.drivers.models import Driver
 
 
 def redirect_user(user):
-    """
-    After login, send every user to the public home page.
-    """
+
+    if user.role == UserRole.ADMIN:
+        return redirect("dashboard:admin_dashboard")
+
+    if user.role == UserRole.CUSTOMER:
+        return redirect("home")
+
+    if user.role == UserRole.DRIVER:
+        return redirect("home")
 
     return redirect("home")
 

@@ -7,190 +7,2136 @@ Login | ParcelPath
 
 {% block content %}
 
-<section class="py-5">
+<style>
 
-    <div class="container">
+/* =========================================================
+   PARCELPATH LOGIN PAGE
+   ========================================================= */
 
-        <div class="row justify-content-center">
+.pp-login-page {
+    position: relative;
 
-            <div class="col-lg-5">
+    min-height: calc(100vh - 80px);
 
-                <div class="card shadow-lg border-0">
+    padding: 45px 0 55px;
 
-                    <div class="card-body p-5">
+    overflow: hidden;
 
-                        <div class="text-center mb-4">
+    background:
+        radial-gradient(
+            circle at 8% 15%,
+            rgba(59, 130, 246, 0.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 82%,
+            rgba(14, 165, 233, 0.11),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #f4f8ff 0%,
+            #edf5ff 48%,
+            #f9fcff 100%
+        );
+}
 
-                            <h2 class="fw-bold">
-                                Welcome Back
-                            </h2>
 
-                            <p class="text-muted">
-                                Login to your ParcelPath account
-                            </p>
+/* Soft background glow */
+
+.pp-login-page::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    top: -270px;
+    left: -130px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.12),
+            rgba(59, 130, 246, 0.04) 40%,
+            transparent 72%
+        );
+
+    pointer-events: none;
+}
+
+
+/* Bottom glow */
+
+.pp-login-page::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    right: -200px;
+    bottom: -250px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(14, 165, 233, 0.11),
+            rgba(14, 165, 233, 0.04) 42%,
+            transparent 72%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.pp-login-container {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+   ========================================================= */
+
+.pp-login-left {
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 670px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding:
+        35px 35px 35px 5px;
+}
+
+
+/* Kicker */
+
+.pp-login-kicker {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: fit-content;
+
+    margin-bottom: 17px;
+
+    color: #1677df;
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+}
+
+
+.pp-login-kicker::before {
+    content: "";
+
+    width: 28px;
+    height: 3px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1677df,
+            #38bdf8
+        );
+}
+
+
+/* =========================================================
+   MAIN HEADING
+   ========================================================= */
+
+.pp-login-heading {
+    margin: 0;
+
+    max-width: 650px;
+
+    color: #09264a;
+
+    font-size: clamp(
+        3.2rem,
+        5vw,
+        5.1rem
+    );
+
+    line-height: 0.91;
+
+    font-weight: 900;
+
+    letter-spacing: -0.055em;
+
+    text-transform: uppercase;
+}
+
+
+.pp-login-heading .blue {
+    display: block;
+
+    color: #1677df;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1269d7,
+            #20a5f3
+        );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+}
+
+
+/* Description */
+
+.pp-login-description {
+    max-width: 580px;
+
+    margin: 26px 0 25px;
+
+    color: #526b87;
+
+    font-size: 0.88rem;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   QUICK ACCESS FEATURES
+   ========================================================= */
+
+.pp-login-features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px 24px;
+
+    max-width: 630px;
+
+    margin-bottom: 28px;
+}
+
+
+.pp-login-feature {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 38px;
+
+    color: #203b59;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+}
+
+
+/* Feature icon */
+
+.pp-login-feature-icon {
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: #1677df;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e5f3ff,
+            #cfe9ff
+        );
+
+    border:
+        1px solid
+        rgba(
+            37,
+            125,
+            220,
+            0.17
+        );
+
+    box-shadow:
+        0 5px 13px
+        rgba(
+            37,
+            99,
+            235,
+            0.08
+        );
+
+    font-size: 0.9rem;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.pp-login-feature:hover
+.pp-login-feature-icon {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(
+            37,
+            99,
+            235,
+            0.14
+        );
+}
+
+
+.pp-login-feature-icon svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   ACCOUNT STATS
+   ========================================================= */
+
+.pp-login-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    max-width: 570px;
+
+    margin:
+        3px 0 25px;
+
+    padding: 16px 0;
+
+    border-top:
+        1px solid
+        rgba(
+            41,
+            102,
+            164,
+            0.14
+        );
+
+    border-bottom:
+        1px solid
+        rgba(
+            41,
+            102,
+            164,
+            0.14
+        );
+}
+
+
+.pp-login-stat {
+    position: relative;
+
+    padding-left: 18px;
+}
+
+
+.pp-login-stat:first-child {
+    padding-left: 0;
+}
+
+
+.pp-login-stat:not(:first-child)::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 5px;
+
+    width: 1px;
+    height: 34px;
+
+    background:
+        rgba(
+            41,
+            102,
+            164,
+            0.18
+        );
+}
+
+
+.pp-login-stat strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #092b52;
+
+    font-size: 0.95rem;
+
+    font-weight: 800;
+}
+
+
+.pp-login-stat span {
+    color: #6c829a;
+
+    font-size: 0.65rem;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   TRACKING PREVIEW
+   ========================================================= */
+
+.pp-login-tracking-card {
+    position: relative;
+
+    width: min(100%, 570px);
+
+    padding: 17px 19px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #123d68,
+            #092f53
+        );
+
+    border:
+        1px solid
+        rgba(
+            82,
+            176,
+            255,
+            0.35
+        );
+
+    box-shadow:
+        0 16px 35px
+        rgba(
+            19,
+            62,
+            104,
+            0.18
+        );
+
+    overflow: hidden;
+}
+
+
+.pp-login-tracking-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    top: -120px;
+    right: -50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            52,
+            180,
+            255,
+            0.15
+        );
+
+    filter: blur(8px);
+}
+
+
+/* Tracking header */
+
+.pp-login-tracking-header {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+
+.pp-login-tracking-title {
+    color: #fff;
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+
+.pp-login-online {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    color: #35e69b;
+
+    background:
+        rgba(
+            16,
+            185,
+            129,
+            0.10
+        );
+
+    border:
+        1px solid
+        rgba(
+            52,
+            211,
+            153,
+            0.25
+        );
+
+    font-size: 0.58rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+
+.pp-login-online::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #31d391;
+
+    box-shadow:
+        0 0 8px
+        rgba(
+            49,
+            211,
+            145,
+            0.8
+        );
+}
+
+
+/* Tracking information */
+
+.pp-login-tracking-body {
+    position: relative;
+
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1.4fr 1fr;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.pp-login-location small {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #83a9ca;
+
+    font-size: 0.55rem;
+
+    text-transform: uppercase;
+}
+
+
+.pp-login-location strong {
+    color: #fff;
+
+    font-size: 0.7rem;
+}
+
+
+/* Progress */
+
+.pp-login-progress {
+    position: relative;
+
+    height: 4px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.13
+        );
+
+    overflow: hidden;
+}
+
+
+.pp-login-progress span {
+    display: block;
+
+    width: 72%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #19a9ef,
+            #54d3ff
+        );
+
+    box-shadow:
+        0 0 12px
+        rgba(
+            39,
+            177,
+            240,
+            0.55
+        );
+}
+
+
+.pp-login-progress-label {
+    margin-top: 6px;
+
+    color: #70bde4;
+
+    font-size: 0.55rem;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.pp-login-card {
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+    padding:
+        36px 38px 30px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.95
+        );
+
+    border:
+        1px solid
+        rgba(
+            148,
+            181,
+            216,
+            0.30
+        );
+
+    box-shadow:
+        0 22px 55px
+        rgba(
+            30,
+            75,
+            125,
+            0.13
+        );
+
+    backdrop-filter: blur(14px);
+
+    -webkit-backdrop-filter: blur(14px);
+
+    overflow: hidden;
+}
+
+
+/* Top accent */
+
+.pp-login-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1269d7,
+            #24a9f2
+        );
+}
+
+
+/* Card title */
+
+.pp-login-card-title {
+    margin: 0;
+
+    color: #0b294d;
+
+    font-size: 1.65rem;
+
+    font-weight: 850;
+
+    letter-spacing: -0.025em;
+}
+
+
+.pp-login-card-title-line {
+    width: 38px;
+    height: 4px;
+
+    margin-top: 10px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #1677df,
+            #38bdf8
+        );
+}
+
+
+.pp-login-card-subtitle {
+    margin:
+        10px 0 26px;
+
+    color: #657d98;
+
+    font-size: 0.78rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   ========================================================= */
+
+.pp-login-message {
+    margin-bottom: 15px;
+
+    border-radius: 10px;
+
+    font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.pp-login-field {
+    margin-bottom: 19px;
+}
+
+
+.pp-login-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #102d4e;
+
+    font-size: 0.72rem;
+
+    font-weight: 750;
+}
+
+
+/* Inputs */
+
+.pp-login-input {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding:
+        0 14px;
+
+    color: #183653;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.92
+        );
+
+    border:
+        1px solid
+        #cbd9e8;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 0.78rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.pp-login-input::placeholder {
+    color: #91a5bc;
+}
+
+
+.pp-login-input:hover {
+    border-color: #a9c4df;
+}
+
+
+.pp-login-input:focus {
+    border-color: #2587e8;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            37,
+            135,
+            232,
+            0.11
+        );
+}
+
+
+.pp-login-input.is-invalid {
+    border-color: #ef4444;
+}
+
+
+.pp-login-input.is-invalid:focus {
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            239,
+            68,
+            68,
+            0.10
+        );
+}
+
+
+/* Errors */
+
+.pp-login-error {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #dc2626;
+
+    font-size: 0.67rem;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.pp-login-password-wrap {
+    position: relative;
+}
+
+
+.pp-login-password-wrap
+.pp-login-input {
+    padding-right: 47px;
+}
+
+
+.pp-login-password-toggle {
+    position: absolute;
+
+    right: 9px;
+    top: 50%;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform:
+        translateY(-50%);
+
+    border: 0;
+
+    border-radius: 7px;
+
+    color: #6c829a;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.pp-login-password-toggle:hover {
+    color: #1677df;
+
+    background:
+        #edf6ff;
+}
+
+
+.pp-login-password-toggle svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   REMEMBER + FORGOT
+   ========================================================= */
+
+.pp-login-options {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin:
+        -3px 0 24px;
+}
+
+
+.pp-login-remember {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #6c829a;
+
+    font-size: 0.7rem;
+
+    cursor: pointer;
+}
+
+
+.pp-login-remember input {
+    width: 15px;
+    height: 15px;
+
+    accent-color: #1677df;
+
+    cursor: pointer;
+}
+
+
+.pp-login-forgot {
+    color: #1269d7;
+
+    font-size: 0.7rem;
+
+    font-weight: 750;
+
+    text-decoration: none;
+}
+
+
+.pp-login-forgot:hover {
+    color: #0b57b8;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.pp-login-submit {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 51px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1269d7,
+            #168ff0
+        );
+
+    box-shadow:
+        0 10px 24px
+        rgba(
+            22,
+            119,
+            223,
+            0.22
+        );
+
+    font-size: 0.78rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+
+.pp-login-submit::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(
+                255,
+                255,
+                255,
+                0.22
+            ),
+            transparent
+        );
+
+    transform:
+        skewX(-20deg);
+
+    transition:
+        left 0.55s ease;
+}
+
+
+.pp-login-submit:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 14px 30px
+        rgba(
+            22,
+            119,
+            223,
+            0.28
+        );
+
+    filter:
+        brightness(1.03);
+}
+
+
+.pp-login-submit:hover::before {
+    left: 130%;
+}
+
+
+.pp-login-submit:active {
+    transform:
+        translateY(0);
+}
+
+
+.pp-login-submit svg {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   REGISTER LINK
+   ========================================================= */
+
+.pp-login-register {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    text-align: center;
+
+    border-top:
+        1px solid
+        #e1eaf3;
+
+    color: #71859b;
+
+    font-size: 0.75rem;
+}
+
+
+.pp-login-register a {
+    color: #1269d7;
+
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+
+.pp-login-register a:hover {
+    color: #0b57b8;
+
+    text-decoration: underline;
+}
+
+
+/* Security */
+
+.pp-login-security {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 13px;
+
+    color: #8296aa;
+
+    font-size: 0.63rem;
+}
+
+
+.pp-login-security svg {
+    width: 13px;
+    height: 13px;
+
+    fill: none;
+
+    stroke: #10b981;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .pp-login-heading {
+        font-size:
+            clamp(
+                3rem,
+                5vw,
+                4.5rem
+            );
+    }
+
+}
+
+
+@media (max-width: 991px) {
+
+    .pp-login-page {
+        padding:
+            35px 0 45px;
+    }
+
+    .pp-login-left {
+        min-height: auto;
+
+        padding:
+            20px 10px 35px;
+    }
+
+    .pp-login-heading {
+        max-width: 650px;
+
+        font-size:
+            clamp(
+                3rem,
+                8vw,
+                4.5rem
+            );
+    }
+
+    .pp-login-card {
+        max-width: 650px;
+
+        margin: 0 auto;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .pp-login-features {
+        grid-template-columns: 1fr;
+
+        max-width: 500px;
+    }
+
+    .pp-login-stats {
+        max-width: 500px;
+    }
+
+    .pp-login-tracking-card {
+        max-width: 500px;
+    }
+
+    .pp-login-card {
+        padding:
+            30px 24px 27px;
+    }
+
+}
+
+
+@media (max-width: 575px) {
+
+    .pp-login-page {
+        padding:
+            25px 0 35px;
+    }
+
+    .pp-login-left {
+        padding:
+            15px 5px 30px;
+    }
+
+    .pp-login-kicker {
+        font-size: 0.65rem;
+    }
+
+    .pp-login-heading {
+        font-size: 2.8rem;
+
+        line-height: 0.94;
+    }
+
+    .pp-login-description {
+        font-size: 0.8rem;
+
+        margin:
+            20px 0;
+    }
+
+    .pp-login-stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .pp-login-stat {
+        padding-left: 10px;
+    }
+
+    .pp-login-stat strong {
+        font-size: 0.8rem;
+    }
+
+    .pp-login-stat span {
+        font-size: 0.55rem;
+    }
+
+    .pp-login-tracking-card {
+        padding: 15px;
+    }
+
+    .pp-login-tracking-body {
+        grid-template-columns:
+            60px 1fr 60px;
+    }
+
+    .pp-login-card {
+        padding:
+            27px 20px 24px;
+
+        border-radius: 16px;
+    }
+
+    .pp-login-card-title {
+        font-size: 1.45rem;
+    }
+
+    .pp-login-options {
+        align-items: flex-start;
+    }
+
+}
+
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pp-login-feature-icon,
+    .pp-login-submit {
+        transition: none;
+    }
+
+    .pp-login-submit::before {
+        display: none;
+    }
+
+}
+
+</style>
+
+
+<section class="pp-login-page">
+
+    <div class="container pp-login-container">
+
+        <div class="row align-items-center g-4 g-lg-5">
+
+
+            <!-- =================================================
+                 LEFT SIDE
+                 ================================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="pp-login-left">
+
+
+                    <div class="pp-login-kicker">
+                        ParcelPath Smart Logistics
+                    </div>
+
+
+                    <h1 class="pp-login-heading">
+
+                        Your Logistics.
+
+                        <br>
+
+                        One
+
+                        <span class="blue">
+                            Smarter
+                            <br>
+                            Platform.
+                        </span>
+
+                    </h1>
+
+
+                    <p class="pp-login-description">
+
+                        Welcome back to ParcelPath. Access your
+                        shipments, monitor deliveries, manage
+                        logistics operations and stay connected
+                        with your delivery network.
+
+                    </p>
+
+
+                    <!-- Features -->
+
+                    <div class="pp-login-features">
+
+
+                        <!-- Tracking -->
+
+                        <div class="pp-login-feature">
+
+                            <span
+                                class="pp-login-feature-icon"
+                            >
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="8"
+                                    />
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2"
+                                    />
+
+                                    <path d="M12 4V2"/>
+                                    <path d="M12 22v-2"/>
+
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Track shipments in real time
+                            </span>
 
                         </div>
 
-                        <!-- Django Messages -->
 
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        <!-- Delivery -->
 
-                                    {{ message }}
+                        <div class="pp-login-feature">
 
-                                    <button
-                                        type="button"
-                                        class="btn-close"
-                                        data-bs-dismiss="alert">
-                                    </button>
+                            <span
+                                class="pp-login-feature-icon"
+                            >
 
-                                </div>
-                            {% endfor %}
-                        {% endif %}
+                                <svg viewBox="0 0 24 24">
 
-                        <!-- Form Errors -->
+                                    <path
+                                        d="M3 7h11v10H3z"
+                                    />
 
-                        {% if form.non_field_errors %}
+                                    <path
+                                        d="M14 10h4l3 3v4h-7z"
+                                    />
 
-                            <div class="alert alert-danger">
+                                    <circle
+                                        cx="7"
+                                        cy="19"
+                                        r="2"
+                                    />
 
-                                {% for error in form.non_field_errors %}
+                                    <circle
+                                        cx="18"
+                                        cy="19"
+                                        r="2"
+                                    />
 
-                                    <div>{{ error }}</div>
+                                </svg>
 
-                                {% endfor %}
+                            </span>
+
+                            <span>
+                                Monitor delivery progress
+                            </span>
+
+                        </div>
+
+
+                        <!-- Account -->
+
+                        <div class="pp-login-feature">
+
+                            <span
+                                class="pp-login-feature-icon"
+                            >
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <circle
+                                        cx="12"
+                                        cy="8"
+                                        r="4"
+                                    />
+
+                                    <path
+                                        d="M4 21a8 8 0 0 1 16 0"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Manage your logistics account
+                            </span>
+
+                        </div>
+
+
+                        <!-- Notifications -->
+
+                        <div class="pp-login-feature">
+
+                            <span
+                                class="pp-login-feature-icon"
+                            >
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                                    />
+
+                                    <path
+                                        d="M10 21h4"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Receive important shipment updates
+                            </span>
+
+                        </div>
+
+
+                        <!-- Secure -->
+
+                        <div class="pp-login-feature">
+
+                            <span
+                                class="pp-login-feature-icon"
+                            >
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"
+                                    />
+
+                                    <path
+                                        d="M9 12l2 2 4-4"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Secure access to your information
+                            </span>
+
+                        </div>
+
+
+                        <!-- Support -->
+
+                        <div class="pp-login-feature">
+
+                            <span
+                                class="pp-login-feature-icon"
+                            >
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="9"
+                                    />
+
+                                    <path
+                                        d="M12 8v4"
+                                    />
+
+                                    <path
+                                        d="M12 16h.01"
+                                    />
+
+                                </svg>
+
+                            </span>
+
+                            <span>
+                                Get support when you need it
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Stats -->
+
+                    <div class="pp-login-stats">
+
+
+                        <div class="pp-login-stat">
+
+                            <strong>
+                                24/7
+                            </strong>
+
+                            <span>
+                                Shipment visibility
+                            </span>
+
+                        </div>
+
+
+                        <div class="pp-login-stat">
+
+                            <strong>
+                                LIVE
+                            </strong>
+
+                            <span>
+                                Tracking updates
+                            </span>
+
+                        </div>
+
+
+                        <div class="pp-login-stat">
+
+                            <strong>
+                                SECURE
+                            </strong>
+
+                            <span>
+                                Account access
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Tracking preview -->
+
+                    <div class="pp-login-tracking-card">
+
+
+                        <div
+                            class="pp-login-tracking-header"
+                        >
+
+                            <span
+                                class="pp-login-tracking-title"
+                            >
+                                Shipment Tracking
+                            </span>
+
+                            <span
+                                class="pp-login-online"
+                            >
+                                Live Tracking
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="pp-login-tracking-body"
+                        >
+
+
+                            <div
+                                class="pp-login-location"
+                            >
+
+                                <small>
+                                    Pickup
+                                </small>
+
+                                <strong>
+                                    Surat
+                                </strong>
 
                             </div>
 
-                        {% endif %}
 
-                        <form method="post" novalidate>
+                            <div>
 
-                            {% csrf_token %}
+                                <div
+                                    class="pp-login-progress"
+                                >
 
-                            <!-- Email -->
+                                    <span></span>
 
-                            <div class="mb-3">
+                                </div>
 
-                                <label class="form-label">
+                                <div
+                                    class="pp-login-progress-label"
+                                >
+                                    72% In Transit
+                                </div>
 
-                                    Email Address
+                            </div>
 
-                                </label>
+
+                            <div
+                                class="pp-login-location"
+                                style="text-align:right;"
+                            >
+
+                                <small>
+                                    Delivery
+                                </small>
+
+                                <strong>
+                                    Mumbai
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+                 ================================================= -->
+
+            <div class="col-lg-6">
+
+
+                <div class="pp-login-card">
+
+
+                    <h2 class="pp-login-card-title">
+                        Welcome Back
+                    </h2>
+
+
+                    <div
+                        class="pp-login-card-title-line"
+                    ></div>
+
+
+                    <p class="pp-login-card-subtitle">
+
+                        Login to your ParcelPath account
+                        and continue managing your logistics.
+
+                    </p>
+
+
+                    <!-- Django Messages -->
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div
+                                class="alert
+                                alert-{{ message.tags }}
+                                alert-dismissible
+                                fade show
+                                pp-login-message"
+                                role="alert"
+                            >
+
+                                {{ message }}
+
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                    <!-- Form Errors -->
+
+                    {% if form.non_field_errors %}
+
+                        <div
+                            class="alert
+                            alert-danger
+                            pp-login-message"
+                        >
+
+                            {% for error in form.non_field_errors %}
+
+                                <div>
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <form
+                        method="post"
+                        novalidate
+                        id="loginForm"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <!-- Email -->
+
+                        <div class="pp-login-field">
+
+                            <label
+                                class="pp-login-label"
+                                for="id_email"
+                            >
+                                Email Address
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="id_email"
+                                name="email"
+                                value="{{ form.email.value|default:'' }}"
+                                class="pp-login-input {% if form.email.errors %}is-invalid{% endif %}"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required
+                            >
+
+
+                            {% for error in form.email.errors %}
+
+                                <span
+                                    class="pp-login-error"
+                                >
+                                    {{ error }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- Password -->
+
+                        <div class="pp-login-field">
+
+                            <label
+                                class="pp-login-label"
+                                for="id_password"
+                            >
+                                Password
+                            </label>
+
+
+                            <div
+                                class="pp-login-password-wrap"
+                            >
 
                                 <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ form.email.value|default:'' }}"
-                                    class="form-control {% if form.email.errors %}is-invalid{% endif %}"
-                                    placeholder="Enter your email"
-                                    required>
+                                    type="password"
+                                    id="id_password"
+                                    name="password"
+                                    class="pp-login-input {% if form.password.errors %}is-invalid{% endif %}"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required
+                                >
 
-                                {% for error in form.email.errors %}
 
-                                    <div class="invalid-feedback d-block">
+                                <button
+                                    type="button"
+                                    class="pp-login-password-toggle"
+                                    onclick="toggleLoginPassword(this)"
+                                    aria-label="Show password"
+                                >
 
-                                        {{ error }}
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                    >
 
-                                    </div>
+                                        <path
+                                            d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                                        />
 
-                                {% endfor %}
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="3"
+                                        />
 
-                            </div>
+                                    </svg>
 
-                            <!-- Password -->
-
-                            <div class="mb-3">
-
-                                <label class="form-label">
-
-                                    Password
-
-                                </label>
-
-                                <div class="input-group">
-
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        class="form-control {% if form.password.errors %}is-invalid{% endif %}"
-                                        placeholder="Enter your password"
-                                        required>
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-secondary"
-                                        onclick="togglePassword()">
-
-                                        👁
-
-                                    </button>
-
-                                </div>
-
-                                {% for error in form.password.errors %}
-
-                                    <div class="invalid-feedback d-block">
-
-                                        {{ error }}
-
-                                    </div>
-
-                                {% endfor %}
+                                </button>
 
                             </div>
 
-                            <div class="d-flex justify-content-between align-items-center mb-4">
 
-                                <div class="form-check">
+                            {% for error in form.password.errors %}
 
-                                    <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        id="remember_me">
+                                <span
+                                    class="pp-login-error"
+                                >
+                                    {{ error }}
+                                </span>
 
-                                    <label
-                                        class="form-check-label"
-                                        for="remember_me">
+                            {% endfor %}
 
-                                        Remember Me
+                        </div>
 
-                                    </label>
 
-                                </div>
+                        <!-- Remember / Forgot -->
 
-                                <a
-                                    href="{% url 'accounts:password_reset' %}"
-                                    class="text-decoration-none">
+                        <div
+                            class="pp-login-options"
+                        >
 
-                                    Forgot Password?
+                            <label
+                                class="pp-login-remember"
+                            >
 
-                                </a>
+                                <input
+                                    type="checkbox"
+                                    id="remember_me"
+                                    name="remember_me"
+                                >
 
-                            </div>
-                                                        <button
-                                type="submit"
-                                class="btn btn-primary w-100 py-2">
+                                <span>
+                                    Remember Me
+                                </span>
 
-                                Login
+                            </label>
 
-                            </button>
 
-                        </form>
-
-                        <hr>
-
-                        <p class="text-center mb-0">
-
-                            Don't have an account?
-
-                            <a href="{% url 'accounts:register' %}">
-                                Create Account
+                            <a
+                                href="{% url 'accounts:password_reset' %}"
+                                class="pp-login-forgot"
+                            >
+                                Forgot Password?
                             </a>
 
-                        </p>
+                        </div>
+
+
+                        <!-- Submit -->
+
+                        <button
+                            type="submit"
+                            class="pp-login-submit"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                            >
+
+                                <path
+                                    d="M10 17l5-5-5-5"
+                                />
+
+                                <path
+                                    d="M15 12H3"
+                                />
+
+                                <path
+                                    d="M21 19V5a2 2 0 0 0-2-2h-5"
+                                />
+
+                            </svg>
+
+                            <span>
+                                Login to ParcelPath
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- Register -->
+
+                    <div
+                        class="pp-login-register"
+                    >
+
+                        Don't have an account?
+
+                        <a
+                            href="{% url 'accounts:register' %}"
+                        >
+                            Create Account
+                        </a>
+
+                    </div>
+
+
+                    <!-- Security -->
+
+                    <div
+                        class="pp-login-security"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3z"
+                            />
+
+                            <path
+                                d="M9 12l2 2 4-4"
+                            />
+
+                        </svg>
+
+                        <span>
+                            Secure login protected by ParcelPath
+                        </span>
 
                     </div>
 
@@ -204,19 +2150,80 @@ Login | ParcelPath
 
 </section>
 
+
 <script>
 
-function togglePassword() {
+/* =========================================================
+   LOGIN PASSWORD TOGGLE
+   ========================================================= */
 
-    const password = document.getElementById("password");
+function toggleLoginPassword(button) {
+
+    const password =
+        document.getElementById(
+            "id_password"
+        );
+
+    if (!password) {
+        return;
+    }
+
 
     if (password.type === "password") {
 
         password.type = "text";
 
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
+
+        button.innerHTML = `
+            <svg viewBox="0 0 24 24">
+
+                <path
+                    d="M3 3l18 18"
+                />
+
+                <path
+                    d="M10.6 10.6a2 2 0 0 0 2.8 2.8"
+                />
+
+                <path
+                    d="M9.9 4.2A10.5 10.5 0 0 1 12 4c6.5 0 10 8 10 8a18.8 18.8 0 0 1-3.2 4.5"
+                />
+
+                <path
+                    d="M6.1 6.1C3.4 8.1 2 12 2 12s3.5 8 10 8a10.8 10.8 0 0 0 4.1-.8"
+                />
+
+            </svg>
+        `;
+
     } else {
 
         password.type = "password";
+
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+        button.innerHTML = `
+            <svg viewBox="0 0 24 24">
+
+                <path
+                    d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                />
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                />
+
+            </svg>
+        `;
 
     }
 
