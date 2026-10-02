@@ -1,0 +1,223 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Create Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <div class="card shipment-form-card border-0">
+
+        <div class="card-header shipment-form-header">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+        <div>
+
+            <h3 class="mb-1">
+
+                <i class="bi bi-box-seam-fill text-primary me-2"></i>
+
+                Create Shipment
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                Fill in the shipment information below.
+
+            </p>
+
+        </div>
+
+        <span class="badge bg-primary fs-6">
+
+            New Shipment
+
+        </span>
+
+    </div>
+
+</div>
+
+        <div class="card-body">
+
+            <form method="post" novalidate>
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ field.label }}:</strong> {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="row">
+
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Package Type</label>
+                        {{ form.package_type }}
+                        {{ form.package_type.errors }}
+                    </div>
+
+                </div>
+
+                <hr class="shipment-divider">
+
+                <h5 class="form-section-title mb-4">
+
+                    <i class="bi bi-person-fill me-2"></i>
+
+                    Sender Information
+
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sender Name</label>
+                        {{ form.sender_name }}
+                        {{ form.sender_name.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sender Phone</label>
+                        {{ form.sender_phone }}
+                        {{ form.sender_phone.errors }}
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Sender Address</label>
+                    {{ form.sender_address }}
+                    {{ form.sender_address.errors }}
+                </div>
+
+                <hr class="shipment-divider">
+
+                <h5 class="form-section-title mb-4">
+
+                    <i class="bi bi-person-check-fill me-2"></i>
+
+                    Receiver Information
+
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Receiver Name</label>
+                        {{ form.receiver_name }}
+                        {{ form.receiver_name.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Receiver Phone</label>
+                        {{ form.receiver_phone }}
+                        {{ form.receiver_phone.errors }}
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Receiver Address</label>
+                    {{ form.receiver_address }}
+                    {{ form.receiver_address.errors }}
+                </div>
+
+                <hr class="shipment-divider">
+
+                <h5 class="form-section-title mb-4">
+
+                    <i class="bi bi-box-fill me-2"></i>
+
+                    Package Details
+
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Weight (kg)</label>
+                        {{ form.weight }}
+                        {{ form.weight.errors }}
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Length</label>
+                        {{ form.length }}
+                        {{ form.length.errors }}
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Width</label>
+                        {{ form.width }}
+                        {{ form.width.errors }}
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Height</label>
+                        {{ form.height }}
+                        {{ form.height.errors }}
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Declared Value</label>
+                        {{ form.declared_value }}
+                        {{ form.declared_value.errors }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Shipping Cost</label>
+                        {{ form.shipping_cost }}
+                        {{ form.shipping_cost.errors }}
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Expected Delivery</label>
+                    {{ form.expected_delivery }}
+                    {{ form.expected_delivery.errors }}
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Remarks</label>
+                    {{ form.remarks }}
+                    {{ form.remarks.errors }}
+                </div>
+
+                <button type="submit" class="btn shipment-save-btn">
+                    Save Shipment
+                </button>
+
+                <a href="{% url 'shipments:shipment_list' %}"
+                   class="btn shipment-cancel-btn ms-2"
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Delivery Details | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-lg-3">
+
+{% include "drivers/sidebar.html" %}
+
+</div>
+
+<div class="col-lg-9">
+
+<div class="card driver-update-card border-0 mb-4">
+
+<div class="card-header driver-update-header">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<h3 class="mb-1">
+
+<i class="bi bi-box-seam-fill text-primary me-2"></i>
+
+Delivery Details
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Update shipment delivery information.
+
+</p>
+
+</div>
+
+<span class="badge driver-status-pill">
+
+{{ shipment.status }}
+
+</span>
+
+</div>
+
+</div>
+
+<div class="card-body">
+<div class="row g-4 driver-info-section">
+
+
+<div class="col-md-6">
+
+    <p class="driver-info-item">
+        <strong>Tracking:</strong>
+        {{ shipment.tracking_number }}
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Sender:</strong>
+        {{ shipment.sender_name }}
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Receiver:</strong>
+        {{ shipment.receiver_name }}
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Phone:</strong>
+        {{ shipment.receiver_phone }}
+    </p>
+
+</div>
+
+<div class="col-md-6">
+
+    <p class="driver-info-item">
+        <strong>Status:</strong>
+        {{ shipment.status }}
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Weight:</strong>
+        {{ shipment.weight }} Kg
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Parcel Type:</strong>
+        {{ shipment.parcel_type }}
+    </p>
+
+    <p class="driver-info-item">
+        <strong>Destination:</strong>
+        {{ shipment.delivery_city }}
+    </p>
+
+</div>
+
+</div>
+
+<hr class="driver-divider">
+
+<form method="post" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Update Status
+
+</label>
+
+<select
+class="form-select driver-select"
+name="status">
+
+<option>Out For Delivery</option>
+<option>Delivered</option>
+<option>Delivery Failed</option>
+<option>Returned</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Delivery Notes
+
+</label>
+
+<textarea
+class="form-control driver-textarea"
+rows="4"
+name="notes"></textarea>
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Proof Of Delivery
+
+</label>
+
+<input
+type="file"
+class="form-control driver-file"
+name="proof">
+
+</div>
+
+<div class="d-flex gap-3">
+
+<button
+class="btn driver-save-btn">
+
+Save Delivery Update
+
+</button>
+
+<a
+href="{% url 'drivers:dashboard' %}"
+class="btn driver-cancel-btn">
+
+Cancel
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Track Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+
+
+<section class="py-5">
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-body p-5">
+
+                    <h2 class="fw-bold text-center mb-3">
+
+                        Track Shipment
+
+                    </h2>
+
+                    <p class="text-center text-muted mb-4">
+
+                        Enter your tracking number to view shipment status.
+
+                    </p>
+
+                    <form method="get" action="{% url 'tracking:track' %}">
+
+                        <div class="input-group input-group-lg">
+
+                            <input
+                                type="text"
+                                name="tracking_number"
+                                class="form-control"
+                                placeholder="Enter Tracking Number"
+                                value="{{ request.GET.tracking_number }}">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4">
+
+                                <i class="bi bi-search me-2"></i>
+
+                                Track
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% if shipment %}
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-lg-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-header bg-primary text-white py-3">
+
+                    <h4 class="mb-0">
+
+                        Shipment Information
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Tracking Number</strong>
+
+                            <p>{{ shipment.tracking_number }}</p>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Status</strong>
+
+                            <p>
+
+                                <span class="badge bg-success">
+
+                                    {{ shipment.status }}
+
+                                </span>
+
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Customer</strong>
+
+                            <p>{{ shipment.customer }}</p>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <strong>Receiver</strong>
+
+                            <p>{{ shipment.receiver_name }}</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center mt-4">
+
+        <div class="col-lg-10">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-header bg-light">
+
+                    <h4 class="mb-0">
+
+                        Shipment Timeline
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    {% if tracking_events %}
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for event in tracking_events %}
+
+                            <li class="list-group-item">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+                                        <strong>{{ event.status }}</strong>
+
+                                        <br>
+
+                                        <small class="text-muted">
+
+                                            {{ event.location }}
+
+                                        </small>
+
+                                        <br>
+
+                                        {{ event.description }}
+
+                                    </div>
+
+                                    <small>
+
+                                        {{ event.created_at|date:"d M Y H:i" }}
+
+                                    </small>
+
+                                </div>
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+
+                        <div class="alert alert-info mb-0">
+
+                            No tracking events available.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</section>
+
+{% endblock %}

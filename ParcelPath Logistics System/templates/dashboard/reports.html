@@ -1,0 +1,171 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Reports | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<h2 class="fw-bold mb-4">
+
+Reports & Analytics
+
+</h2>
+
+<div class="row g-4 mb-4">
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body text-center">
+
+<h2>
+
+{{ today_shipments|default:"0" }}
+
+</h2>
+
+<p>
+
+Today's Shipments
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body text-center">
+
+<h2>
+
+{{ delivered_today|default:"0" }}
+
+</h2>
+
+<p>
+
+Delivered Today
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body text-center">
+
+<h2>
+
+{{ pending_shipments|default:"0" }}
+
+</h2>
+
+<p>
+
+Pending
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body text-center">
+
+<h2>
+
+{{ failed_deliveries|default:"0" }}
+
+</h2>
+
+<p>
+
+Failed Deliveries
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white">
+
+Monthly Performance
+
+</div>
+
+<div class="card-body">
+
+<canvas id="shipmentChart" height="100"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById("shipmentChart");
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+
+labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+
+datasets:[{
+
+label:"Shipments",
+
+data:[120,140,160,180,170,220,260,240,280,310,330,360]
+
+}]
+
+}
+
+});
+
+</script>
+
+{% endblock %}

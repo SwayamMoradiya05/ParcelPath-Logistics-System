@@ -1,0 +1,1479 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Shipment Details | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       Payment Section
+       Only applies to the payment button/card
+       ========================================================= */
+
+    .payment-required-card {
+        width: 100%;
+        padding: 24px;
+        margin-bottom: 20px;
+        border: 1px solid #20a464;
+        border-radius: 12px;
+        background: #f4fff8;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .payment-required-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+    }
+
+    .payment-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+    }
+
+    .payment-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #dff7e9;
+        color: #159447;
+        font-size: 24px;
+    }
+
+    .payment-info h5 {
+        color: #128744;
+        font-weight: 700;
+    }
+
+    .payment-info p {
+        color: #5f6b66;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .payment-amount {
+        text-align: center;
+        min-width: 140px;
+    }
+
+    .payment-amount small {
+        display: block;
+        color: #59635e;
+        font-weight: 600;
+        margin-bottom: 3px;
+    }
+
+    .payment-amount strong {
+        display: block;
+        color: #159447;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .payment-action {
+        min-width: 280px;
+    }
+
+    .payment-button {
+        width: 100%;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        padding: 14px 22px;
+        transition: all 0.2s ease;
+    }
+
+    .payment-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(25, 135, 84, 0.25);
+    }
+
+    .payment-security {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 20px;
+        color: #178c4b;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .payment-security span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .payment-divider {
+        color: #adb5bd;
+    }
+
+    @media (max-width: 992px) {
+
+        .payment-required-content {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .payment-info {
+            justify-content: center;
+            text-align: left;
+        }
+
+        .payment-amount {
+            margin: 5px auto;
+        }
+
+        .payment-action {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .payment-button {
+            width: 100%;
+        }
+
+    }
+
+    @media (max-width: 576px) {
+
+        .payment-required-card {
+            padding: 18px;
+        }
+
+        .payment-info {
+            align-items: flex-start;
+        }
+
+        .payment-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            font-size: 20px;
+        }
+
+        .payment-amount strong {
+            font-size: 24px;
+        }
+
+        .payment-button {
+            font-size: 16px;
+            min-height: 52px;
+        }
+
+        .payment-security {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .payment-divider {
+            display: none !important;
+        }
+
+    }
+
+/* =========================================================
+   PARCELPATH CUSTOMER SHIPMENT DETAILS
+   NEW PREMIUM COLOR SYSTEM
+   UI ONLY - NO BACKEND CHANGES
+   ========================================================= */
+
+#shipment-details-page {
+    --pp-burgundy: #4A2F35;
+    --pp-burgundy-light: #6B454D;
+
+    --pp-terracotta: #A96752;
+    --pp-terracotta-light: #F2E3DC;
+
+    --pp-copper: #B86F4B;
+    --pp-copper-light: #F5E5DA;
+
+    --pp-amber: #C9983E;
+    --pp-amber-light: #F7EBCF;
+
+    --pp-olive: #66765A;
+    --pp-olive-light: #E7EBDD;
+
+    --pp-stone: #A79E93;
+    --pp-stone-light: #EEE9E2;
+
+    --pp-cream: #F4EEE6;
+    --pp-card: #FFFDF9;
+
+    --pp-text: #30282A;
+    --pp-muted: #81766F;
+    --pp-border: #DED3C8;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+#shipment-details-page {
+    color: var(--pp-text);
+}
+
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+
+#shipment-details-page > .d-flex:first-child h2 {
+    color: var(--pp-burgundy);
+    letter-spacing: -0.4px;
+}
+
+#shipment-details-page > .d-flex:first-child p {
+    color: var(--pp-muted) !important;
+}
+
+#shipment-details-page > .d-flex:first-child strong {
+    color: var(--pp-terracotta);
+}
+
+
+/* =========================================================
+   ALL CARDS
+   ========================================================= */
+
+#shipment-details-page .card {
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border) !important;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(74, 47, 53, 0.07) !important;
+}
+
+
+/* =========================================================
+   SHIPMENT INFORMATION
+   PRIMARY → BURGUNDY
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-primary {
+    background: var(--pp-burgundy) !important;
+    color: #fff !important;
+    border: 0;
+    padding: 17px 20px;
+}
+
+#shipment-details-page .card-header.bg-primary h5 {
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   CUSTOMER INFORMATION
+   GREEN → TERRACOTTA
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-success {
+    background: var(--pp-terracotta) !important;
+    color: #fff !important;
+    border: 0;
+    padding: 17px 20px;
+}
+
+#shipment-details-page .card-header.bg-success h5 {
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   DRIVER INFORMATION
+   INFO BLUE → DEEP PLUM
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-info {
+    background: var(--pp-burgundy-light) !important;
+    color: #fff !important;
+    border: 0;
+    padding: 17px 20px;
+}
+
+#shipment-details-page .card-header.bg-info h5 {
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   SHIPMENT PROGRESS
+   DARK → BURGUNDY
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-dark {
+    background: #35252A !important;
+    color: #fff !important;
+    border: 0;
+    padding: 17px 20px;
+}
+
+#shipment-details-page .card-header.bg-dark h5 {
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   REMARKS
+   YELLOW → AMBER
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-warning {
+    background: var(--pp-amber) !important;
+    color: #33291C !important;
+    border: 0;
+    padding: 17px 20px;
+}
+
+#shipment-details-page .card-header.bg-warning h5 {
+    color: #33291C !important;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+#shipment-details-page .table {
+    margin-bottom: 0;
+    color: var(--pp-text);
+}
+
+#shipment-details-page .table > :not(caption) > * > * {
+    border-color: var(--pp-border);
+    padding: 14px 15px;
+}
+
+#shipment-details-page .table th {
+    background: #F7F1EA;
+    color: var(--pp-muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#shipment-details-page .table td {
+    background: var(--pp-card);
+    color: var(--pp-text);
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   SHIPMENT STATUS BADGES
+   ========================================================= */
+
+/* Pending */
+
+#shipment-details-page .badge.bg-warning {
+    background: var(--pp-amber) !important;
+    color: #33291C !important;
+}
+
+
+/* Confirmed */
+
+#shipment-details-page .badge.bg-info {
+    background: var(--pp-terracotta) !important;
+    color: #fff !important;
+}
+
+
+/* Primary statuses */
+
+#shipment-details-page .badge.bg-primary {
+    background: var(--pp-burgundy-light) !important;
+    color: #fff !important;
+}
+
+
+/* Completed */
+
+#shipment-details-page .badge.bg-success {
+    background: var(--pp-olive) !important;
+    color: #fff !important;
+}
+
+
+/* Cancelled */
+
+#shipment-details-page .badge.bg-danger {
+    background: #9B4B4B !important;
+    color: #fff !important;
+}
+
+
+/* Returned / inactive */
+
+#shipment-details-page .badge.bg-secondary {
+    background: var(--pp-stone) !important;
+    color: #fff !important;
+}
+
+
+/* =========================================================
+   SHIPMENT PROGRESS
+   ========================================================= */
+
+#shipment-details-page .card-body .d-flex.flex-wrap
+.justify-content-between.text-center {
+    gap: 10px;
+}
+
+
+/* Every progress badge */
+
+#shipment-details-page .card-body
+.d-flex.flex-wrap.justify-content-between.text-center
+.badge {
+    min-width: 105px;
+    padding: 9px 13px !important;
+    border-radius: 7px;
+    font-size: 12px;
+    letter-spacing: 0.1px;
+}
+
+
+/* Current progress */
+
+#shipment-details-page .card-body
+.d-flex.flex-wrap.justify-content-between.text-center
+.badge.bg-primary {
+    background: var(--pp-amber) !important;
+    color: #33291C !important;
+    box-shadow: 0 4px 10px rgba(201, 152, 62, 0.20);
+}
+
+
+/* Completed progress */
+
+#shipment-details-page .card-body
+.d-flex.flex-wrap.justify-content-between.text-center
+.badge.bg-success {
+    background: var(--pp-olive) !important;
+    color: #fff !important;
+}
+
+
+/* Upcoming */
+
+#shipment-details-page .card-body
+.d-flex.flex-wrap.justify-content-between.text-center
+.badge.bg-secondary {
+    background: var(--pp-stone-light) !important;
+    color: #756C63 !important;
+}
+
+
+/* =========================================================
+   DRIVER EMPTY STATE
+   ========================================================= */
+
+#shipment-details-page .alert-warning {
+    background: var(--pp-amber-light);
+    border: 1px solid #E1C984;
+    color: #65502A;
+}
+
+
+/* =========================================================
+   PROOF OF DELIVERY
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-success + .card-body img {
+    border: 4px solid var(--pp-terracotta-light);
+}
+
+
+/* =========================================================
+   PAYMENT REQUIRED
+   ========================================================= */
+
+#shipment-details-page .payment-required-card {
+    background: var(--pp-copper-light);
+    border: 1px solid var(--pp-copper) !important;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(184, 111, 75, 0.10);
+}
+
+#shipment-details-page .payment-icon {
+    background: var(--pp-copper);
+    color: #fff;
+}
+
+#shipment-details-page .payment-info h5 {
+    color: var(--pp-copper);
+}
+
+#shipment-details-page .payment-info p {
+    color: var(--pp-muted);
+}
+
+#shipment-details-page .payment-amount small {
+    color: var(--pp-muted);
+}
+
+#shipment-details-page .payment-amount strong {
+    color: var(--pp-copper);
+}
+
+
+/* Pay button */
+
+#shipment-details-page .payment-button {
+    background: var(--pp-burgundy) !important;
+    border-color: var(--pp-burgundy) !important;
+    color: #fff !important;
+}
+
+#shipment-details-page .payment-button:hover {
+    background: var(--pp-burgundy-light) !important;
+    border-color: var(--pp-burgundy-light) !important;
+    box-shadow: 0 7px 18px rgba(74, 47, 53, 0.22);
+}
+
+
+/* Payment security */
+
+#shipment-details-page .payment-security {
+    color: var(--pp-olive);
+}
+
+
+/* =========================================================
+   PAYMENT RECEIPT
+   ========================================================= */
+
+#shipment-details-page .card-header.bg-success:has(
+    .bi-receipt
+) {
+    background: var(--pp-copper) !important;
+}
+
+
+/* Receipt buttons */
+
+#shipment-details-page .btn-outline-success {
+    color: var(--pp-copper);
+    border-color: var(--pp-copper);
+}
+
+#shipment-details-page .btn-outline-success:hover {
+    background: var(--pp-copper);
+    border-color: var(--pp-copper);
+    color: #fff;
+}
+
+#shipment-details-page .btn-success {
+    background: var(--pp-burgundy);
+    border-color: var(--pp-burgundy);
+}
+
+#shipment-details-page .btn-success:hover {
+    background: var(--pp-burgundy-light);
+    border-color: var(--pp-burgundy-light);
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+#shipment-details-page .btn-outline-secondary {
+    color: var(--pp-burgundy);
+    border-color: var(--pp-burgundy);
+    background: transparent;
+}
+
+#shipment-details-page .btn-outline-secondary:hover {
+    background: var(--pp-burgundy);
+    border-color: var(--pp-burgundy);
+    color: #fff;
+}
+
+
+/* =========================================================
+   ADMIN EDIT BUTTON
+   ========================================================= */
+
+#shipment-details-page .btn-primary {
+    background: var(--pp-burgundy);
+    border-color: var(--pp-burgundy);
+}
+
+#shipment-details-page .btn-primary:hover {
+    background: var(--pp-burgundy-light);
+    border-color: var(--pp-burgundy-light);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    #shipment-details-page .card-header {
+        padding: 15px 16px;
+    }
+
+    #shipment-details-page .card-body {
+        padding: 16px;
+    }
+
+    #shipment-details-page .table th,
+    #shipment-details-page .table td {
+        padding: 11px 10px;
+        font-size: 13px;
+    }
+
+    #shipment-details-page .card-body
+    .d-flex.flex-wrap.justify-content-between.text-center
+    .badge {
+        min-width: 95px;
+    }
+}
+</style>
+
+<div class="container py-5" id="shipment-details-page">
+    <!-- ================================================= -->
+    <!-- Page Header -->
+    <!-- ================================================= -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                Shipment Details
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Tracking Number:
+                <strong>{{ shipment.tracking_number }}</strong>
+
+            </p>
+
+        </div>
+
+        <div class="mt-3 mt-md-0">
+
+            {% if shipment.status == "PENDING" %}
+
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "CONFIRMED" %}
+
+                <span class="badge bg-info text-dark fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "PICKUP_ASSIGNED" %}
+
+                <span class="badge bg-primary fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "PICKED_UP" %}
+
+                <span class="badge bg-primary fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "IN_TRANSIT" %}
+
+                <span class="badge bg-primary fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "OUT_FOR_DELIVERY" %}
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "DELIVERED" %}
+
+                <span class="badge bg-success fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "CANCELLED" %}
+
+                <span class="badge bg-danger fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% elif shipment.status == "RETURNED" %}
+
+                <span class="badge bg-secondary fs-6 px-3 py-2">
+                    {{ shipment.get_status_display }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- ================================================= -->
+        <!-- Shipment Information -->
+        <!-- ================================================= -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="bi bi-box-seam me-2"></i>
+
+                        Shipment Information
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered align-middle">
+
+                        <tbody>
+
+                            <tr>
+
+                                <th width="35%">Tracking Number</th>
+
+                                <td>{{ shipment.tracking_number }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Package Type</th>
+
+                                <td>{{ shipment.package_type }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Weight</th>
+
+                                <td>{{ shipment.weight }} kg</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Dimensions</th>
+
+                                <td>
+
+                                    {{ shipment.length }}
+                                    ×
+                                    {{ shipment.width }}
+                                    ×
+                                    {{ shipment.height }}
+                                    cm
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Volume</th>
+
+                                <td>{{ shipment.volume }} cm³</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Chargeable Weight</th>
+
+                                <td>{{ shipment.chargeable_weight }} kg</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Declared Value</th>
+
+                                <td>₹ {{ shipment.declared_value }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Shipping Cost</th>
+
+                                <td>₹ {{ shipment.shipping_cost }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Expected Delivery</th>
+
+                                <td>
+
+                                    {% if shipment.expected_delivery %}
+
+                                        {{ shipment.expected_delivery|date:"F d, Y" }}
+
+                                    {% else %}
+
+                                        <span class="text-muted">
+
+                                            Not Assigned
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- Customer Information -->
+        <!-- ================================================= -->
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="bi bi-person-circle me-2"></i>
+
+                        Customer Information
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered align-middle">
+
+                        <tbody>
+
+                            <tr>
+
+                                <th width="35%">Sender</th>
+
+                                <td>{{ shipment.sender_name }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Sender Phone</th>
+
+                                <td>{{ shipment.sender_phone }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Sender Address</th>
+
+                                <td>{{ shipment.sender_address }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Receiver</th>
+
+                                <td>{{ shipment.receiver_name }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Receiver Phone</th>
+
+                                <td>{{ shipment.receiver_phone }}</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Receiver Address</th>
+
+                                <td>{{ shipment.receiver_address }}</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- Driver Information -->
+        <!-- ================================================= -->
+
+        <div class="col-12 mb-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-info text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="bi bi-truck me-2"></i>
+
+                        Driver Information
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    {% if shipment.driver %}
+
+                    <table class="table table-bordered align-middle mb-0">
+
+                        <tbody>
+
+                            <tr>
+
+                                <th width="30%">Driver</th>
+
+                                <td>
+
+                                    {{ shipment.driver.user.full_name }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Vehicle Number</th>
+
+                                <td>
+
+                                    {{ shipment.driver.vehicle_number }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Vehicle Type</th>
+
+                                <td>
+
+                                    {{ shipment.driver.get_vehicle_type_display }}
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Driver Status</th>
+
+                                <td>
+
+                                    {% if shipment.driver.status == "AVAILABLE" %}
+
+                                        <span class="badge bg-success">
+                                            {{ shipment.driver.get_status_display }}
+                                        </span>
+
+                                    {% elif shipment.driver.status == "ON_DELIVERY" %}
+
+                                        <span class="badge bg-primary">
+                                            {{ shipment.driver.get_status_display }}
+                                        </span>
+
+                                    {% elif shipment.driver.status == "OFF_DUTY" %}
+
+                                        <span class="badge bg-secondary">
+                                            {{ shipment.driver.get_status_display }}
+                                        </span>
+
+                                    {% elif shipment.driver.status == "ON_LEAVE" %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            {{ shipment.driver.get_status_display }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    {% else %}
+
+                        <div class="alert alert-warning mb-0">
+
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                            No driver has been assigned to this shipment yet.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- Shipment Progress -->
+    <!-- ================================================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-graph-up-arrow me-2"></i>
+
+                Shipment Progress
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            {% with current=shipment.status %}
+
+            <div class="d-flex flex-wrap justify-content-between text-center">
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'PENDING' %}bg-primary{% else %}bg-success{% endif %}">
+
+                        Pending
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'CONFIRMED' %}bg-primary{% elif current == 'PENDING' %}bg-secondary{% else %}bg-success{% endif %}">
+
+                        Confirmed
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'PICKUP_ASSIGNED' %}bg-primary{% elif current == 'PENDING' or current == 'CONFIRMED' %}bg-secondary{% else %}bg-success{% endif %}">
+
+                        Pickup Assigned
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'PICKED_UP' %}bg-primary{% elif current in 'PENDING CONFIRMED PICKUP_ASSIGNED' %}bg-secondary{% else %}bg-success{% endif %}">
+
+                        Picked Up
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'IN_TRANSIT' %}bg-primary{% elif current == 'OUT_FOR_DELIVERY' or current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
+                        In Transit
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'OUT_FOR_DELIVERY' %}bg-primary{% elif current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
+                        Out For Delivery
+
+                    </span>
+
+                </div>
+
+                <div class="flex-fill mb-3">
+
+                    <span class="badge {% if current == 'DELIVERED' %}bg-success{% else %}bg-secondary{% endif %}">
+
+                        Delivered
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endwith %}
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- Remarks -->
+    <!-- ================================================= -->
+
+    {% if shipment.remarks %}
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-chat-left-text me-2"></i>
+
+                Remarks
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            {{ shipment.remarks }}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- ================================================= -->
+    <!-- Proof of Delivery -->
+    <!-- ================================================= -->
+
+    {% if shipment.proof_of_delivery %}
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-camera-fill me-2"></i>
+
+                Proof of Delivery
+
+            </h5>
+
+        </div>
+
+        <div class="card-body text-center">
+
+            <img
+                src="{{ shipment.proof_of_delivery.url }}"
+                alt="Proof of Delivery"
+                class="img-fluid rounded shadow"
+                style="max-height:400px;"
+            >
+
+            <hr>
+
+            <p class="mb-0">
+
+                <strong>Uploaded On:</strong>
+
+                {{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- ================================================= -->
+    <!-- Payment -->
+    <!-- ================================================= -->
+
+    {% if request.user.role == "CUSTOMER" and shipment.status == "PENDING" %}
+
+        {% if shipment.shipping_cost and not shipment.is_paid %}
+
+        <div class="payment-required-card">
+
+            <div class="payment-required-content">
+
+                <div class="payment-info">
+
+                    <div class="payment-icon">
+
+                        <i class="bi bi-wallet2"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h5 class="mb-1">
+
+                            Payment Required
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            Complete the payment to confirm your shipment
+                            and start the delivery process.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="payment-amount">
+
+                    <small>
+                        Total Amount
+                    </small>
+
+                    <strong>
+                        ₹{{ shipment.shipping_cost }}
+                    </strong>
+
+                </div>
+
+                <div class="payment-action">
+
+                    <a
+                        href="{% url 'shipments:shipment_payment' shipment.pk %}"
+                        class="btn btn-success payment-button"
+                    >
+
+                        <i class="bi bi-credit-card me-2"></i>
+
+                        Pay ₹{{ shipment.shipping_cost }}
+
+                        <i class="bi bi-arrow-right ms-3"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="payment-security">
+
+                <span>
+
+                    <i class="bi bi-lock-fill"></i>
+
+                    Secure Payment
+
+                </span>
+
+                <span class="payment-divider">|</span>
+
+                <span>
+
+                    <i class="bi bi-lightning-charge-fill"></i>
+
+                    Instant Confirmation
+
+                </span>
+
+                <span class="payment-divider">|</span>
+
+                <span>
+
+                    <i class="bi bi-shield-check"></i>
+
+                    100% Safe &amp; Secure
+
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    <!-- ================================================= -->
+    <!-- Action Buttons -->
+    <!-- ================================================= -->
+
+    {% if paid_payment %}
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-success text-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-receipt me-2"></i>
+
+            Payment Receipt
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <h6 class="fw-bold mb-1">
+
+                    Payment Successful
+
+                </h6>
+
+                <p class="text-muted mb-0">
+
+                    ₹{{ paid_payment.amount }}
+
+                    paid successfully via Razorpay.
+
+                </p>
+
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a
+                    href="{% url 'shipments:payment_receipt' shipment.pk %}"
+                    class="btn btn-outline-success"
+                >
+
+                    <i class="bi bi-receipt me-2"></i>
+
+                    View Receipt
+
+                </a>
+
+                <a
+                    href="{% url 'shipments:payment_receipt_pdf' shipment.pk %}"
+                    class="btn btn-success"
+                >
+
+                    <i class="bi bi-download me-2"></i>
+
+                    Download Receipt
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+
+        <a
+            href="{% url 'shipments:shipment_list' %}"
+            class="btn btn-outline-secondary"
+        >
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Back to Shipments
+
+        </a>
+
+        {% if request.user.role == "ADMIN" %}
+
+        <a
+            href="{% url 'shipments:shipment_update' shipment.pk %}"
+            class="btn btn-primary"
+        >
+
+            <i class="bi bi-pencil-square me-2"></i>
+
+            Edit Shipment
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

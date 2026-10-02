@@ -1,0 +1,76 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Proof of Delivery
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h4>
+
+                Upload Proof of Delivery
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Delivery Photo
+
+                    </label>
+
+                    <input
+                        type="file"
+                        name="proof_of_delivery"
+                        class="form-control"
+                        accept="image/*"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                >
+
+                    Mark as Delivered
+
+                </button>
+
+                <a
+                    href="{% url 'drivers:dashboard' %}"
+                    class="btn btn-secondary"
+                >
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

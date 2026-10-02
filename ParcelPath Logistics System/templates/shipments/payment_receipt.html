@@ -1,0 +1,397 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Payment Receipt | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg">
+
+                <!-- Header -->
+
+                <div class="card-header bg-success text-white p-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h3 class="fw-bold mb-1">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                Payment Receipt
+                            </h3>
+
+                            <p class="mb-0">
+                                ParcelPath
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <span class="badge bg-light text-success fs-6 px-3 py-2">
+                                PAID
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Receipt Information -->
+
+                    <div class="row mb-4">
+
+                        <div class="col-md-6">
+
+                            <p class="text-muted mb-1">
+                                Receipt Number
+                            </p>
+
+                            <h6 class="fw-bold">
+                                PP-RCP-{{ payment.pk|stringformat:"08d" }}
+                            </h6>
+
+                        </div>
+
+                        <div class="col-md-6 text-md-end">
+
+                            <p class="text-muted mb-1">
+                                Payment Date
+                            </p>
+
+                            <h6 class="fw-bold">
+
+                                {% if payment.paid_at %}
+                                    {{ payment.paid_at|date:"d F Y, h:i A" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <!-- Customer -->
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-person-circle me-2"></i>
+
+                        Customer Information
+
+                    </h5>
+
+                    <div class="table-responsive mb-4">
+
+                        <table class="table table-bordered">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <th width="35%">
+                                        Customer
+                                    </th>
+
+                                    <td>
+
+                                        {{ shipment.customer.user.get_full_name }}
+
+                                        {% if not shipment.customer.user.get_full_name %}
+                                            {{ shipment.customer.user.email }}
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Email
+                                    </th>
+
+                                    <td>
+                                        {{ shipment.customer.user.email }}
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- Shipment -->
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-box-seam me-2"></i>
+
+                        Shipment Information
+
+                    </h5>
+
+                    <div class="table-responsive mb-4">
+
+                        <table class="table table-bordered">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <th width="35%">
+                                        Tracking Number
+                                    </th>
+
+                                    <td>
+                                        <strong>
+                                            {{ shipment.tracking_number }}
+                                        </strong>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Receiver
+                                    </th>
+
+                                    <td>
+                                        {{ shipment.receiver_name }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Package Type
+                                    </th>
+
+                                    <td>
+                                        {{ shipment.package_type }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Shipping Cost
+                                    </th>
+
+                                    <td>
+                                        ₹ {{ payment.amount }}
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- Payment -->
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-credit-card me-2"></i>
+
+                        Payment Information
+
+                    </h5>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <th width="35%">
+                                        Payment Method
+                                    </th>
+
+                                    <td>
+                                        Razorpay
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Razorpay Order ID
+                                    </th>
+
+                                    <td>
+                                        {{ payment.razorpay_order_id }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Razorpay Payment ID
+                                    </th>
+
+                                    <td>
+                                        {{ payment.razorpay_payment_id }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Currency
+                                    </th>
+
+                                    <td>
+                                        {{ payment.currency }}
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <td>
+
+                                        <span class="badge bg-success">
+                                            PAID
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- Total -->
+
+                    <div class="alert alert-success mt-4 mb-4">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <strong class="fs-5">
+                                Total Amount Paid
+                            </strong>
+
+                            <strong class="fs-4">
+                                ₹ {{ payment.amount }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Buttons -->
+
+                    <div class="d-flex justify-content-center flex-wrap gap-2 mt-4">
+
+                        <a
+                            href="{% url 'shipments:payment_receipt_pdf' shipment.pk %}"
+                            class="btn btn-success"
+                        >
+
+                            <i class="bi bi-download me-2"></i>
+
+                            Download Receipt
+
+                        </a>
+
+                        <button
+                            type="button"
+                            onclick="window.print()"
+                            class="btn btn-outline-primary"
+                        >
+
+                            <i class="bi bi-printer me-2"></i>
+
+                            Print Receipt
+
+                        </button>
+
+                        <a
+                            href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                            class="btn btn-outline-secondary"
+                        >
+
+                            <i class="bi bi-arrow-left me-2"></i>
+
+                            Back to Shipment
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-center text-muted">
+
+                    <small>
+                        Thank you for choosing ParcelPath.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+@media print {
+
+    nav,
+    footer,
+    .btn {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+}
+
+</style>
+
+{% endblock %}

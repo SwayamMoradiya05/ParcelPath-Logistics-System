@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}ParcelPath | Logistics that stays on track{% endblock %}
+{% block content %}
+<section class="pp-editorial-hero">
+  <div class="container">
+    <div class="pp-editorial-grid">
+      <div class="pp-editorial-copy">
+        <div class="pp-eyebrow">PARCELPATH / LOGISTICS & DELIVERY</div>
+        <h1>Logistics should feel <em>clear.</em> Even when the journey is busy.</h1>
+        <p class="pp-editorial-lead">ParcelPath brings shipment booking, tracking, delivery updates and operational work into one dependable flow. Less searching. Fewer unclear handovers. A clearer record from pickup to destination.</p>
+        <div class="pp-home-actions">
+          {% if user.is_authenticated %}
+          <a href="{% url 'shipments:shipment_create' %}" class="pp-gold-btn pp-large-btn">Start a shipment <i class="bi bi-arrow-right"></i></a>
+          {% else %}
+          <a href="{% url 'accounts:register' %}" class="pp-gold-btn pp-large-btn">Start a shipment <i class="bi bi-arrow-right"></i></a>
+          {% endif %}
+          <a href="{% url 'tracking:track' %}" class="pp-outline-btn pp-large-btn">Track a parcel</a>
+        </div>
+        <div class="pp-editorial-proof">
+          <div><strong>25K+</strong><span>parcels delivered</span></div><div><strong>150+</strong><span>cities covered</span></div><div><strong>500+</strong><span>business customers</span></div>
+        </div>
+      </div>
+      <div class="pp-editorial-visual">
+        <div class="pp-visual-frame">
+          <img src="{% static 'images/hero/delivery-team.png' %}" alt="ParcelPath delivery team and logistics vehicle">
+          <div class="pp-visual-caption"><span>THE PARCELPATH APPROACH</span><strong>One shipment. One clear record.</strong><p>From booking to handover, every important update stays connected to the same delivery journey.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pp-track-strip pp-track-editorial"><div class="container"><div class="pp-track-copy"><span class="pp-kicker">SHIPMENT LOOKUP</span><h2>Need an update?</h2><p>Enter your tracking number and see the latest recorded movement of your parcel.</p></div><form method="GET" action="{% url 'tracking:track' %}" class="pp-track-form"><label for="tracking_number" class="visually-hidden">Tracking number</label><input id="tracking_number" name="tracking_number" value="{{ request.GET.tracking_number }}" placeholder="Tracking number, e.g. PP123456789" required><button type="submit" class="pp-dark-btn">View shipment <i class="bi bi-arrow-right"></i></button></form></div></section>
+
+<section class="pp-section pp-paper-section"><div class="container"><div class="pp-section-heading"><div><span class="pp-kicker">WHAT PARCELPATH DOES</span><h2>A practical system for the work behind every delivery.</h2></div><p>Different people handle different parts of a shipment. ParcelPath keeps their work connected without making the process harder to understand.</p></div><div class="row g-0 pp-service-grid"><div class="col-md-6 col-lg-3"><article><span>01</span><i class="bi bi-box-seam"></i><h3>Book</h3><p>Capture sender, receiver, parcel and delivery details in one shipment record.</p></article></div><div class="col-md-6 col-lg-3"><article><span>02</span><i class="bi bi-geo-alt"></i><h3>Follow</h3><p>Give customers a straightforward way to understand the latest shipment status.</p></article></div><div class="col-md-6 col-lg-3"><article><span>03</span><i class="bi bi-truck"></i><h3>Deliver</h3><p>Drivers can manage assigned work, update progress and record delivery confirmation.</p></article></div><div class="col-md-6 col-lg-3"><article><span>04</span><i class="bi bi-clipboard-check"></i><h3>Manage</h3><p>Operations teams can keep an eye on shipments, drivers, routes and daily activity.</p></article></div></div></div></section>
+
+<section class="pp-section pp-story-section"><div class="container"><div class="row align-items-center g-5"><div class="col-lg-6"><div class="pp-story-copy"><span class="pp-kicker">BUILT FOR REAL DELIVERY WORK</span><h2>Good logistics is about knowing what happens next.</h2><p class="pp-body">A parcel can pass through several hands before it reaches its destination. The challenge is not simply moving it; it is keeping the information around that movement accurate and easy to understand.</p><div class="pp-written-points"><div><strong>For customers</strong><span>Book a shipment, follow its progress and understand the delivery status without unnecessary complexity.</span></div><div><strong>For drivers</strong><span>See assigned deliveries, update the shipment journey and capture proof when the parcel reaches its destination.</span></div><div><strong>For operations</strong><span>Keep shipment records, driver activity and delivery workflows organised from one place.</span></div></div></div></div><div class="col-lg-6"><div class="pp-story-note"><span class="pp-kicker">THE PRINCIPLE</span><blockquote>“A delivery is easier to manage when everyone can see the same journey.”</blockquote><p>ParcelPath is designed around that simple idea: clear records, useful updates and accountable handovers.</p><div class="pp-note-rule"></div><span class="pp-note-label">PARCELPATH / LOGISTICS & DELIVERY</span></div></div></div></div></section>
+
+<section class="pp-quote-section"><div class="container"><p class="pp-kicker">FROM PICKUP TO DESTINATION</p><h2>Keep the journey visible.</h2><p>ParcelPath gives every shipment a clear place in the workflow — so the next step is easier to understand and easier to act on.</p><a href="{% url 'services' %}" class="pp-outline-btn">Explore our services <i class="bi bi-arrow-right"></i></a></div></section>
+{% endblock %}

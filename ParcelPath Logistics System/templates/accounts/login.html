@@ -1,0 +1,60 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Login | ParcelPath{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth-modern.css' %}">{% endblock %}
+{% block content %}
+<section class="pp-auth-page">
+  <div class="container pp-auth-shell">
+    <div class="row g-4 g-xl-5 align-items-stretch">
+      <div class="col-lg-6">
+        <aside class="pp-auth-intro">
+          <div>
+            <div class="eyebrow">ParcelPath / Account access</div>
+            <h1>Keep every delivery <em>within reach.</em></h1>
+            <p>Sign in to manage shipments, check delivery progress and keep your customer or driver work in one dependable place.</p>
+            <ul class="pp-auth-list">
+              <li><span class="num">01</span><div><strong>See the work that matters</strong><span>Review active shipments, recent activity and the next action without searching through multiple screens.</span></div></li>
+              <li><span class="num">02</span><div><strong>Follow a parcel clearly</strong><span>Use the tracking record to understand where a shipment is and what has already happened.</span></div></li>
+              <li><span class="num">03</span><div><strong>Keep delivery accountable</strong><span>Customer, driver and operations updates stay connected to the same shipment record.</span></div></li>
+            </ul>
+          </div>
+          <div class="pp-auth-footnote">PARCELPATH — LOGISTICS & DELIVERY</div>
+        </aside>
+      </div>
+      <div class="col-lg-6">
+        <div class="pp-auth-card">
+          <div class="eyebrow">Welcome back</div>
+          <h2>Sign in to ParcelPath</h2>
+          <p class="sub">Use the email and password associated with your account. Your existing ParcelPath account and permissions remain unchanged.</p>
+          {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }} alert-dismissible fade show pp-auth-message" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}{% endif %}
+          {% if form.non_field_errors %}<div class="alert alert-danger pp-auth-message">{% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}</div>{% endif %}
+          <form method="post" novalidate id="loginForm" class="pp-auth-form">
+            {% csrf_token %}
+            <div class="field">
+              <label for="id_email">Email address</label>
+              <input type="email" id="id_email" name="email" value="{{ form.email.value|default:'' }}" placeholder="you@example.com" autocomplete="email" required class="{% if form.email.errors %}invalid{% endif %}">
+              {% for error in form.email.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}
+            </div>
+            <div class="field">
+              <label for="id_password">Password</label>
+              <div class="pp-auth-password">
+                <input type="password" id="id_password" name="password" placeholder="Enter your password" autocomplete="current-password" required class="{% if form.password.errors %}invalid{% endif %}">
+                <button type="button" class="pp-auth-toggle" onclick="toggleAuthPassword('id_password',this)" aria-label="Show password"><i class="bi bi-eye"></i></button>
+              </div>
+              {% for error in form.password.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}
+            </div>
+            <div class="pp-auth-options">
+              <label><input type="checkbox" id="remember_me" name="remember_me"> Remember me</label>
+              <a class="pp-auth-link" href="{% url 'accounts:password_reset' %}">Forgot password?</a>
+            </div>
+            <button type="submit" class="pp-auth-submit"><i class="bi bi-arrow-right"></i> Sign in to ParcelPath</button>
+          </form>
+          <div class="pp-auth-switch">New to ParcelPath? <a href="{% url 'accounts:register' %}">Create an account</a></div>
+          <div class="pp-auth-note"><i class="bi bi-shield-check"></i><span>Your login is handled by the existing ParcelPath authentication system. This redesign changes the presentation only.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}<script>function toggleAuthPassword(id,button){const input=document.getElementById(id);if(!input)return;const show=input.type==='password';input.type=show?'text':'password';button.innerHTML=show?'<i class="bi bi-eye-slash"></i>':'<i class="bi bi-eye"></i>';button.setAttribute('aria-label',show?'Hide password':'Show password');}</script>{% endblock %}

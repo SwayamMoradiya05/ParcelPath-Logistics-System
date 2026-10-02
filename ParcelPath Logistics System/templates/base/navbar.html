@@ -1,0 +1,64 @@
+{% load static %}
+<header class="pp-site-header">
+    <div class="pp-topline">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-shield-check me-2"></i>Dependable movement for every shipment</span>
+            <span class="d-none d-md-inline">Ahmedabad, Gujarat &nbsp;·&nbsp; +91 93285 47380</span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg pp-main-nav">
+        <div class="container">
+            <a href="{% if user.is_authenticated and user.role == 'ADMIN' or user.is_authenticated and user.is_staff or user.is_authenticated and user.is_superuser %}{% url 'dashboard:dashboard' %}{% else %}{% url 'home' %}{% endif %}"
+               class="navbar-brand pp-brand"
+               aria-label="ParcelPath home">
+                <span class="pp-brand-logo-wrap">
+                    <img src="{% static 'images/logos/Nav_logo.png' %}"
+                         alt="ParcelPath Smart Logistics"
+                         class="pp-brand-logo">
+            
+            </a>
+
+            <button class="navbar-toggler pp-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-label="Open navigation">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                {% if user.is_authenticated and user.role == 'ADMIN' or user.is_authenticated and user.is_staff or user.is_authenticated and user.is_superuser %}
+                    {# Admin/staff/superuser: operations navigation only. No public Home/About/Services/Pricing/Contact links. #}
+                    <ul class="navbar-nav mx-auto pp-nav-links">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
+                                <i class="bi bi-grid-1x2 me-1"></i> Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="pp-nav-action">
+                        <a href="{% url 'accounts:logout' %}" class="pp-text-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <ul class="navbar-nav mx-auto pp-nav-links">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'pricing' %}">Pricing</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'tracking:track' %}">Track Parcel</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+
+                    <div class="pp-nav-action">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'dashboard:dashboard' %}" class="pp-outline-btn">
+                                <i class="bi bi-grid-1x2 me-2"></i>Dashboard
+                            </a>
+                            <a href="{% url 'accounts:logout' %}" class="pp-text-btn">Logout</a>
+                        {% else %}
+                            <a href="{% url 'accounts:login' %}" class="pp-text-btn">Sign in</a>
+                            <a href="{% url 'accounts:register' %}" class="pp-gold-btn">Create account</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>

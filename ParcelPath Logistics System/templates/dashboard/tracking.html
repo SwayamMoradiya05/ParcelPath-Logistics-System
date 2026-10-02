@@ -1,0 +1,141 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Tracking Management | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+<h3 class="mb-0">
+
+Tracking Management
+
+</h3>
+
+<form method="get" class="d-flex">
+
+<input
+type="text"
+name="tracking"
+class="form-control me-2"
+placeholder="Tracking Number">
+
+<button
+class="btn btn-primary">
+
+Search
+
+</button>
+
+</form>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle mb-0">
+
+<thead>
+
+<tr>
+
+<th>Tracking</th>
+<th>Shipment</th>
+<th>Current Status</th>
+<th>Location</th>
+<th>Updated</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for tracking in tracking_list %}
+
+<tr>
+
+<td>
+
+{{ tracking.tracking_number }}
+
+</td>
+
+<td>
+
+{{ tracking.shipment }}
+
+</td>
+
+<td>
+
+<span class="badge bg-success">
+
+{{ tracking.status }}
+
+</span>
+
+</td>
+
+<td>
+
+{{ tracking.location }}
+
+</td>
+
+<td>
+
+{{ tracking.created_at }}
+
+</td>
+
+<td>
+
+<a
+href="#"
+class="btn btn-outline-primary btn-sm">
+
+Timeline
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6" class="text-center py-5">
+
+No tracking records found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

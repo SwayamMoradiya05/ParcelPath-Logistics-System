@@ -1,0 +1,245 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Register | ParcelPath{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth-modern.css' %}">{% endblock %}
+{% block content %}
+<section class="pp-auth-page">
+  <div class="container pp-auth-shell">
+    <div class="row g-4 g-xl-5 align-items-stretch">
+      <div class="col-lg-5">
+        <aside class="pp-auth-intro">
+          <div>
+            <div class="eyebrow">ParcelPath / New account</div>
+            <h1>Start with a <em>clearer</em> way to deliver.</h1>
+            <p>Create your ParcelPath account and keep bookings, shipment progress and delivery information organised from the beginning.</p>
+            <ul class="pp-auth-list">
+              <li><span class="num">01</span><div><strong>One place for shipment details</strong><span>Keep sender, receiver and delivery information together with each shipment.</span></div></li>
+              <li><span class="num">02</span><div><strong>Useful visibility</strong><span>Track progress using straightforward shipment statuses and recorded updates.</span></div></li>
+              <li><span class="num">03</span><div><strong>Built around real roles</strong><span>Your existing customer, driver or operational permissions continue to determine what you can access.</span></div></li>
+            </ul>
+          </div>
+          <div class="pp-auth-footnote">PARCELPATH — LOGISTICS & DELIVERY</div>
+        </aside>
+      </div>
+      <div class="col-lg-7">
+        <div class="pp-auth-card">
+          <div class="eyebrow">Create your account</div>
+          <h2>Join ParcelPath</h2>
+          <p class="sub">Enter your details below. The registration process and account rules remain exactly as defined by your existing Django application.</p>
+          {% if messages %}{% for message in messages %}<div class="alert alert-{{ message.tags }} alert-dismissible fade show pp-auth-message" role="alert">{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>{% endfor %}{% endif %}
+          {% if form.non_field_errors %}<div class="alert alert-danger pp-auth-message">{% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}</div>{% endif %}
+          <form method="post" novalidate id="registerForm" class="pp-auth-form">
+            {% csrf_token %}
+            <div class="pp-auth-row">
+              <div class="field"><label for="id_first_name">First name <span>*</span></label><input type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value|default:'' }}" placeholder="First name" autocomplete="given-name" required class="{% if form.first_name.errors %}invalid{% endif %}">{% for error in form.first_name.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+              <div class="field"><label for="id_last_name">Last name <span>*</span></label><input type="text" id="id_last_name" name="last_name" value="{{ form.last_name.value|default:'' }}" placeholder="Last name" autocomplete="family-name" required class="{% if form.last_name.errors %}invalid{% endif %}">{% for error in form.last_name.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+            </div>
+            <div class="pp-auth-row">
+              <div class="field"><label for="id_email">Email address <span>*</span></label><input type="email" id="id_email" name="email" value="{{ form.email.value|default:'' }}" placeholder="you@example.com" autocomplete="email" required class="{% if form.email.errors %}invalid{% endif %}">{% for error in form.email.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+              <div class="field">
+                <label for="id_phone">
+                    Phone number <span>*</span>
+                </label>
+
+                <input
+                    type="tel"
+                    id="id_phone"
+                    name="phone"
+                    value="{{ form.phone.value|default:'' }}"
+                    placeholder="Enter 10-digit phone number"
+                    autocomplete="tel"
+                    inputmode="numeric"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required
+                    class="{% if form.phone.errors %}invalid{% endif %}">
+
+                {% for error in form.phone.errors %}
+                    <span class="pp-auth-error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="field"><label for="id_role">Account type <span>*</span></label><select id="id_role" name="role" required class="{% if form.role.errors %}invalid{% endif %}"><option value="">Select account type</option>{% for value,label in form.role.field.choices %}{% if value %}<option value="{{ value }}" {% if form.role.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>{% endif %}{% endfor %}</select>{% for error in form.role.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+            <div class="pp-auth-row">
+              <div class="field"><label for="id_password1">Password <span>*</span></label><div class="pp-auth-password"><input type="password" id="id_password1" name="password1" placeholder="Create a password" autocomplete="new-password" required class="{% if form.password1.errors %}invalid{% endif %}"><button type="button" class="pp-auth-toggle" onclick="toggleAuthPassword('id_password1',this)" aria-label="Show password"><i class="bi bi-eye"></i></button></div>{% for error in form.password1.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+              <div class="field"><label for="id_password2">Confirm password <span>*</span></label><div class="pp-auth-password"><input type="password" id="id_password2" name="password2" placeholder="Confirm password" autocomplete="new-password" required class="{% if form.password2.errors %}invalid{% endif %}"><button type="button" class="pp-auth-toggle" onclick="toggleAuthPassword('id_password2',this)" aria-label="Show password"><i class="bi bi-eye"></i></button></div>{% for error in form.password2.errors %}<span class="pp-auth-error">{{ error }}</span>{% endfor %}</div>
+            </div>
+            <button type="submit" class="pp-auth-submit"><i class="bi bi-person-plus"></i> Create ParcelPath account</button>
+          </form>
+          <div class="pp-auth-switch">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></div>
+          <div class="pp-auth-note"><i class="bi bi-shield-check"></i><span>Your existing Django registration, validation and account-role handling remain unchanged. This page only changes how the form is presented.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+function toggleAuthPassword(id, button) {
+    const input = document.getElementById(id);
+
+    if (!input) return;
+
+    const show = input.type === 'password';
+
+    input.type = show ? 'text' : 'password';
+
+    button.innerHTML = show
+        ? '<i class="bi bi-eye-slash"></i>'
+        : '<i class="bi bi-eye"></i>';
+
+    button.setAttribute(
+        'aria-label',
+        show ? 'Hide password' : 'Show password'
+    );
+}
+
+
+/* =========================================================
+   PHONE NUMBER VALIDATION
+   Only ASCII digits 0-9
+   Maximum 10 digits
+   ========================================================= */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const phone = document.getElementById('id_phone');
+
+    if (!phone) {
+        console.log('Phone input not found');
+        return;
+    }
+
+    console.log('ParcelPath phone validation loaded');
+
+    phone.setAttribute('inputmode', 'numeric');
+    phone.setAttribute('maxlength', '10');
+    phone.setAttribute('pattern', '[0-9]{10}');
+
+    /* Block invalid keyboard characters */
+    phone.addEventListener('keydown', function (event) {
+
+        const allowedKeys = [
+            'Backspace',
+            'Delete',
+            'ArrowLeft',
+            'ArrowRight',
+            'ArrowUp',
+            'ArrowDown',
+            'Home',
+            'End',
+            'Tab'
+        ];
+
+        if (allowedKeys.includes(event.key)) {
+            return;
+        }
+
+        /* Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X */
+        if (event.ctrlKey || event.metaKey) {
+            return;
+        }
+
+        /* Allow only 0-9 */
+        if (!/^[0-9]$/.test(event.key)) {
+            event.preventDefault();
+        }
+
+        /* Stop entering more than 10 digits */
+        if (
+            /^[0-9]$/.test(event.key) &&
+            phone.value.length >= 10 &&
+            phone.selectionStart === phone.selectionEnd
+        ) {
+            event.preventDefault();
+        }
+    });
+
+
+    /* Handles typing, autofill and other input methods */
+    phone.addEventListener('input', function () {
+
+        this.value = this.value
+            .replace(/[^0-9]/g, '')
+            .slice(0, 10);
+    });
+
+
+    /* Strong protection against invalid paste */
+    phone.addEventListener('paste', function (event) {
+
+        event.preventDefault();
+
+        const pastedText =
+            (event.clipboardData || window.clipboardData)
+            .getData('text');
+
+        const digits = pastedText
+            .replace(/[^0-9]/g, '')
+            .slice(0, 10);
+
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+
+        const newValue =
+            this.value.substring(0, start) +
+            digits +
+            this.value.substring(end);
+
+        this.value = newValue
+            .replace(/[^0-9]/g, '')
+            .slice(0, 10);
+
+        this.dispatchEvent(new Event('input', {
+            bubbles: true
+        }));
+    });
+
+
+    /* Prevent drag/drop text */
+    phone.addEventListener('drop', function (event) {
+        event.preventDefault();
+    });
+
+
+    /* Prevent invalid beforeinput events */
+    phone.addEventListener('beforeinput', function (event) {
+
+        if (
+            event.data &&
+            !/^[0-9]+$/.test(event.data)
+        ) {
+            event.preventDefault();
+        }
+    });
+
+
+    /* Final form-level validation */
+    const form = document.getElementById('registerForm');
+
+    if (form) {
+
+        form.addEventListener('submit', function (event) {
+
+            const value = phone.value.trim();
+
+            if (!/^[0-9]{10}$/.test(value)) {
+
+                event.preventDefault();
+
+                phone.classList.add('invalid');
+
+                phone.focus();
+
+                alert('Phone number must contain exactly 10 digits.');
+
+                return false;
+            }
+
+            phone.classList.remove('invalid');
+        });
+    }
+
+});
+</script>
+{% endblock %}

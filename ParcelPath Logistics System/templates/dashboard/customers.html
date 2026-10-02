@@ -1,0 +1,145 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Customers | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-4">
+
+<div class="container-fluid">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header customer-header">
+
+<div class="d-lg-flex justify-content-between align-items-center">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+
+            <i class="bi bi-people-fill text-primary me-2"></i>
+
+            Customers
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Manage all registered ParcelPath customers.
+
+        </p>
+
+    </div>
+
+    <div class="mt-3 mt-lg-0">
+
+        <input
+            type="text"
+            class="form-control search-box"
+            placeholder="Search customer...">
+
+        </div>
+
+    </div>
+
+</div>
+<div class="table-responsive">
+
+    <table class="table table-striped customer-table align-middle mb-0">
+
+        <thead>
+
+            <tr>
+
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Shipments</th>
+                <th>Status</th>
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+{% for customer in customers %}
+
+<tr>
+
+<td>{{ customer.get_full_name }}</td>
+
+<td>{{ customer.email }}</td>
+
+<td>{{ customer.phone }}</td>
+
+<td>{{ customer.total_shipments }}</td>
+
+<td>
+
+<span class="badge customer-status">
+    Active
+</span>
+
+</td>
+
+<td>
+
+<a
+    href="#"
+    class="btn btn-sm customer-btn">
+
+    View
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6" class="text-center py-5">
+
+<div class="py-5">
+
+    <i class="bi bi-people display-3 text-secondary"></i>
+
+    <h4 class="mt-3">
+
+        No Customers Found
+
+    </h4>
+
+    <p class="text-muted">
+
+        Customers will appear here after they register.
+
+    </p>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

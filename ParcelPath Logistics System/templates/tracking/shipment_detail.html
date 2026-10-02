@@ -1,0 +1,83 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Shipment Timeline | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="fw-bold mb-5">
+
+Shipment Timeline
+
+</h2>
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body">
+
+<div class="timeline">
+
+{% for event in tracking_events %}
+
+<div class="d-flex mb-4">
+
+<div class="me-4">
+
+<span class="badge rounded-pill bg-primary p-3">
+
+<i class="bi bi-geo-alt-fill"></i>
+
+</span>
+
+</div>
+
+<div>
+
+<h5 class="mb-1">
+
+{{ event.status }}
+
+</h5>
+
+<p class="mb-1">
+
+{{ event.location }}
+
+</p>
+
+<small class="text-muted">
+
+{{ event.created_at }}
+
+</small>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p class="text-center">
+
+No shipment updates available.
+
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

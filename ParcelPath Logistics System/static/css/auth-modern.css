@@ -1,0 +1,36 @@
+/* ParcelPath — editorial authentication surfaces. UI only. */
+.pp-auth-page{background:#f4f0e7;min-height:calc(100vh - 84px);padding:54px 0 76px;color:#27332d}
+.pp-auth-shell{max-width:1180px;margin:0 auto}
+.pp-auth-intro{height:100%;min-height:680px;background:#173f34;color:#f7f1e6;border-radius:24px;padding:54px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 24px 70px rgba(32,55,46,.14)}
+.pp-auth-intro:after{content:"";position:absolute;right:-120px;bottom:-140px;width:390px;height:390px;border:1px solid rgba(205,170,103,.32);border-radius:50%;box-shadow:0 0 0 50px rgba(205,170,103,.035),0 0 0 100px rgba(205,170,103,.025)}
+.pp-auth-intro .eyebrow{color:#d1ae69;letter-spacing:.16em;font-size:.72rem;font-weight:800;text-transform:uppercase;margin-bottom:22px}
+.pp-auth-intro h1{font-family:"Playfair Display",serif;font-size:clamp(2.8rem,5vw,5rem);line-height:1.02;letter-spacing:-.035em;margin:0 0 22px;max-width:570px}
+.pp-auth-intro h1 em{color:#d1ae69;font-style:normal}
+.pp-auth-intro p{color:#cbd7d0;line-height:1.8;max-width:520px;font-size:1rem;margin:0}
+.pp-auth-list{margin:38px 0 0;padding:0;list-style:none;max-width:520px}
+.pp-auth-list li{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(255,255,255,.12)}
+.pp-auth-list li:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+.pp-auth-list .num{color:#d1ae69;font-weight:800;font-size:.78rem;padding-top:3px}
+.pp-auth-list strong{display:block;font-size:.95rem;color:#fff;margin-bottom:3px}
+.pp-auth-list span{display:block;color:#aebeb5;font-size:.84rem;line-height:1.55}
+.pp-auth-footnote{position:relative;z-index:1;color:#aebeb5;font-size:.78rem;letter-spacing:.04em;margin-top:34px}
+.pp-auth-card{background:#fffdf8;border:1px solid #ddd5c7;border-radius:24px;padding:44px;box-shadow:0 24px 70px rgba(54,49,39,.10);height:100%}
+.pp-auth-card .eyebrow{color:#a17a38;letter-spacing:.14em;font-size:.7rem;font-weight:800;text-transform:uppercase;margin-bottom:10px}
+.pp-auth-card h2{font-family:"Playfair Display",serif;font-size:2.45rem;line-height:1.05;color:#203f35;margin:0 0 10px;letter-spacing:-.025em}
+.pp-auth-card .sub{color:#72736b;line-height:1.65;margin:0 0 28px;max-width:490px}
+.pp-auth-form .field{margin-bottom:18px}
+.pp-auth-form label{display:block;font-size:.78rem;font-weight:800;color:#42483f;margin:0 0 7px;letter-spacing:.01em}
+.pp-auth-form input,.pp-auth-form select{width:100%;height:50px;border:1px solid #d7d0c4;border-radius:10px;background:#fffefa;color:#2c332e;padding:0 14px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.pp-auth-form input:focus,.pp-auth-form select:focus{border-color:#6c8e7d;box-shadow:0 0 0 3px rgba(55,100,80,.10);background:#fff}
+.pp-auth-form input::placeholder{color:#a7a39a}
+.pp-auth-form .invalid{border-color:#b66b5c}
+.pp-auth-error{display:block;color:#9b5146;font-size:.76rem;margin-top:6px}
+.pp-auth-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pp-auth-password{position:relative}.pp-auth-password input{padding-right:48px}.pp-auth-toggle{position:absolute;right:9px;top:9px;width:32px;height:32px;border:0;background:transparent;color:#6d716a;border-radius:7px}.pp-auth-toggle:hover{background:#eee9df;color:#214c3d}
+.pp-auth-options{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:8px 0 22px;font-size:.82rem}.pp-auth-options label{margin:0;display:flex;align-items:center;gap:8px;font-weight:600;color:#62645d}.pp-auth-options input{width:16px;height:16px}.pp-auth-link{color:#2c5b49;text-decoration:none;font-weight:800}.pp-auth-link:hover{text-decoration:underline}
+.pp-auth-submit{width:100%;height:52px;border:1px solid #1b493a;border-radius:10px;background:#1b493a;color:#fffaf0;font-weight:800;letter-spacing:.01em;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s,transform .15s}.pp-auth-submit:hover{background:#12392e;transform:translateY(-1px)}
+.pp-auth-switch{text-align:center;margin:22px 0 0;color:#73746c;font-size:.86rem}.pp-auth-switch a{color:#2c5b49;font-weight:800;text-decoration:none}.pp-auth-switch a:hover{text-decoration:underline}
+.pp-auth-note{margin-top:24px;padding-top:18px;border-top:1px solid #e6dfd4;display:flex;gap:10px;align-items:flex-start;color:#7a7b73;font-size:.75rem;line-height:1.55}.pp-auth-note i{color:#a17a38;font-size:1rem;margin-top:1px}
+.pp-auth-message{border-radius:10px!important;margin-bottom:16px!important}
+@media(max-width:991px){.pp-auth-intro{min-height:auto;margin-bottom:22px;padding:38px}.pp-auth-card{padding:34px}.pp-auth-page{padding-top:30px}}
+@media(max-width:575px){.pp-auth-page{padding:20px 0 45px}.pp-auth-intro,.pp-auth-card{border-radius:18px;padding:27px}.pp-auth-intro h1{font-size:2.7rem}.pp-auth-row{grid-template-columns:1fr}.pp-auth-options{align-items:flex-start;flex-direction:column}}

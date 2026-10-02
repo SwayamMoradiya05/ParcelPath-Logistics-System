@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: parcelpath
+    env: python
+
+    buildCommand: "./build.sh"
+
+    startCommand: "gunicorn config.wsgi:application"
+
+    plan: free

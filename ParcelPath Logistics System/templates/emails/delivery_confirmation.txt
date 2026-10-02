@@ -1,0 +1,108 @@
+PARCELPATH LOGISTICS
+====================
+
+SHIPMENT DELIVERED SUCCESSFULLY
+
+Hello {{ customer_name }},
+
+Your ParcelPath shipment has been successfully delivered.
+
+SHIPMENT DETAILS
+----------------
+
+Tracking Number:
+{{ shipment.tracking_number }}
+
+Status:
+{{ shipment.get_status_display }}
+
+Delivered At:
+{{ delivered_at|date:"d M Y, h:i A" }}
+
+Expected Delivery:
+{% if shipment.expected_delivery %}{{ shipment.expected_delivery|date:"d M Y" }}{% else %}Not specified{% endif %}
+
+Package Type:
+{{ shipment.package_type }}
+
+Weight:
+{{ shipment.weight }} kg
+
+Dimensions:
+{{ shipment.length }} × {{ shipment.width }} × {{ shipment.height }}
+
+Declared Value:
+₹{{ shipment.declared_value }}
+
+Shipping Cost:
+₹{{ shipment.shipping_cost }}
+
+
+SENDER
+------
+
+Name:
+{{ shipment.sender_name }}
+
+Phone:
+{{ shipment.sender_phone }}
+
+Address:
+{{ shipment.sender_address }}
+
+
+RECEIVER
+--------
+
+Name:
+{{ shipment.receiver_name }}
+
+Phone:
+{{ shipment.receiver_phone }}
+
+Address:
+{{ shipment.receiver_address }}
+
+
+DELIVERY PARTNER
+----------------
+
+Driver:
+{{ driver_name }}
+
+{% if vehicle_number %}
+Vehicle:
+{{ vehicle_number }}
+{% endif %}
+
+{% if driver_phone %}
+Phone:
+{{ driver_phone }}
+{% endif %}
+
+
+PROOF OF DELIVERY
+-----------------
+
+{% if shipment.proof_uploaded_at %}
+Uploaded:
+{{ shipment.proof_uploaded_at|date:"d M Y, h:i A" }}
+{% else %}
+Proof of delivery recorded.
+{% endif %}
+
+The proof of delivery image is attached to this email.
+
+
+TRACK YOUR SHIPMENT
+-------------------
+
+{{ tracking_url }}
+
+
+Thank you for choosing ParcelPath Logistics.
+
+Support:
+{{ support_email }}
+
+This is an automated delivery confirmation from ParcelPath.

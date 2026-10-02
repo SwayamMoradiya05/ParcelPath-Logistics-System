@@ -1,0 +1,438 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Destinations | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+
+<section class="py-5 bg-light">
+
+    <div class="container text-center">
+
+        <span class="text-primary fw-semibold">
+
+            DELIVERY NETWORK
+
+        </span>
+
+        <h1 class="display-5 fw-bold mt-3">
+
+            We Deliver Across India
+
+        </h1>
+
+        <p class="lead text-muted mx-auto"
+           style="max-width: 760px;">
+
+            ParcelPath provides reliable parcel delivery services across major
+            cities and continuously expands its logistics network to reach more
+            destinations.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Search -->
+
+<section class="py-4">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7">
+
+                <div class="input-group input-group-lg">
+
+                    <span class="input-group-text bg-white">
+
+                        <i class="bi bi-search"></i>
+
+                    </span>
+
+                    <input type="text"
+                           id="destinationSearch"
+                           class="form-control"
+                           placeholder="Search destination...">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Destination Cards -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+        <div class="row g-4" id="destinationContainer">
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/ahmedabad.jpg' %}"
+                         class="card-img-top"
+                         alt="Ahmedabad">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Ahmedabad
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Gujarat
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                            Same Day Available
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/surat.jpg' %}"
+                         class="card-img-top"
+                         alt="Surat">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Surat
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Gujarat
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                            Express Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/mumbai.jpg' %}"
+                         class="card-img-top"
+                         alt="Mumbai">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Mumbai
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Maharashtra
+
+                        </p>
+
+                        <span class="badge bg-primary">
+
+                            Next Day Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/delhi.jpg' %}"
+                         class="card-img-top"
+                         alt="Delhi">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Delhi
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Delhi NCR
+
+                        </p>
+
+                        <span class="badge bg-primary">
+
+                            Next Day Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/pune.jpg' %}"
+                         class="card-img-top"
+                         alt="Pune">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Pune
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Maharashtra
+
+                        </p>
+
+                        <span class="badge bg-info">
+
+                            Standard Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/bangalore.jpg' %}"
+                         class="card-img-top"
+                         alt="Bangalore">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Bangalore
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Karnataka
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                            Express Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/hyderabad.jpg' %}"
+                         class="card-img-top"
+                         alt="Hyderabad">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Hyderabad
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Telangana
+
+                        </p>
+
+                        <span class="badge bg-info">
+
+                            Standard Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6 destination-item">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <img src="{% static 'images/destinations/chennai.jpg' %}"
+                         class="card-img-top"
+                         alt="Chennai">
+
+                    <div class="card-body">
+
+                        <h5 class="fw-bold">
+
+                            Chennai
+
+                        </h5>
+
+                        <p class="text-muted mb-3">
+
+                            Tamil Nadu
+
+                        </p>
+
+                        <span class="badge bg-primary">
+
+                            Next Day Delivery
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Coverage -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-primary">
+
+                    120+
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Service Cities
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-primary">
+
+                    500+
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Delivery Partners
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-primary">
+
+                    10K+
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Deliveries Completed
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h2 class="fw-bold text-primary">
+
+                    99%
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Success Rate
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

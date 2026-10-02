@@ -1,0 +1,335 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Delivery History | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-lg-3">
+
+{% include "drivers/sidebar.html" %}
+
+</div>
+
+<div class="col-lg-9">
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header history-header">
+
+<div class="d-flex justify-content-between align-items-center flex-wrap">
+
+<div>
+
+<h3 class="mb-1">
+
+<i class="bi bi-clock-history text-primary me-2"></i>
+
+Completed Deliveries
+
+</h3>
+
+<p class="text-muted mb-0">
+
+View all successfully completed deliveries.
+
+</p>
+
+</div>
+
+<div>
+
+<span class="history-count">
+
+{{ completed_shipments.count }} Deliveries
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="row g-4 px-4 pt-4 pb-2">
+
+<div class="col-md-6 col-xl-3">
+
+<div class="history-stat-card">
+
+<div class="history-icon bg-primary">
+
+<i class="bi bi-box-seam"></i>
+
+</div>
+
+<h3>
+
+{{ total_deliveries }}
+
+</h3>
+
+<p>
+
+Total Deliveries
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-6 col-xl-3">
+
+<div class="history-stat-card">
+
+<div class="history-icon bg-success">
+
+<i class="bi bi-check-circle-fill"></i>
+
+</div>
+
+<h3>
+
+{{ delivered_count }}
+
+</h3>
+
+<p>
+
+Delivered
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-6 col-xl-3">
+
+<div class="history-stat-card">
+
+<div class="history-icon bg-warning">
+
+<i class="bi bi-calendar-check-fill"></i>
+
+</div>
+
+<h3>
+
+{{ this_month_count }}
+
+</h3>
+
+<p>
+
+This Month
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-6 col-xl-3">
+
+<div class="history-stat-card">
+
+<div class="history-icon bg-info">
+
+<i class="bi bi-currency-rupee"></i>
+
+</div>
+
+<h3>
+
+₹{{ total_revenue }}
+
+</h3>
+
+<p>
+
+Revenue
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-striped align-middle mb-0">
+
+<thead>
+
+<tr>
+
+<th>
+
+Tracking No.
+
+</th>
+
+<th>
+
+Receiver
+
+</th>
+
+<th>
+
+Delivered On
+
+</th>
+
+<th>
+
+Status
+
+</th>
+
+<th class="text-center">
+
+Action
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for shipment in completed_shipments %}
+
+<tr>
+
+<td>
+
+<strong class="text-primary">
+
+{{ shipment.tracking_number }}
+
+</strong>
+
+</td>
+
+<td>
+
+<div class="fw-semibold">
+
+{{ shipment.receiver_name }}
+
+</div>
+
+<small class="text-muted">
+
+{{ shipment.receiver_phone }}
+
+</small>
+
+</td>
+
+<td>
+
+{% if shipment.delivered_at %}
+
+{{ shipment.delivered_at|date:"d M Y" }}
+
+<br>
+
+<small class="text-muted">
+
+{{ shipment.delivered_at|time:"h:i A" }}
+
+</small>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+<td>
+
+<span class="badge rounded-pill bg-success px-3 py-2">
+
+<i class="bi bi-check-circle-fill me-1"></i>
+
+Delivered
+
+</span>
+
+</td>
+
+<td>
+
+<a
+href="{% url 'shipments:shipment_detail' shipment.pk %}"
+class="btn btn-sm btn-outline-primary rounded-pill">
+
+<i class="bi bi-eye me-1"></i>
+
+View
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5" class="text-center py-5">
+
+<i class="bi bi-inbox display-5 text-secondary"></i>
+
+<h5 class="mt-3">
+
+No Completed Deliveries
+
+</h5>
+
+<p class="text-muted mb-0">
+
+Completed deliveries will appear here.
+
+</p>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

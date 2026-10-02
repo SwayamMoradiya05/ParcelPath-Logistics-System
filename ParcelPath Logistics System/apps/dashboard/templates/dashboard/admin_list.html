@@ -1,0 +1,1599 @@
+{% extends "dashboard/admin_base.html" %}
+{% load admin_tags %}
+
+{% block admin_content %}
+
+<div class="pp-list-page">
+
+    <!-- ======================================================
+         PAGE HEADER
+         ====================================================== -->
+
+    <div class="pp-list-header">
+
+        <div>
+
+            <div class="pp-list-eyebrow">
+                PARCELPATH OPERATIONS
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="pp-list-title-icon">
+                    {% if model_key == "shipments" %}
+                        <i class="bi bi-box-seam"></i>
+                    {% elif model_key == "customers" %}
+                        <i class="bi bi-people"></i>
+                    {% elif model_key == "drivers" %}
+                        <i class="bi bi-truck"></i>
+                    {% elif model_key == "payments" %}
+                        <i class="bi bi-credit-card"></i>
+                    {% elif model_key == "routes" %}
+                        <i class="bi bi-signpost-split"></i>
+                    {% elif model_key == "notifications" %}
+                        <i class="bi bi-bell"></i>
+                    {% else %}
+                        <i class="bi bi-grid"></i>
+                    {% endif %}
+                </div>
+
+                <div>
+
+                    <h2 class="pp-list-title mb-1">
+                        {{ title }}
+                    </h2>
+
+                    <p class="pp-list-subtitle mb-0">
+                        Manage and monitor {{ title|lower }} from the operations center.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="pp-list-header-actions">
+
+            <a
+                href="{% url 'dashboard:model_list' model_key %}"
+                class="pp-list-refresh"
+            >
+                <i class="bi bi-arrow-clockwise"></i>
+                Refresh
+            </a>
+
+            <a
+                href="{% url 'dashboard:model_create' model_key %}"
+                class="pp-list-primary"
+            >
+                <i class="bi bi-plus-lg"></i>
+                Add {{ title|slice:":-1" }}
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         SUMMARY CARDS
+         ====================================================== -->
+
+    <div class="pp-list-summary">
+
+        <div class="pp-summary-card">
+
+            <div class="pp-summary-icon blue">
+                <i class="bi bi-database"></i>
+            </div>
+
+            <div>
+                <div class="pp-summary-label">
+                    Total Records
+                </div>
+
+                <div class="pp-summary-value">
+                    {{ objects|length }}
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="pp-summary-card">
+
+            <div class="pp-summary-icon purple">
+                <i class="bi bi-layers"></i>
+            </div>
+
+            <div>
+                <div class="pp-summary-label">
+                    Current Page
+                </div>
+
+                <div class="pp-summary-value">
+                    1
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="pp-summary-card">
+
+            <div class="pp-summary-icon green">
+                <i class="bi bi-list-check"></i>
+            </div>
+
+            <div>
+                <div class="pp-summary-label">
+                    Showing
+                </div>
+
+                <div class="pp-summary-value">
+                    {{ objects|length }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         SEARCH
+         ====================================================== -->
+
+    <div class="pp-list-search">
+
+        <div class="pp-search-heading">
+
+            <div>
+                <div class="pp-search-title">
+                    Search Records
+                </div>
+
+                <div class="pp-search-subtitle">
+                    Find records quickly using names, IDs or available information.
+                </div>
+            </div>
+
+        </div>
+
+
+        <form method="get" class="pp-search-form">
+
+            <div class="pp-search-input">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ query }}"
+                    placeholder="Search {{ title|lower }}..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="pp-search-button"
+            >
+                <i class="bi bi-search me-2"></i>
+                Search
+            </button>
+
+
+            {% if query %}
+
+                <a
+                    href="{% url 'dashboard:model_list' model_key %}"
+                    class="pp-search-reset"
+                    title="Clear search"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <!-- ======================================================
+         DATA TABLE
+         ====================================================== -->
+
+    <div class="pp-data-card">
+
+        <div class="pp-data-header">
+
+            <div>
+
+                <div class="pp-data-title">
+                    {{ title }}
+                </div>
+
+                <div class="pp-data-subtitle">
+                    {{ objects|length }} record{{ objects|length|pluralize }}
+                </div>
+
+            </div>
+
+
+            <div class="pp-data-live">
+
+                <span class="pp-live-dot"></span>
+
+                Live Data
+
+            </div>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="pp-premium-table">
+
+                <thead>
+
+                    <tr>
+
+                        {% for column in columns %}
+
+                            <th>
+                                {{ column|title }}
+                            </th>
+
+                        {% endfor %}
+
+                        <th class="text-end">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for obj in objects %}
+
+                        <tr>
+
+                            {% for column in columns %}
+
+                                <td>
+
+                                    {% if column == "is_active" or column == "is_verified" or column == "email_verified" or column == "phone_verified" or column == "is_read" or column == "delivered" %}
+
+                                        {% if obj|getattr:column %}
+
+                                            <span class="pp-value-badge success">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                                Yes
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="pp-value-badge neutral">
+                                                <i class="bi bi-dash-circle"></i>
+                                                No
+                                            </span>
+
+                                        {% endif %}
+
+
+                                    {% elif column == "status" %}
+
+                                        <span class="pp-status-pill status-{{ obj.status|lower|cut:' ' }}">
+
+                                            <span class="pp-status-indicator"></span>
+
+                                            {{ obj.get_status_display|default:obj.status }}
+
+                                        </span>
+
+
+                                    {% elif column == "created_at" or column == "updated_at" or column == "login_time" %}
+
+                                        <span class="pp-date-value">
+
+                                            <i class="bi bi-calendar3"></i>
+
+                                            {{ obj|getattr:column|date:"d M Y, H:i" }}
+
+                                        </span>
+
+
+                                    {% else %}
+
+                                        <span class="pp-table-value">
+
+                                            {{ obj|getattr:column|default:"—" }}
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            {% endfor %}
+
+
+                            <td class="pp-actions-cell">
+
+                                <div class="pp-row-actions">
+
+                                    <a
+                                        href="{% url 'dashboard:model_detail' model_key obj.pk %}"
+                                        class="pp-row-action view"
+                                        title="View"
+                                    >
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+
+                                    <a
+                                        href="{% url 'dashboard:model_update' model_key obj.pk %}"
+                                        class="pp-row-action edit"
+                                        title="Edit"
+                                    >
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'dashboard:model_delete' model_key obj.pk %}"
+                                        onsubmit="return confirm('Delete this record?');"
+                                    >
+
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="pp-row-action delete"
+                                            title="Delete"
+                                        >
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="20"
+                                class="pp-empty-state"
+                            >
+
+                                <div class="pp-empty-icon">
+                                    <i class="bi bi-inbox"></i>
+                                </div>
+
+                                <div class="pp-empty-title">
+                                    No records found
+                                </div>
+
+                                <div class="pp-empty-text">
+                                    There are no {{ title|lower }} matching your current search.
+                                </div>
+
+                                {% if query %}
+
+                                    <a
+                                        href="{% url 'dashboard:model_list' model_key %}"
+                                        class="pp-empty-button"
+                                    >
+                                        Clear Search
+                                    </a>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     PREMIUM ADMIN LIST CSS
+     ========================================================== -->
+
+<style>
+
+.pp-list-page {
+    padding-bottom: 35px;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.pp-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    gap: 25px;
+
+    margin-bottom: 22px;
+}
+
+
+.pp-list-eyebrow {
+    color: #6b83a0;
+
+    font-size: .66rem;
+    font-weight: 800;
+
+    letter-spacing: .11em;
+
+    margin-bottom: 9px;
+}
+
+
+.pp-list-title-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        #e7f0ff,
+        #dceaff
+    );
+
+    border: 1px solid #cbdcf2;
+
+    color: #2563eb;
+
+    box-shadow: 0 5px 14px rgba(37,99,235,.08);
+
+    font-size: 1.15rem;
+}
+
+
+.pp-list-title {
+    color: #122b49;
+
+    font-size: 1.55rem;
+
+    font-weight: 800;
+
+    letter-spacing: -.025em;
+}
+
+
+.pp-list-subtitle {
+    color: #718096;
+
+    font-size: .78rem;
+}
+
+
+.pp-list-header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.pp-list-refresh,
+.pp-list-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 38px;
+
+    padding: 8px 14px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: .78rem;
+    font-weight: 650;
+
+    transition: all .18s ease;
+}
+
+
+.pp-list-refresh {
+    color: #425a75;
+
+    background: #f7faff;
+
+    border: 1px solid #d8e2ee;
+}
+
+
+.pp-list-refresh:hover {
+    color: #2563eb;
+
+    border-color: #bcd0e7;
+
+    background: #fff;
+}
+
+
+.pp-list-primary {
+    color: #fff;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    border: 1px solid #2563eb;
+
+    box-shadow:
+        0 5px 13px rgba(37,99,235,.18);
+}
+
+
+.pp-list-primary:hover {
+    color: #fff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 17px rgba(37,99,235,.24);
+}
+
+
+/* ==========================================================
+   SUMMARY
+   ========================================================== */
+
+.pp-list-summary {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 13px;
+
+    margin-bottom: 16px;
+}
+
+
+.pp-summary-card {
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px 17px;
+
+    background: rgba(255,255,255,.60);
+
+    border: 1px solid #dbe5f0;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 5px 15px rgba(15,35,60,.035);
+}
+
+
+.pp-summary-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: .95rem;
+}
+
+
+.pp-summary-icon.blue {
+    color: #2563eb;
+    background: #e9f1ff;
+}
+
+
+.pp-summary-icon.purple {
+    color: #7c3aed;
+    background: #f1eaff;
+}
+
+
+.pp-summary-icon.green {
+    color: #159447;
+    background: #e7f7ed;
+}
+
+
+.pp-summary-label {
+    color: #718096;
+
+    font-size: .68rem;
+
+    font-weight: 600;
+
+    margin-bottom: 2px;
+}
+
+
+.pp-summary-value {
+    color: #142e4c;
+
+    font-size: 1.15rem;
+
+    font-weight: 800;
+}
+
+
+/* ==========================================================
+   SEARCH
+   ========================================================== */
+
+.pp-list-search {
+    padding: 16px;
+
+    margin-bottom: 16px;
+
+    background: rgba(255,255,255,.58);
+
+    border: 1px solid #dbe5f0;
+
+    border-radius: 14px;
+}
+
+
+.pp-search-heading {
+    margin-bottom: 11px;
+}
+
+
+.pp-search-title {
+    color: #203853;
+
+    font-size: .82rem;
+
+    font-weight: 750;
+}
+
+
+.pp-search-subtitle {
+    color: #8190a2;
+
+    font-size: .68rem;
+
+    margin-top: 2px;
+}
+
+
+.pp-search-form {
+    display: flex;
+
+    gap: 9px;
+}
+
+
+.pp-search-input {
+    position: relative;
+
+    flex: 1;
+}
+
+
+.pp-search-input i {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #7d91aa;
+
+    font-size: .82rem;
+
+    pointer-events: none;
+}
+
+
+.pp-search-input input {
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 8px 13px 8px 37px;
+
+    background: #f9fbfe;
+
+    border: 1px solid #d5e0ec;
+
+    border-radius: 9px;
+
+    color: #243b53;
+
+    font-size: .78rem;
+
+    outline: none;
+
+    transition: all .18s ease;
+}
+
+
+.pp-search-input input:focus {
+    background: #fff;
+
+    border-color: #8fb4e8;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,.08);
+}
+
+
+.pp-search-button {
+    min-width: 110px;
+
+    min-height: 40px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: #fff;
+
+    font-size: .77rem;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition: all .18s ease;
+}
+
+
+.pp-search-button:hover {
+    background: #1d4ed8;
+
+    box-shadow:
+        0 5px 13px rgba(37,99,235,.17);
+}
+
+
+.pp-search-reset {
+    width: 40px;
+
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #d5e0ec;
+
+    border-radius: 9px;
+
+    color: #64748b;
+
+    background: #f8fafc;
+
+    text-decoration: none;
+}
+
+
+.pp-search-reset:hover {
+    color: #dc2626;
+
+    border-color: #fecaca;
+
+    background: #fff5f5;
+}
+
+
+/* ==========================================================
+   DATA CARD
+   ========================================================== */
+
+.pp-data-card {
+    overflow: hidden;
+
+    background: rgba(255,255,255,.68);
+
+    border: 1px solid #d9e3ee;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 8px 24px rgba(15,35,60,.045);
+}
+
+
+.pp-data-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #dce5ef;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.90),
+            rgba(242,247,253,.80)
+        );
+}
+
+
+.pp-data-title {
+    color: #1a3553;
+
+    font-size: .85rem;
+
+    font-weight: 800;
+}
+
+
+.pp-data-subtitle {
+    color: #8190a2;
+
+    font-size: .66rem;
+
+    margin-top: 2px;
+}
+
+
+.pp-data-live {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    color: #16834a;
+
+    background: #eaf8ef;
+
+    border: 1px solid #ccebd8;
+
+    font-size: .65rem;
+
+    font-weight: 700;
+}
+
+
+.pp-live-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #16a34a;
+}
+
+
+/* ==========================================================
+   TABLE
+   ========================================================== */
+
+.pp-premium-table {
+    width: 100%;
+
+    margin: 0;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    background: transparent;
+}
+
+
+.pp-premium-table thead th {
+    padding: 12px 14px;
+
+    background: #f3f7fb;
+
+    border-bottom: 1px solid #dce5ef;
+
+    color: #718096;
+
+    font-size: .62rem;
+
+    font-weight: 800;
+
+    letter-spacing: .065em;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+
+.pp-premium-table tbody tr {
+    transition:
+        background .15s ease;
+}
+
+
+.pp-premium-table tbody tr:hover {
+    background: #f7faff;
+}
+
+
+.pp-premium-table tbody td {
+    padding: 13px 14px;
+
+    border-bottom: 1px solid #e7edf4;
+
+    color: #334b65;
+
+    font-size: .74rem;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+}
+
+
+.pp-premium-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+.pp-table-value {
+    color: #334b65;
+
+    font-weight: 550;
+}
+
+
+/* ==========================================================
+   STATUS
+   ========================================================== */
+
+.pp-status-pill {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: .62rem;
+
+    font-weight: 750;
+
+    line-height: 1;
+}
+
+
+.pp-status-indicator {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+
+.pp-status-pill.status-delivered {
+    color: #16834a;
+    background: #e8f7ee;
+}
+
+
+.pp-status-pill.status-pending {
+    color: #a16207;
+    background: #fff5d8;
+}
+
+
+.pp-status-pill.status-confirmed {
+    color: #2563eb;
+    background: #e8f0ff;
+}
+
+
+.pp-status-pill.status-cancelled {
+    color: #dc2626;
+    background: #feecec;
+}
+
+
+.pp-status-pill.status-returned {
+    color: #b45309;
+    background: #fff1d8;
+}
+
+
+.pp-status-pill.status-intransit {
+    color: #0891b2;
+    background: #e5f8fc;
+}
+
+
+.pp-status-pill.status-pickedup {
+    color: #7c3aed;
+    background: #f0eaff;
+}
+
+
+/* ==========================================================
+   BOOLEAN VALUES
+   ========================================================== */
+
+.pp-value-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 8px;
+
+    border-radius: 7px;
+
+    font-size: .62rem;
+
+    font-weight: 700;
+}
+
+
+.pp-value-badge.success {
+    color: #16834a;
+
+    background: #e8f7ee;
+}
+
+
+.pp-value-badge.neutral {
+    color: #718096;
+
+    background: #eef2f6;
+}
+
+
+/* ==========================================================
+   DATE
+   ========================================================== */
+
+.pp-date-value {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #63778e;
+
+    font-size: .69rem;
+}
+
+
+.pp-date-value i {
+    color: #8ba0b6;
+
+    font-size: .68rem;
+}
+
+
+/* ==========================================================
+   ACTIONS - PREMIUM PARCELPATH STYLE
+   ========================================================== */
+
+.pp-actions-cell {
+    text-align: right;
+    width: 1%;
+    white-space: nowrap;
+}
+
+.pp-row-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.pp-row-actions form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* VIEW BUTTON - BLUE */
+
+.pp-row-action.view {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #eaf3ff;
+    border: 1px solid #a9c9f5;
+    color: #1769aa;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: all .18s ease;
+}
+
+.pp-row-action.view:hover {
+    background: #1769aa;
+    border-color: #1769aa;
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(23, 105, 170, .28);
+}
+
+
+/* EDIT BUTTON - ORANGE */
+
+.pp-row-action.edit {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #fff4df;
+    border: 1px solid #f2c36b;
+    color: #c77700;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: all .18s ease;
+}
+
+.pp-row-action.edit:hover {
+    background: #f39c12;
+    border-color: #f39c12;
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(243, 156, 18, .30);
+}
+
+
+/* DELETE BUTTON - RED */
+
+.pp-row-action.delete {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #fff0f0;
+    border: 1px solid #f3a6a6;
+    color: #dc2626;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: all .18s ease;
+}
+
+.pp-row-action.delete:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 16px rgba(220, 38, 38, .35);
+}
+
+
+/* ICONS */
+
+.pp-row-action i {
+    margin: 0 !important;
+    font-size: 14px;
+    line-height: 1;
+    color: inherit;
+}
+
+
+/* FOCUS */
+
+.pp-row-action:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, .18);
+    outline-offset: 2px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .pp-row-actions {
+        gap: 4px;
+    }
+
+    .pp-row-action {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .pp-row-action i {
+        font-size: 12px;
+    }
+}
+
+
+/* ==========================================================
+   EMPTY
+   ========================================================== */
+
+.pp-empty-state {
+    padding: 55px 20px !important;
+
+    text-align: center;
+
+    white-space: normal !important;
+}
+
+
+.pp-empty-icon {
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #edf3f9;
+
+    color: #8ba0b6;
+
+    font-size: 1.2rem;
+}
+
+
+.pp-empty-title {
+    color: #334b65;
+
+    font-size: .88rem;
+
+    font-weight: 750;
+}
+
+
+.pp-empty-text {
+    color: #8190a2;
+
+    font-size: .72rem;
+
+    margin-top: 4px;
+}
+
+
+.pp-empty-button {
+    display: inline-block;
+
+    margin-top: 13px;
+
+    padding: 7px 12px;
+
+    border-radius: 8px;
+
+    background: #edf4ff;
+
+    border: 1px solid #c9daf3;
+
+    color: #2563eb;
+
+    text-decoration: none;
+
+    font-size: .7rem;
+
+    font-weight: 650;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .pp-list-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .pp-list-header-actions {
+        width: 100%;
+    }
+
+    .pp-list-refresh,
+    .pp-list-primary {
+        flex: 1;
+    }
+
+    .pp-list-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .pp-search-form {
+        flex-wrap: wrap;
+    }
+
+    .pp-search-input {
+        flex-basis: 100%;
+    }
+
+    .pp-search-button {
+        flex: 1;
+    }
+
+}
+
+/* ==========================================================
+   FINAL TABLE HEADER + DATE DESIGN
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   PREMIUM TABLE HEADER
+   ---------------------------------------------------------- */
+
+.pp-premium-table thead th {
+    background: linear-gradient(
+        135deg,
+        #173f67 0%,
+        #245b86 100%
+    ) !important;
+
+    color: #ffffff !important;
+
+    border: none !important;
+    border-bottom: 2px solid #0d6efd !important;
+
+    padding: 14px 14px !important;
+
+    font-size: 0.66rem !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 0.075em !important;
+    text-transform: uppercase !important;
+
+    vertical-align: middle !important;
+}
+
+
+/* First header cell */
+
+.pp-premium-table thead th:first-child {
+    border-radius: 10px 0 0 0;
+
+    color: #ffffff !important;
+}
+
+
+/* Last header cell */
+
+.pp-premium-table thead th:last-child {
+    border-radius: 0 10px 0 0;
+
+    color: #ffffff !important;
+}
+
+
+/* Header hover should NOT change color */
+
+.pp-premium-table thead tr:hover {
+    background: transparent !important;
+}
+
+.pp-premium-table thead th:hover {
+    background: #245b86 !important;
+    color: #ffffff !important;
+}
+
+
+/* ----------------------------------------------------------
+   DATE / TIME
+   ---------------------------------------------------------- */
+
+.pp-date-value {
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    padding: 5px 9px !important;
+
+    border-radius: 7px !important;
+
+    background: #f1f6fb !important;
+
+    border: 1px solid #d9e6f2 !important;
+
+    color: #45627d !important;
+
+    font-size: 0.68rem !important;
+
+    font-weight: 600 !important;
+
+    white-space: nowrap !important;
+
+    font-variant-numeric: tabular-nums;
+
+    transition: all 0.18s ease;
+}
+
+
+/* Calendar icon */
+
+.pp-date-value i {
+    color: #1976a8 !important;
+
+    font-size: 0.72rem !important;
+
+    margin: 0 !important;
+}
+
+
+/* Date hover */
+
+.pp-premium-table tbody tr:hover .pp-date-value {
+    background: #e8f3ff !important;
+
+    border-color: #b9d5ee !important;
+
+    color: #245b86 !important;
+}
+
+.pp-premium-table tbody tr:hover .pp-date-value i {
+    color: #0d6efd !important;
+}
+
+
+/* ----------------------------------------------------------
+   TABLE BODY - SLIGHTLY BETTER CONTRAST
+   ---------------------------------------------------------- */
+
+.pp-premium-table tbody td {
+    color: #334b65 !important;
+
+    border-bottom: 1px solid #e2e9f0 !important;
+}
+
+
+/* Keep date column aligned */
+
+.pp-premium-table tbody td .pp-date-value {
+    vertical-align: middle;
+}
+
+
+/* ----------------------------------------------------------
+   ACTION COLUMN HEADER
+   ---------------------------------------------------------- */
+
+.pp-premium-table thead th:last-child {
+    text-align: right !important;
+    padding-right: 18px !important;
+}
+
+
+/* ----------------------------------------------------------
+   MOBILE
+   ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .pp-premium-table thead th {
+        padding: 11px 10px !important;
+
+        font-size: 0.60rem !important;
+    }
+
+    .pp-date-value {
+        padding: 4px 7px !important;
+
+        font-size: 0.62rem !important;
+
+        gap: 5px !important;
+    }
+
+    .pp-date-value i {
+        font-size: 0.65rem !important;
+    }
+}
+
+</style>
+
+{% endblock %}

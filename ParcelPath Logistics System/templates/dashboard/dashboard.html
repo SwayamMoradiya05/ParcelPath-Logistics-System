@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+{% block title %}Operations Dashboard | ParcelPath{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="pp-app-head"><div><span class="pp-kicker">OPERATIONS / OVERVIEW</span><h1>ParcelPath operations</h1><p>One working view of shipments, people, revenue and delivery activity.</p></div><a href="{% url 'shipments:shipment_create' %}" class="pp-gold-btn"><i class="bi bi-plus-lg"></i>Create shipment</a></div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-xl-3"><div class="pp-kpi"><span>Total shipments</span><strong>{{ total_shipments|default:"0" }}</strong><small>All recorded shipments</small></div></div>
+    <div class="col-md-6 col-xl-3"><div class="pp-kpi"><span>In transit</span><strong>{{ transit|default:"0" }}</strong><small>Currently moving</small></div></div>
+    <div class="col-md-6 col-xl-3"><div class="pp-kpi"><span>Delivered</span><strong>{{ delivered|default:"0" }}</strong><small>Completed deliveries</small></div></div>
+    <div class="col-md-6 col-xl-3"><div class="pp-kpi"><span>Revenue</span><strong>{{ total_revenue|default:"0" }}</strong><small>Recorded shipment revenue</small></div></div>
+  </div>
+  <div class="row g-4">
+    <div class="col-xl-8"><section class="pp-panel"><div class="pp-panel-head"><div><span class="pp-kicker">SHIPMENT FLOW</span><h2>Current delivery workload</h2></div><a href="{% url 'shipments:shipment_list' %}">View all shipments <i class="bi bi-arrow-right"></i></a></div><div class="pp-flow-grid"><div><strong>{{ pending|default:"0" }}</strong><span>Pending</span></div><div><strong>{{ pickup_assigned|default:"0" }}</strong><span>Pickup assigned</span></div><div><strong>{{ transit|default:"0" }}</strong><span>In transit</span></div><div><strong>{{ out_for_delivery|default:"0" }}</strong><span>Out for delivery</span></div><div><strong>{{ delivered|default:"0" }}</strong><span>Delivered</span></div><div><strong>{{ cancelled|default:"0" }}</strong><span>Cancelled</span></div></div></section></div>
+    <div class="col-xl-4"><section class="pp-panel pp-people-panel"><span class="pp-kicker">NETWORK</span><h2>People behind the route</h2><div class="pp-mini-row"><span>Customers</span><strong>{{ total_customers|default:"0" }}</strong></div><div class="pp-mini-row"><span>Drivers</span><strong>{{ total_drivers|default:"0" }}</strong></div><div class="pp-mini-row"><span>Verified drivers</span><strong>{{ verified_drivers|default:"0" }}</strong></div></section></div>
+  </div>
+  <div class="row g-4 mt-1">
+    <div class="col-xl-8"><section class="pp-panel"><div class="pp-panel-head"><div><span class="pp-kicker">RECENT SHIPMENTS</span><h2>Latest activity</h2></div></div><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Tracking</th><th>Customer</th><th>Driver</th><th>Status</th><th>Expected</th><th></th></tr></thead><tbody>{% for shipment in recent_shipments %}<tr><td><strong>{{ shipment.tracking_number }}</strong></td><td>{{ shipment.customer }}</td><td>{{ shipment.driver.user.get_full_name|default:shipment.driver.user.username|default:"Unassigned" }}</td><td><span class="pp-status">{{ shipment.get_status_display }}</span></td><td>{{ shipment.expected_delivery|default:"-" }}</td><td><a href="{% url 'shipments:shipment_detail' shipment.pk %}" class="pp-table-link">Open</a></td></tr>{% empty %}<tr><td colspan="6" class="text-muted py-4">No recent shipments to display.</td></tr>{% endfor %}</tbody></table></div></section></div>
+    <div class="col-xl-4"><section class="pp-panel"><span class="pp-kicker">NOTIFICATIONS</span><h2>Recent notes</h2>{% for contact in recent_contacts %}<div class="pp-note-row"><strong>{{ contact.name }}{% if contact.category %} · {{ contact.category }}{% endif %}</strong><span>{{ contact.created_at|timesince }} ago</span></div>{% empty %}<p class="text-muted mb-0">No recent support requests.</p>{% endfor %}</section></div>
+  </div>
+</div>
+{% endblock %}

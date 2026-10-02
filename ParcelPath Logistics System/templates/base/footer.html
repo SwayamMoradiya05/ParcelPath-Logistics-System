@@ -1,0 +1,246 @@
+{% load static %}
+
+<footer class="footer bg-dark text-light pt-5 pb-3 mt-5">
+
+    <div class="container">
+
+        <div class="row gy-5">
+
+            <!-- Company -->
+            <div class="col-lg-4 col-md-6">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <img
+                        src="{% static 'images/logos/Nav_logo.png' %}"
+                        alt="ParcelPath"
+                        class="footer-logo">
+
+                    
+
+                </div>
+
+                <p class="text-secondary mb-4">
+
+                    ParcelPath is a modern logistics platform designed for
+                    businesses and individuals to book shipments, track parcels
+                    in real time, manage deliveries, and ensure secure
+                    transportation across India.
+
+                </p>
+
+                <div class="d-flex gap-3">
+
+                    <a href="#"
+                       class="social-icon">
+
+                        <i class="bi bi-facebook"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="social-icon">
+
+                        <i class="bi bi-instagram"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="social-icon">
+
+                        <i class="bi bi-twitter-x"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="social-icon">
+
+                        <i class="bi bi-linkedin"></i>
+
+                    </a>
+
+                    <a href="#"
+                       class="social-icon">
+
+                        <i class="bi bi-youtube"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+
+                <h5 class="fw-semibold mb-4">
+
+                    Quick Links
+
+                </h5>
+
+                <ul class="list-unstyled footer-links">
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'about' %}">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'services' %}">
+                            Services
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'destinations' %}">
+                            Destinations
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'pricing' %}">
+                            Pricing
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'faq' %}">
+                            FAQ
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Services -->
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="fw-semibold mb-4">
+
+                    Our Services
+
+                </h5>
+
+                <ul class="list-unstyled footer-links">
+
+                    <li>Domestic Shipping</li>
+
+                    <li>International Shipping</li>
+
+                    <li>Express Delivery</li>
+
+                    <li>Business Logistics</li>
+
+                    <li>Warehouse Distribution</li>
+
+                    <li>Real-Time Tracking</li>
+
+                </ul>
+
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="fw-semibold mb-4">
+
+                    Contact Us
+
+                </h5>
+
+                <div class="footer-contact">
+
+                    <p>
+
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+
+                        Ahmedabad, Gujarat, India
+
+                    </p>
+
+                    <p>
+
+                        <i class="bi bi-envelope-fill me-2"></i>
+
+                        support@parcelpath.com
+
+                    </p>
+
+                    <p>
+
+                        <i class="bi bi-telephone-fill me-2"></i>
+
+                        +91 93285 47380
+
+                    </p>
+
+                    <p>
+
+                        <i class="bi bi-clock-fill me-2"></i>
+
+                        Monday - Saturday<br>
+
+                        9:00 AM - 7:00 PM
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="border-secondary my-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-6">
+
+                <p class="mb-md-0 text-secondary">
+
+                    © {% now "Y" %} ParcelPath. All Rights Reserved.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="d-flex justify-content-md-end gap-4 footer-policy">
+
+                    <a href="#">
+
+                        Privacy Policy
+
+                    </a>
+
+                    <a href="#">
+
+                        Terms & Conditions
+
+                    </a>
+
+                    <a href="#">
+
+                        Cookie Policy
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>

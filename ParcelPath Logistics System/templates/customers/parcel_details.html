@@ -1,0 +1,195 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Shipment Details | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container-fluid">
+
+<div class="row">
+
+<div class="col-lg-3">
+
+{% include "customers/sidebar.html" %}
+
+</div>
+
+<div class="col-lg-9">
+
+<div class="card border-0 shadow-sm mb-4">
+
+<div class="card-header bg-white">
+
+<h3 class="mb-0">
+
+Shipment Information
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-6">
+
+<p>
+
+<strong>Tracking Number:</strong>
+
+{{ shipment.tracking_number }}
+
+</p>
+
+<p>
+
+<strong>Sender:</strong>
+
+{{ shipment.sender_name }}
+
+</p>
+
+<p>
+
+<strong>Receiver:</strong>
+
+{{ shipment.receiver_name }}
+
+</p>
+
+<p>
+
+<strong>Status:</strong>
+
+<span class="badge bg-primary">
+
+{{ shipment.status }}
+
+</span>
+
+</p>
+
+</div>
+
+<div class="col-md-6">
+
+<p>
+
+<strong>Weight:</strong>
+
+{{ shipment.weight }} Kg
+
+</p>
+
+<p>
+
+<strong>Type:</strong>
+
+{{ shipment.parcel_type }}
+
+</p>
+
+<p>
+
+<strong>Booking Date:</strong>
+
+{{ shipment.created_at }}
+
+</p>
+
+<p>
+
+<strong>Estimated Delivery:</strong>
+
+{{ shipment.estimated_delivery }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-header bg-white">
+
+<h4 class="mb-0">
+
+Tracking Timeline
+
+</h4>
+
+</div>
+
+<div class="card-body">
+
+<ul class="list-group list-group-flush">
+
+{% for event in tracking_events %}
+
+<li class="list-group-item">
+
+<div class="d-flex justify-content-between">
+
+<div>
+
+<strong>
+
+{{ event.status }}
+
+</strong>
+
+<br>
+
+<small>
+
+{{ event.location }}
+
+</small>
+
+</div>
+
+<div>
+
+{{ event.created_at }}
+
+</div>
+
+</div>
+
+</li>
+
+{% empty %}
+
+<li class="list-group-item text-center">
+
+No tracking events available.
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

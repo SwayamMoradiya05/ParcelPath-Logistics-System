@@ -1,0 +1,2125 @@
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    Operations Dashboard | ParcelPath
+{% endblock %}
+
+
+{% block admin_content %}
+
+<div class="pp-dashboard">
+
+    <!-- ==========================================================
+         DASHBOARD HEADER
+    ========================================================== -->
+
+    <div class="pp-dashboard-heading">
+
+        <div>
+
+            <div class="pp-dashboard-eyebrow">
+                OPERATIONS OVERVIEW
+            </div>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Monitor shipments, customers, revenue and daily logistics
+                performance from one place.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         KPI CARDS
+    ========================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- Total Shipments -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-blue">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Overall
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Total Shipments
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ total_shipments|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    All registered shipments
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Active Shipments -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-cyan">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Live
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Active Shipments
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ active_shipments|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Currently moving through network
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Delivered -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-green">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Completed
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Delivered
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    {{ delivered|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Successfully completed deliveries
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Revenue -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="pp-dashboard-kpi pp-kpi-purple">
+
+                <div class="pp-kpi-top">
+
+                    <div class="pp-kpi-icon">
+                        <i class="bi bi-currency-rupee"></i>
+                    </div>
+
+                    <span class="pp-kpi-badge">
+                        Revenue
+                    </span>
+
+                </div>
+
+
+                <div class="pp-kpi-label">
+                    Total Revenue
+                </div>
+
+
+                <div class="pp-kpi-value">
+                    ₹{{ total_revenue|default:"0" }}
+                </div>
+
+
+                <div class="pp-kpi-description">
+                    Total paid shipment amount
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         BUSINESS PERFORMANCE
+    ========================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- Revenue Performance -->
+
+        <div class="col-xl-8">
+
+            <div class="pp-dashboard-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-graph-up-arrow me-2"></i>
+                            Revenue Performance
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Paid revenue generated over the last six months
+                        </div>
+
+                    </div>
+
+
+                    <span class="pp-chart-badge pp-chart-badge-green">
+                        Revenue
+                    </span>
+
+                </div>
+
+
+                <div class="pp-dashboard-chart">
+
+                    <canvas id="revenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Business Overview -->
+
+        <div class="col-xl-4">
+
+            <div class="pp-dashboard-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-pie-chart-fill me-2"></i>
+                            Business Overview
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Customers, fleet and shipment scale
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="pp-business-chart">
+
+                    <canvas id="businessChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         SHIPMENT PERFORMANCE
+    ========================================================== -->
+
+    <div class="pp-dashboard-panel mb-4">
+
+        <div class="pp-dashboard-panel-header">
+
+            <div>
+
+                <div class="pp-dashboard-panel-title">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Shipment Performance
+                </div>
+
+                <div class="pp-dashboard-panel-subtitle">
+                    Current distribution across the complete shipment lifecycle
+                </div>
+
+            </div>
+
+
+            <span class="pp-chart-badge pp-chart-badge-blue">
+                Live
+            </span>
+
+        </div>
+
+
+        <div class="pp-dashboard-chart pp-shipment-chart">
+
+            <canvas id="shipmentChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         OPERATIONAL SUMMARY
+    ========================================================== -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- Customers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-blue">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Customers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ total_customers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Registered customers
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Drivers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-cyan">
+                    <i class="bi bi-truck"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Drivers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ total_drivers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Registered delivery drivers
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Verified Drivers -->
+
+        <div class="col-xl-4 col-md-6">
+
+            <div class="pp-summary-card">
+
+                <div class="pp-summary-icon pp-summary-green">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+
+
+                <div>
+
+                    <div class="pp-summary-label">
+                        Verified Drivers
+                    </div>
+
+                    <div class="pp-summary-value">
+                        {{ verified_drivers|default:"0" }}
+                    </div>
+
+                    <div class="pp-summary-description">
+                        Drivers approved for operations
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+         OPERATIONAL STATUS
+    ========================================================== -->
+
+    <div class="row g-3">
+
+
+        <!-- Driver Operations -->
+
+        <div class="col-xl-6">
+
+            <div class="pp-dashboard-panel pp-operation-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-truck me-2"></i>
+                            Driver Operations
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Fleet availability and verification status
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'dashboard:model_list' 'drivers' %}"
+                        class="pp-panel-action"
+                    >
+                        Manage
+                    </a>
+
+                </div>
+
+
+                <div class="pp-operation-body">
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-green">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ verified_drivers|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Verified Drivers
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-blue">
+                            <i class="bi bi-people"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ total_drivers|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Total Drivers
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-cyan">
+                            <i class="bi bi-activity"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ active_shipments|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Active Assignments
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Support & Alerts -->
+
+        <div class="col-xl-6">
+
+            <div class="pp-dashboard-panel pp-operation-panel">
+
+                <div class="pp-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="pp-dashboard-panel-title">
+                            <i class="bi bi-bell-fill me-2"></i>
+                            Support & Alerts
+                        </div>
+
+                        <div class="pp-dashboard-panel-subtitle">
+                            Items requiring administrator attention
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'dashboard:model_list' 'notifications' %}"
+                        class="pp-panel-action"
+                    >
+                        Open
+                    </a>
+
+                </div>
+
+
+                <div class="pp-operation-body">
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-orange">
+                            <i class="bi bi-chat-left-text"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ pending_contacts|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Pending Contact Requests
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-purple">
+                            <i class="bi bi-bell"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ unread_notifications|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Unread Notifications
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pp-operation-stat">
+
+                        <div class="pp-operation-stat-icon pp-summary-red">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ cancelled|default:"0" }}
+                            </strong>
+
+                            <span>
+                                Cancelled Shipments
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================================================
+     DJANGO DATA
+     
+     IMPORTANT:
+     Django variables stay here, outside JavaScript.
+     ========================================================== -->
+
+<div
+    id="dashboard-data"
+
+    data-pending="{{ pending|default:'0' }}"
+    data-confirmed="{{ confirmed|default:'0' }}"
+    data-pickup-assigned="{{ pickup_assigned|default:'0' }}"
+    data-picked-up="{{ picked_up|default:'0' }}"
+    data-in-transit="{{ in_transit|default:'0' }}"
+    data-out-for-delivery="{{ out_for_delivery|default:'0' }}"
+    data-delivered="{{ delivered|default:'0' }}"
+    data-cancelled="{{ cancelled|default:'0' }}"
+    data-returned="{{ returned|default:'0' }}"
+
+    data-total-shipments="{{ total_shipments|default:'0' }}"
+    data-total-customers="{{ total_customers|default:'0' }}"
+    data-total-drivers="{{ total_drivers|default:'0' }}"
+    data-verified-drivers="{{ verified_drivers|default:'0' }}"
+    data-active-shipments="{{ active_shipments|default:'0' }}"
+    data-total-revenue="{{ total_revenue|default:'0' }}"
+>
+</div>
+
+
+<!-- ==========================================================
+     CHART.JS
+     ========================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ==========================================================
+       GET DASHBOARD DATA
+       ========================================================== */
+
+    const dashboardData =
+        document.getElementById("dashboard-data");
+
+
+    if (!dashboardData) {
+        return;
+    }
+
+
+    /* ==========================================================
+       HELPER
+       ========================================================== */
+
+    function numberValue(value) {
+
+        const number =
+            Number(value);
+
+        return Number.isFinite(number)
+            ? number
+            : 0;
+    }
+
+
+    /* ==========================================================
+       DASHBOARD VALUES
+       ========================================================== */
+
+    const pending =
+        numberValue(
+            dashboardData.dataset.pending
+        );
+
+
+    const confirmed =
+        numberValue(
+            dashboardData.dataset.confirmed
+        );
+
+
+    const pickupAssigned =
+        numberValue(
+            dashboardData.dataset.pickupAssigned
+        );
+
+
+    const pickedUp =
+        numberValue(
+            dashboardData.dataset.pickedUp
+        );
+
+
+    const inTransit =
+        numberValue(
+            dashboardData.dataset.inTransit
+        );
+
+
+    const outForDelivery =
+        numberValue(
+            dashboardData.dataset.outForDelivery
+        );
+
+
+    const delivered =
+        numberValue(
+            dashboardData.dataset.delivered
+        );
+
+
+    const cancelled =
+        numberValue(
+            dashboardData.dataset.cancelled
+        );
+
+
+    const returned =
+        numberValue(
+            dashboardData.dataset.returned
+        );
+
+
+    const totalShipments =
+        numberValue(
+            dashboardData.dataset.totalShipments
+        );
+
+
+    const totalCustomers =
+        numberValue(
+            dashboardData.dataset.totalCustomers
+        );
+
+
+    const totalDrivers =
+        numberValue(
+            dashboardData.dataset.totalDrivers
+        );
+
+
+    const verifiedDrivers =
+        numberValue(
+            dashboardData.dataset.verifiedDrivers
+        );
+
+
+    const activeShipments =
+        numberValue(
+            dashboardData.dataset.activeShipments
+        );
+
+
+    const totalRevenue =
+        numberValue(
+            dashboardData.dataset.totalRevenue
+        );
+
+
+    /* ==========================================================
+       GLOBAL CHART SETTINGS
+       ========================================================== */
+
+    Chart.defaults.font.family =
+        "'Poppins', Arial, sans-serif";
+
+
+    Chart.defaults.color =
+        "#68746D";
+
+
+    /* ==========================================================
+       REVENUE CHART
+       ========================================================== */
+
+    const revenueCanvas =
+        document.getElementById("revenueChart");
+
+
+    if (revenueCanvas) {
+
+        const revenueContext =
+            revenueCanvas.getContext("2d");
+
+
+        const revenueGradient =
+            revenueContext.createLinearGradient(
+                0,
+                0,
+                0,
+                320
+            );
+
+
+        revenueGradient.addColorStop(
+            0,
+            "rgba(184, 137, 69, 0.28)"
+        );
+
+
+        revenueGradient.addColorStop(
+            0.55,
+            "rgba(111, 143, 114, 0.12)"
+        );
+
+
+        revenueGradient.addColorStop(
+            1,
+            "rgba(111, 143, 114, 0.015)"
+        );
+
+
+        new Chart(
+            revenueCanvas,
+            {
+
+                type: "line",
+
+
+                data: {
+
+                    labels: [
+                        "Mar 2026",
+                        "Apr 2026",
+                        "May 2026",
+                        "Jun 2026",
+                        "Jul 2026",
+                        "Aug 2026"
+                    ],
+
+
+                    datasets: [
+
+                        {
+
+                            label: "Revenue",
+
+                            data: [
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                totalRevenue
+                            ],
+
+                            borderColor:
+                                "#B27A35",
+
+                            backgroundColor:
+                                revenueGradient,
+
+                            fill:
+                                true,
+
+                            borderWidth:
+                                3.5,
+
+                            tension:
+                                0.42,
+
+                            pointRadius:
+                                4,
+
+                            pointHoverRadius:
+                                7,
+
+                            pointBackgroundColor:
+                                "#ffffff",
+
+                            pointBorderColor:
+                                "#527A61",
+
+                            pointBorderWidth:
+                                2
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    interaction: {
+
+                        intersect:
+                            false,
+
+                        mode:
+                            "index"
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#24332D",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#F1EBDD",
+
+                            borderColor:
+                                "#B27A35",
+
+                            borderWidth:
+                                1,
+
+                            padding:
+                                12,
+
+                            displayColors:
+                                false,
+
+
+                            callbacks: {
+
+                                label:
+                                    function (context) {
+
+                                        return " ₹" +
+                                            Number(
+                                                context.parsed.y || 0
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#68746D",
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "700"
+
+                                }
+
+                            }
+
+                        },
+
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+
+                            grid: {
+
+                                color:
+                                    "#DED5C6",
+
+                                lineWidth:
+                                    1
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#66736B",
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "600"
+
+                                },
+
+
+                                callback:
+                                    function (value) {
+
+                                        return "₹" +
+                                            Number(
+                                                value
+                                            ).toLocaleString(
+                                                "en-IN"
+                                            );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ==========================================================
+       BUSINESS OVERVIEW CHART
+       ========================================================== */
+
+    const businessCanvas =
+        document.getElementById("businessChart");
+
+
+    if (businessCanvas) {
+
+        new Chart(
+            businessCanvas,
+            {
+
+                type:
+                    "doughnut",
+
+
+                data: {
+
+                    labels: [
+
+                        "Customers",
+                        "Drivers",
+                        "Verified Drivers",
+                        "Shipments",
+                        "Delivered",
+                        "Active Shipments"
+
+                    ],
+
+
+                    datasets: [
+
+                        {
+
+                            data: [
+
+                                totalCustomers,
+                                totalDrivers,
+                                verifiedDrivers,
+                                totalShipments,
+                                delivered,
+                                activeShipments
+
+                            ],
+
+
+                            backgroundColor: [
+
+                                "#B27A35",
+                                "#6F8F72",
+                                "#765B6D",
+                                "#C9794B",
+                                "#3E6653",
+                                "#A6534A"
+
+                            ],
+
+
+                            borderWidth:
+                                3,
+
+
+                            borderColor:
+                                "#F1EBDD",
+
+
+                            hoverOffset:
+                                9
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    cutout:
+                        "66%",
+
+
+                    plugins: {
+
+                        legend: {
+
+                            position:
+                                "bottom",
+
+
+                            labels: {
+
+                                color:
+                                    "#68746D",
+
+                                padding:
+                                    14,
+
+                                usePointStyle:
+                                    true,
+
+                                pointStyle:
+                                    "circle",
+
+
+                                font: {
+
+                                    size:
+                                        10,
+
+                                    weight:
+                                        "700"
+
+                                }
+
+                            }
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#24332D",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#F1EBDD",
+
+                            padding:
+                                11,
+
+                            displayColors:
+                                true
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ==========================================================
+       SHIPMENT PERFORMANCE CHART
+       ========================================================== */
+
+    const shipmentCanvas =
+        document.getElementById("shipmentChart");
+
+
+    if (shipmentCanvas) {
+
+        const shipmentLabels = [
+
+            "Pending",
+            "Confirmed",
+            "Pickup Assigned",
+            "Picked Up",
+            "In Transit",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled",
+            "Returned"
+
+        ];
+
+
+        const shipmentValues = [
+
+            pending,
+            confirmed,
+            pickupAssigned,
+            pickedUp,
+            inTransit,
+            outForDelivery,
+            delivered,
+            cancelled,
+            returned
+
+        ];
+
+
+        new Chart(
+            shipmentCanvas,
+            {
+
+                type:
+                    "bar",
+
+
+                data: {
+
+                    labels:
+                        shipmentLabels,
+
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Shipments",
+
+
+                            data:
+                                shipmentValues,
+
+
+                            backgroundColor: [
+
+                                "#C9794B",
+                                "#8D6B3C",
+                                "#B27A35",
+                                "#6F8F72",
+                                "#597C6B",
+                                "#A6534A",
+                                "#3E6653",
+                                "#A6534A",
+                                "#5A5B52"
+
+                            ],
+
+
+                            borderRadius:
+                                8,
+
+
+                            borderSkipped:
+                                false,
+
+
+                            maxBarThickness:
+                                42
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#24332D",
+
+                            titleColor:
+                                "#ffffff",
+
+                            bodyColor:
+                                "#F1EBDD",
+
+                            padding:
+                                11,
+
+                            displayColors:
+                                true
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#68746D",
+
+
+                                font: {
+
+                                    size:
+                                        10,
+
+                                    weight:
+                                        "700"
+
+                                },
+
+
+                                maxRotation:
+                                    0,
+
+
+                                minRotation:
+                                    0
+
+                            }
+
+                        },
+
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+
+                            grid: {
+
+                                color:
+                                    "#DED5C6",
+
+                                lineWidth:
+                                    1
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#66736B",
+
+
+                                font: {
+
+                                    size:
+                                        11,
+
+                                    weight:
+                                        "600"
+
+                                },
+
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+});
+
+</script>
+
+
+
+<style>
+
+/* ==========================================================
+   PARCELPATH ADMIN OVERVIEW
+   DISTINCT PREMIUM COLOR SYSTEM
+   NO BLUE / NO CYAN
+   ========================================================== */
+
+.pp-dashboard {
+    padding: 6px 2px 45px;
+    color: #24332D;
+}
+
+/* ==========================================================
+   DASHBOARD HEADING
+   ========================================================== */
+
+.pp-dashboard-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.pp-dashboard-eyebrow {
+    color: #B27A35;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    margin-bottom: 5px;
+}
+
+.pp-dashboard-heading h1 {
+    margin: 0;
+    color: #173F35;
+    font-size: 31px;
+    font-weight: 850;
+    letter-spacing: -0.8px;
+}
+
+.pp-dashboard-heading p {
+    margin: 7px 0 0;
+    color: #68746D;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ==========================================================
+   KPI CARDS — EACH CARD HAS ITS OWN IDENTITY
+   ========================================================== */
+
+.pp-dashboard-kpi {
+    position: relative;
+    overflow: hidden;
+    min-height: 154px;
+    padding: 18px;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    box-shadow: 0 10px 26px rgba(36, 51, 45, 0.10);
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease;
+}
+
+/* subtle bottom-right shape */
+
+.pp-dashboard-kpi::after {
+    content: "";
+    position: absolute;
+    width: 105px;
+    height: 105px;
+    right: -38px;
+    bottom: -48px;
+    border-radius: 50%;
+    opacity: .18;
+    transition: transform .35s ease;
+}
+
+.pp-dashboard-kpi:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 17px 34px rgba(36, 51, 45, 0.15);
+}
+
+.pp-dashboard-kpi:hover::after {
+    transform: scale(1.25);
+}
+
+/* TOTAL SHIPMENTS — FOREST */
+
+.pp-kpi-blue {
+    background:
+        linear-gradient(145deg, #173F35 0%, #285746 100%);
+    border-color: #173F35;
+    color: #FFFFFF;
+}
+
+.pp-kpi-blue::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #D1AE70;
+}
+
+.pp-kpi-blue::after {
+    background: #D1AE70;
+}
+
+/* ACTIVE SHIPMENTS — COPPER */
+
+.pp-kpi-cyan {
+    background:
+        linear-gradient(145deg, #B86B3E 0%, #D08A55 100%);
+    border-color: #B86B3E;
+    color: #FFFFFF;
+}
+
+.pp-kpi-cyan::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #F1D3A5;
+}
+
+.pp-kpi-cyan::after {
+    background: #F4D8B2;
+}
+
+/* DELIVERED — SAGE */
+
+.pp-kpi-green {
+    background:
+        linear-gradient(145deg, #4F765A 0%, #6F8F72 100%);
+    border-color: #4F765A;
+    color: #FFFFFF;
+}
+
+.pp-kpi-green::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #DCE8DB;
+}
+
+.pp-kpi-green::after {
+    background: #DCE8DB;
+}
+
+/* REVENUE — PLUM */
+
+.pp-kpi-purple {
+    background:
+        linear-gradient(145deg, #674D5F 0%, #7B5B73 100%);
+    border-color: #674D5F;
+    color: #FFFFFF;
+}
+
+.pp-kpi-purple::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #E9DFE6;
+}
+
+.pp-kpi-purple::after {
+    background: #E9DFE6;
+}
+
+/* ==========================================================
+   KPI TOP
+   ========================================================== */
+
+.pp-kpi-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.pp-kpi-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 16px;
+    transition: transform .25s ease;
+}
+
+.pp-dashboard-kpi:hover .pp-kpi-icon {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+/* individual icon colors */
+
+.pp-kpi-blue .pp-kpi-icon {
+    color: #F5E5C5;
+    background: rgba(209,174,112,.20);
+}
+
+.pp-kpi-cyan .pp-kpi-icon {
+    color: #FFF0D8;
+    background: rgba(255,239,213,.20);
+}
+
+.pp-kpi-green .pp-kpi-icon {
+    color: #E7F0E4;
+    background: rgba(220,232,219,.20);
+}
+
+.pp-kpi-purple .pp-kpi-icon {
+    color: #F0E5EC;
+    background: rgba(233,223,230,.20);
+}
+
+/* badges */
+
+.pp-kpi-badge {
+    position: relative;
+    z-index: 2;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.pp-kpi-blue .pp-kpi-badge {
+    color: #EAD6AA;
+    background: rgba(209,174,112,.16);
+}
+
+.pp-kpi-cyan .pp-kpi-badge {
+    color: #FFE6C6;
+    background: rgba(255,239,213,.16);
+}
+
+.pp-kpi-green .pp-kpi-badge {
+    color: #E0EEDF;
+    background: rgba(220,232,219,.16);
+}
+
+.pp-kpi-purple .pp-kpi-badge {
+    color: #F0E1EA;
+    background: rgba(233,223,230,.16);
+}
+
+/* KPI text */
+
+.pp-kpi-label {
+    position: relative;
+    z-index: 2;
+    color: rgba(255,255,255,.78);
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.pp-kpi-value {
+    position: relative;
+    z-index: 2;
+    color: #FFFFFF;
+    font-size: 29px;
+    line-height: 1.2;
+    font-weight: 850;
+    letter-spacing: -.7px;
+}
+
+.pp-kpi-description {
+    position: relative;
+    z-index: 2;
+    color: rgba(255,255,255,.70);
+    font-size: 9px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+/* ==========================================================
+   DASHBOARD PANELS
+   ========================================================== */
+
+.pp-dashboard-panel {
+    overflow: hidden;
+    border-radius: 15px;
+    border: 1px solid #D8CCBB;
+    background: #FBF7EF;
+    box-shadow: 0 9px 28px rgba(36, 51, 45, 0.08);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.pp-dashboard-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 13px 32px rgba(36, 51, 45, 0.11);
+}
+
+/* revenue panel gets warm gold tone */
+
+.pp-dashboard-panel:has(#revenueChart) {
+    background: #FBF5E9;
+    border-color: #D9C6A4;
+}
+
+/* business panel gets sage tone */
+
+.pp-dashboard-panel:has(#businessChart) {
+    background: #F1F4EC;
+    border-color: #CAD7C8;
+}
+
+/* shipment panel gets terracotta/ivory tone */
+
+.pp-dashboard-panel:has(#shipmentChart) {
+    background: #F8F0E9;
+    border-color: #DEC9B9;
+}
+
+/* ==========================================================
+   PANEL HEADER
+   ========================================================== */
+
+.pp-dashboard-panel-header {
+    min-height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,.28);
+    border-bottom: 1px solid #D8CCBB;
+}
+
+.pp-dashboard-panel-title {
+    color: #173F35;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.pp-dashboard-panel-title i {
+    color: #B27A35;
+}
+
+.pp-dashboard-panel-subtitle {
+    margin-top: 3px;
+    color: #68746D;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.pp-chart-badge {
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.pp-chart-badge-green {
+    color: #416B59;
+    background: #DCE8DB;
+}
+
+.pp-chart-badge-blue {
+    color: #955044;
+    background: #F0DDD9;
+}
+
+/* ==========================================================
+   CHART AREA
+   ========================================================== */
+
+.pp-dashboard-chart {
+    height: 285px;
+    padding: 18px;
+    background: transparent;
+}
+
+.pp-shipment-chart {
+    height: 300px;
+}
+
+.pp-business-chart {
+    height: 285px;
+    padding: 18px;
+}
+
+/* ==========================================================
+   SUMMARY CARDS — DISTINCT ACCENTS
+   ========================================================== */
+
+.pp-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 105px;
+    padding: 17px;
+    border-radius: 13px;
+    background: #FBF7EF;
+    border: 1px solid #D8CCBB;
+    box-shadow: 0 7px 20px rgba(36, 51, 45, .055);
+    transition: all .25s ease;
+}
+
+.pp-summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(36, 51, 45, .10);
+}
+
+/* individual summary icon palettes */
+
+.pp-summary-blue {
+    color: #A66A3F;
+    background: #F1E4CC;
+}
+
+.pp-summary-cyan {
+    color: #527A61;
+    background: #DCE8DB;
+}
+
+.pp-summary-green {
+    color: #674D5F;
+    background: #E9DFE6;
+}
+
+.pp-summary-orange {
+    color: #955044;
+    background: #F0DDD9;
+}
+
+.pp-summary-purple {
+    color: #76572C;
+    background: #EFE5D4;
+}
+
+.pp-summary-red {
+    color: #8C4E45;
+    background: #F1DDD2;
+}
+
+.pp-summary-label {
+    color: #68746D;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.pp-summary-value {
+    color: #173F35;
+    font-size: 22px;
+    font-weight: 850;
+    line-height: 1.25;
+}
+
+.pp-summary-description {
+    color: #819087;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+/* ==========================================================
+   OPERATION PANELS
+   ========================================================== */
+
+.pp-operation-panel {
+    min-height: 190px;
+}
+
+.pp-panel-action {
+    padding: 6px 10px;
+    border-radius: 7px;
+    color: #8D5B31;
+    border: 1px solid #CDB58F;
+    background: #FBF2E2;
+    text-decoration: none;
+    font-size: 9px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.pp-panel-action:hover {
+    color: #FFFFFF;
+    background: #A66A3F;
+    border-color: #A66A3F;
+}
+
+.pp-operation-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 17px;
+}
+
+.pp-operation-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #F5F0E7;
+    border: 1px solid #DDD2C1;
+    transition: all .22s ease;
+}
+
+.pp-operation-stat:hover {
+    background: #FBF7EF;
+    border-color: #CDBB9D;
+    transform: translateY(-2px);
+}
+
+.pp-operation-stat-icon {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+}
+
+.pp-operation-stat strong {
+    display: block;
+    color: #173F35;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.pp-operation-stat span {
+    display: block;
+    margin-top: 2px;
+    color: #728078;
+    font-size: 8px;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   SYSTEM STATUS
+   ========================================================== */
+
+.pp-system-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.pp-status-dot {
+    animation: ppStatusPulse 2s infinite;
+}
+
+@keyframes ppStatusPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(82,122,97,.35);
+    }
+
+    70% {
+        box-shadow: 0 0 0 7px rgba(82,122,97,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(82,122,97,0);
+    }
+}
+
+/* ==========================================================
+   ENTRY ANIMATION
+   ========================================================== */
+
+.pp-dashboard-kpi {
+    animation: ppDashboardFade .45s ease both;
+}
+
+.pp-dashboard-panel {
+    animation: ppDashboardFade .55s ease both;
+}
+
+.pp-summary-card {
+    animation: ppDashboardFade .6s ease both;
+}
+
+@keyframes ppDashboardFade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1199px) {
+    .pp-dashboard-heading {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 767px) {
+    .pp-dashboard-heading h1 {
+        font-size: 26px;
+    }
+
+    .pp-operation-body {
+        grid-template-columns: 1fr;
+    }
+
+    .pp-dashboard-kpi {
+        min-height: 145px;
+    }
+}
+
+</style>
+
+
+{% endblock %}

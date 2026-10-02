@@ -1,0 +1,372 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Complete Driver Profile | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card driver-profile-card border-0">
+
+                <div class="card-header driver-profile-header">
+
+                    <h3 class="mb-2">
+
+                        <i class="bi bi-person-badge-fill me-2"></i>
+
+                        Complete Driver Profile
+
+                        </h3>
+
+                        <p class="mb-0">
+
+                        Complete your profile to start accepting deliveries on ParcelPath.
+
+                        </p>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Success / Error Messages -->
+
+                    {% if messages %}
+                        {% for message in messages %}
+
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+
+                                {{ message }}
+
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert">
+                                </button>
+
+                            </div>
+
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Global Form Errors -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            {% for error in form.non_field_errors %}
+
+                                <div>{{ error }}</div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                    <form method="post"
+                          enctype="multipart/form-data"
+                          novalidate>
+
+                        {% csrf_token %}
+
+                        <!-- ================================================= -->
+                        <!-- License Information -->
+                        <!-- ================================================= -->
+
+                        <h5 class="driver-section-title">
+
+                            License Information
+
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+
+                                    License Number
+
+                                </label>
+
+                                {{ form.license_number }}
+
+                                {% for error in form.license_number.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    License Expiry
+
+                                </label>
+
+                                {{ form.license_expiry }}
+
+                                {% for error in form.license_expiry.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <hr class="driver-divider">
+
+                        <!-- ================================================= -->
+                        <!-- Vehicle Information -->
+                        <!-- ================================================= -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            Vehicle Information
+
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Vehicle Type
+
+                                </label>
+
+                                {{ form.vehicle_type }}
+
+                                {% for error in form.vehicle_type.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Vehicle Number
+
+                                </label>
+
+                                {{ form.vehicle_number }}
+
+                                {% for error in form.vehicle_number.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Vehicle Model
+
+                                </label>
+
+                                {{ form.vehicle_model }}
+
+                                {% for error in form.vehicle_model.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+                                                        <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Vehicle Capacity (KG)
+
+                                </label>
+
+                                {{ form.vehicle_capacity }}
+
+                                {% for error in form.vehicle_capacity.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <hr class="driver-divider">
+
+                        <!-- ================================================= -->
+                        <!-- Contact Information -->
+                        <!-- ================================================= -->
+
+                        <h5 class="fw-bold mb-3">
+
+                            Contact Information
+
+                        </h5>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Alternate Phone
+
+                                </label>
+
+                                {{ form.alternate_phone }}
+
+                                {% for error in form.alternate_phone.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Profile Image
+
+                                </label>
+
+                                {{ form.profile_image }}
+
+                                {% for error in form.profile_image.errors %}
+
+                                    <div class="invalid-feedback d-block">
+
+                                        {{ error }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                                <img
+                                    id="imagePreview"
+                                    src="#"
+                                    class="driver-preview-image mt-3 d-none"
+                                    alt="Profile Preview">
+
+                            </div>
+
+                        </div>
+
+                        <div class="d-grid mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn driver-save-profile-btn">
+
+                                <i class="bi bi-check-circle me-2"></i>
+
+                                Save Driver Profile
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("id_profile_image");
+    const preview = document.getElementById("imagePreview");
+
+    if (input) {
+
+        input.addEventListener("change", function (event) {
+
+            const file = event.target.files[0];
+
+            if (!file) {
+
+                preview.classList.add("d-none");
+                return;
+
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                preview.src = e.target.result;
+                preview.classList.remove("d-none");
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

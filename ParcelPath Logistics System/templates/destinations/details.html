@@ -1,0 +1,117 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Destination Details | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+<div class="container">
+
+<div class="card border-0 shadow">
+
+<div class="card-header bg-white">
+
+<h3 class="mb-0">
+
+{{ destination.city }}, {{ destination.state }}
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-6">
+
+<p>
+
+<strong>Delivery Time:</strong>
+
+{{ destination.delivery_days }} Days
+
+</p>
+
+<p>
+
+<strong>Service:</strong>
+
+{{ destination.service_type }}
+
+</p>
+
+<p>
+
+<strong>Coverage:</strong>
+
+{{ destination.coverage }}
+
+</p>
+
+</div>
+
+<div class="col-md-6">
+
+<p>
+
+<strong>Available Since:</strong>
+
+{{ destination.created_at }}
+
+</p>
+
+<p>
+
+<strong>Status:</strong>
+
+{% if destination.is_active %}
+
+<span class="badge bg-success">
+
+Active
+
+</span>
+
+{% else %}
+
+<span class="badge bg-secondary">
+
+Inactive
+
+</span>
+
+{% endif %}
+
+</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<h5>
+
+Description
+
+</h5>
+
+<p>
+
+{{ destination.description }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

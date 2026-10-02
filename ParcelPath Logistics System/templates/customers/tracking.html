@@ -1,0 +1,172 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Track Shipment | ParcelPath
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                {% include "customers/sidebar.html" %}
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="card border-0 shadow-sm mb-4">
+
+                    <div class="card-header bg-white">
+
+                        <h3 class="mb-0">
+
+                            Track Your Shipment
+
+                        </h3>
+
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <form method="get">
+
+                            <div class="input-group input-group-lg">
+
+                                <input
+                                    type="text"
+                                    name="tracking_number"
+                                    class="form-control"
+                                    placeholder="Enter Tracking Number">
+
+                                <button
+                                    class="btn btn-primary">
+
+                                    Search
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% if shipment %}
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-white">
+
+                        <h4 class="mb-0">
+
+                            Tracking Details
+
+                        </h4>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+
+                                <p>
+
+                                    <strong>Tracking Number:</strong>
+
+                                    {{ shipment.tracking_number }}
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Status:</strong>
+
+                                    <span class="badge bg-success">
+
+                                        {{ shipment.status }}
+
+                                    </span>
+
+                                </p>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <p>
+
+                                    <strong>Receiver:</strong>
+
+                                    {{ shipment.receiver_name }}
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Estimated Delivery:</strong>
+
+                                    {{ shipment.estimated_delivery }}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for event in tracking_events %}
+
+                            <li class="list-group-item">
+
+                                <strong>
+
+                                    {{ event.status }}
+
+                                </strong>
+
+                                <br>
+
+                                <small>
+
+                                    {{ event.location }}
+
+                                </small>
+
+                                <div class="text-muted">
+
+                                    {{ event.created_at }}
+
+                                </div>
+
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
