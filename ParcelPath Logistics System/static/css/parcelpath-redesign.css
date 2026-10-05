@@ -55,36 +55,137 @@
 }
 
 /* =========================================================
-   PARCELPATH NAVBAR BRAND / LOGO
+   PARCELPATH — PREMIUM NAVBAR LOGO
+   Clean logo — NO rectangular background
    ========================================================= */
 
-.pp-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:var(--pp-forest-3)!important;
-    text-decoration:none
+.pp-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    color: var(--pp-forest-3) !important;
 }
 
-.pp-brand-logo-wrap{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex:0 0 auto;
-    width:220px;
-    height:72px;
-    background:#f1ecdf;
-    border:1px solid #ded5c4;
-    padding:4px 8px;
+
+/* Remove the ugly logo box completely */
+.pp-brand-logo-wrap {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    min-width: 0 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
 }
 
-.pp-brand-logo{
-    display:block;
-    width:100%;
-    height:auto;
-    max-height:64px;
-    object-fit:contain;
-    object-position:center
+
+/* Actual logo */
+.pp-brand-logo {
+    display: block !important;
+
+    width: 205px !important;
+    height: auto !important;
+
+    max-width: 205px !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+    object-position: center !important;
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
+
+
+/* Hide any old text beside logo */
+.pp-brand-copy,
+.pp-brand-divider {
+    display: none !important;
+}
+
+
+/* =========================================================
+   NAVBAR HEIGHT
+   ========================================================= */
+
+.pp-main-nav {
+    min-height: 82px !important;
+    padding: 0 !important;
+}
+
+
+/* Vertically center logo */
+.pp-main-nav .container {
+    min-height: 82px;
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .pp-brand-logo {
+        width: 210px !important;
+        max-width: 210px !important;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .pp-main-nav .pp-brand {
+        min-width: 0 !important;
+        margin-right: 20px !important;
+        gap: 0 !important;
+    }
+
+    .pp-brand-logo-wrap {
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .pp-brand-logo {
+        width: 190px !important;
+        max-width: 190px !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 575px) {
+
+    .pp-brand-logo {
+        width: 165px !important;
+        max-width: 165px !important;
+    }
+
 }
 
 .pp-brand strong{
@@ -5345,4 +5446,1416 @@
 
         padding: 14px !important;
     }
+}
+/* =========================================================
+   PARCELPATH — PREMIUM LOGISTICS BACKGROUND
+   CSS ONLY
+   ---------------------------------------------------------
+   Uses the NEW background image.
+   No HTML changes.
+   No new image required.
+   ========================================================= */
+
+
+/* =========================================================
+   HERO FOUNDATION
+   ========================================================= */
+
+.pp-clean-cinematic-hero {
+    position: relative !important;
+
+    overflow: hidden !important;
+
+    isolation: isolate !important;
+
+    background:
+        #f4efe4 !important;
+
+    border-bottom:
+        1px solid #ddd4c4 !important;
+}
+
+
+/* =========================================================
+   BACKGROUND CONTAINER
+   ========================================================= */
+
+.pp-clean-hero-background {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow: hidden !important;
+
+    z-index: 0 !important;
+
+    pointer-events: none !important;
+}
+
+
+/* =========================================================
+   MAIN PREMIUM BACKGROUND
+   ---------------------------------------------------------
+   IMPORTANT:
+   Increased opacity considerably.
+   Removed blur.
+   Sharper image.
+   ========================================================= */
+
+.pp-clean-hero-image {
+    position: absolute !important;
+
+    top: -4% !important;
+    right: -3% !important;
+    bottom: -4% !important;
+    left: -3% !important;
+
+    width: 106% !important;
+    height: 108% !important;
+
+    background-image:
+        url("../images/hero/clean-logistics-bg.png") !important;
+
+    background-repeat:
+        no-repeat !important;
+
+    background-size:
+        cover !important;
+
+    background-position:
+        center center !important;
+
+    /*
+       MUCH stronger than previous version.
+       The image should actually be visible.
+    */
+    opacity:
+        .62 !important;
+
+    /*
+       No blur.
+       Keep the generated image crisp.
+    */
+    filter:
+        saturate(1.05)
+        contrast(1.04)
+        brightness(.98) !important;
+
+    transform:
+        scale(1.025) !important;
+
+    /*
+       Slow premium camera movement.
+    */
+    animation:
+        ppPremiumLogisticsMotion
+        30s
+        cubic-bezier(.45,0,.55,1)
+        infinite
+        alternate !important;
+
+    will-change:
+        transform;
+}
+
+
+/* =========================================================
+   PREMIUM SLOW CAMERA
+   ========================================================= */
+
+@keyframes ppPremiumLogisticsMotion {
+
+    0% {
+
+        transform:
+            scale(1.025)
+            translate3d(0, 0, 0);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.045)
+            translate3d(-.35%, -.15%, 0);
+
+    }
+
+    100% {
+
+        transform:
+            scale(1.065)
+            translate3d(-.75%, -.30%, 0);
+
+    }
+
+}
+
+
+/* =========================================================
+   TEXT PROTECTION
+   ---------------------------------------------------------
+   Only the LEFT side gets the ivory wash.
+   The logistics scene remains visible on the right.
+   ========================================================= */
+
+.pp-clean-hero-overlay {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    z-index: 1 !important;
+
+    pointer-events: none !important;
+
+    background:
+        linear-gradient(
+            90deg,
+
+            rgba(245,241,232,.97) 0%,
+
+            rgba(245,241,232,.94) 18%,
+
+            rgba(245,241,232,.82) 31%,
+
+            rgba(245,241,232,.60) 42%,
+
+            rgba(245,241,232,.28) 53%,
+
+            rgba(245,241,232,.08) 66%,
+
+            rgba(245,241,232,0) 78%
+        ) !important;
+}
+
+
+/* =========================================================
+   SUBTLE CINEMATIC VIGNETTE
+   ---------------------------------------------------------
+   Adds depth without making image blurry.
+   ========================================================= */
+
+.pp-clean-hero-background::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at 72% 45%,
+            rgba(255,255,255,.05) 0%,
+            rgba(22,55,45,.08) 72%,
+            rgba(15,38,32,.16) 100%
+        );
+}
+
+
+/* =========================================================
+   GOLDEN ATMOSPHERIC LIGHT
+   ---------------------------------------------------------
+   VERY subtle.
+   No blur over the actual image.
+   ========================================================= */
+
+.pp-clean-hero-light {
+
+    position: absolute !important;
+
+    width: 420px !important;
+    height: 420px !important;
+
+    right: 13% !important;
+    top: 3% !important;
+
+    z-index: 3 !important;
+
+    border-radius: 50%;
+
+    pointer-events: none !important;
+
+    background:
+        radial-gradient(
+            circle,
+
+            rgba(211,169,94,.13) 0%,
+
+            rgba(211,169,94,.055) 32%,
+
+            transparent 68%
+        );
+
+    /*
+       Keep this very soft,
+       but don't blur the background itself.
+    */
+    filter:
+        blur(28px);
+
+    opacity:
+        .55;
+
+    animation:
+        ppPremiumLightMovement
+        18s
+        ease-in-out
+        infinite
+        alternate !important;
+
+}
+
+
+/* =========================================================
+   LIGHT MOVEMENT
+   ========================================================= */
+
+@keyframes ppPremiumLightMovement {
+
+    0% {
+
+        transform:
+            translate3d(20px, 0, 0)
+            scale(.96);
+
+        opacity:
+            .42;
+
+    }
+
+    100% {
+
+        transform:
+            translate3d(-18px, 12px, 0)
+            scale(1.05);
+
+        opacity:
+            .62;
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTENT STACK
+   ========================================================= */
+
+.pp-clean-cinematic-hero > .container {
+
+    position:
+        relative !important;
+
+    z-index:
+        10 !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-editorial-grid {
+
+    position:
+        relative !important;
+
+    z-index:
+        10 !important;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-editorial-copy {
+
+    position:
+        relative !important;
+
+    z-index:
+        20 !important;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-eyebrow {
+
+    position:
+        relative;
+
+    z-index:
+        21;
+
+    color:
+        #a77d39 !important;
+}
+
+
+/* =========================================================
+   MAIN HEADING
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-editorial-copy h1 {
+
+    position:
+        relative !important;
+
+    z-index:
+        21 !important;
+
+    color:
+        #173f34 !important;
+
+    text-shadow:
+        0 1px 1px rgba(255,255,255,.22) !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-editorial-copy h1 em {
+
+    color:
+        #b1813a !important;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-editorial-lead {
+
+    position:
+        relative;
+
+    z-index:
+        21;
+
+    color:
+        #64665f !important;
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,.35);
+}
+
+
+/* =========================================================
+   BUTTON AREA
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-home-actions {
+
+    position:
+        relative;
+
+    z-index:
+        25;
+}
+
+
+.pp-clean-cinematic-hero .pp-gold-btn {
+
+    background:
+        #b18a4a !important;
+
+    border:
+        1px solid #b18a4a !important;
+
+    color:
+        #fff !important;
+
+    box-shadow:
+        0 8px 22px rgba(118,85,35,.16);
+}
+
+
+.pp-clean-cinematic-hero .pp-outline-btn {
+
+    background:
+        rgba(248,245,238,.82) !important;
+
+    border:
+        1px solid #173f34 !important;
+
+    color:
+        #173f34 !important;
+
+    backdrop-filter:
+        blur(4px);
+
+    -webkit-backdrop-filter:
+        blur(4px);
+}
+
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-editorial-proof {
+
+    position:
+        relative;
+
+    z-index:
+        20;
+
+    border-top:
+        1px solid rgba(76,70,57,.22) !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-editorial-proof div {
+
+    border-right-color:
+        rgba(76,70,57,.20) !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-editorial-proof strong {
+
+    color:
+        #173f34 !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-editorial-proof span {
+
+    color:
+        #716f67 !important;
+}
+
+
+/* =========================================================
+   RIGHT VISUAL
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-editorial-visual {
+
+    position:
+        relative !important;
+
+    z-index:
+        30 !important;
+}
+
+
+/* =========================================================
+   PARCELPATH CARD
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-visual-frame {
+
+    position:
+        relative !important;
+
+    z-index:
+        40 !important;
+
+    background:
+        #173f34 !important;
+
+    isolation:
+        isolate !important;
+
+    overflow:
+        hidden !important;
+
+    box-shadow:
+        0 28px 65px rgba(25,53,44,.23) !important;
+
+    border:
+        1px solid rgba(23,63,52,.18);
+}
+
+
+/* =========================================================
+   EXISTING DELIVERY IMAGE
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-visual-frame img {
+
+    position:
+        relative !important;
+
+    z-index:
+        41 !important;
+
+    display:
+        block !important;
+
+    width:
+        100% !important;
+
+    height:
+        auto !important;
+
+    max-height:
+        none !important;
+
+    object-fit:
+        initial !important;
+
+    object-position:
+        center !important;
+
+    background:
+        transparent !important;
+
+    filter:
+        none !important;
+}
+
+
+/* =========================================================
+   CARD CAPTION
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-visual-caption {
+
+    position:
+        relative !important;
+
+    z-index:
+        42 !important;
+
+    background:
+        #173f34 !important;
+
+    color:
+        #f7f1e6 !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-visual-caption span {
+
+    color:
+        #d1ae69 !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-visual-caption strong {
+
+    color:
+        #f7f1e6 !important;
+}
+
+
+.pp-clean-cinematic-hero .pp-visual-caption p {
+
+    color:
+        #b9c9c1 !important;
+}
+
+
+/* =========================================================
+   REMOVE CARD OVERLAYS
+   ========================================================= */
+
+.pp-clean-cinematic-hero .pp-visual-frame::before,
+.pp-clean-cinematic-hero .pp-visual-frame::after {
+
+    content:
+        none !important;
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .pp-clean-cinematic-hero {
+
+        min-height:
+            720px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+    }
+
+}
+
+
+/* =========================================================
+   LARGE TABLET
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .pp-clean-hero-image {
+
+        opacity:
+            .52 !important;
+    }
+
+    .pp-clean-hero-overlay {
+
+        background:
+            linear-gradient(
+                90deg,
+
+                rgba(245,241,232,.97) 0%,
+
+                rgba(245,241,232,.92) 24%,
+
+                rgba(245,241,232,.70) 40%,
+
+                rgba(245,241,232,.35) 57%,
+
+                rgba(245,241,232,.08) 78%,
+
+                rgba(245,241,232,0) 100%
+            ) !important;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 991px) {
+
+    .pp-clean-hero-image {
+
+        opacity:
+            .30 !important;
+
+        left:
+            0 !important;
+
+        right:
+            0 !important;
+
+        width:
+            100% !important;
+
+        background-position:
+            center center !important;
+    }
+
+
+    .pp-clean-hero-overlay {
+
+        background:
+            linear-gradient(
+                180deg,
+
+                rgba(245,241,232,.97) 0%,
+
+                rgba(245,241,232,.88) 42%,
+
+                rgba(245,241,232,.72) 70%,
+
+                rgba(245,241,232,.92) 100%
+            ) !important;
+    }
+
+
+    .pp-clean-hero-light {
+
+        width:
+            300px !important;
+
+        height:
+            300px !important;
+
+        right:
+            -60px !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 575px) {
+
+    .pp-clean-hero-image {
+
+        opacity:
+            .20 !important;
+
+        animation:
+            ppPremiumMobileMotion
+            32s
+            ease-in-out
+            infinite
+            alternate !important;
+    }
+
+
+    @keyframes ppPremiumMobileMotion {
+
+        0% {
+
+            transform:
+                scale(1.035)
+                translate3d(0,0,0);
+
+        }
+
+        100% {
+
+            transform:
+                scale(1.08)
+                translate3d(-.8%,-.15%,0);
+
+        }
+
+    }
+
+
+    .pp-clean-hero-overlay {
+
+        background:
+            linear-gradient(
+                180deg,
+
+                rgba(245,241,232,.98) 0%,
+
+                rgba(245,241,232,.91) 45%,
+
+                rgba(245,241,232,.78) 72%,
+
+                rgba(245,241,232,.94) 100%
+            ) !important;
+    }
+
+
+    .pp-clean-hero-light {
+
+        width:
+            230px !important;
+
+        height:
+            230px !important;
+
+        right:
+            -70px !important;
+    }
+
+
+    .pp-clean-cinematic-hero .pp-visual-frame {
+
+        box-shadow:
+            0 18px 45px rgba(25,53,44,.18) !important;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pp-clean-hero-image,
+    .pp-clean-hero-light {
+
+        animation:
+            none !important;
+    }
+
+}
+/* =========================================================
+   PARCELPATH — PREMIUM SERVICE CARDS
+   =========================================================
+   
+   DESIGN:
+   01 BOOK     → Deep Forest
+   02 FOLLOW   → Antique Bronze
+   03 DELIVER  → Muted Sage
+   04 MANAGE   → Terracotta
+   
+   This replaces the original rectangular service grid.
+   ========================================================= */
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.pp-paper-section {
+    background: #f4efe5 !important;
+
+    padding-top: 90px !important;
+    padding-bottom: 100px !important;
+}
+
+
+/* =========================================================
+   SERVICE GRID
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid {
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
+
+    gap: 18px !important;
+
+    border: 0 !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+}
+
+
+/* =========================================================
+   BASE CARD
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div {
+
+    width: auto !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
+
+
+.pp-paper-section .pp-service-grid article {
+
+    position: relative !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    min-height: 330px !important;
+
+    height: 100% !important;
+
+    padding: 30px !important;
+
+    overflow: hidden !important;
+
+    border: 0 !important;
+
+    border-radius: 18px !important;
+
+    box-shadow:
+        0 14px 35px rgba(32, 49, 41, .08) !important;
+
+    transform: translateY(0);
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease !important;
+}
+
+
+/* =========================================================
+   SUBTLE TOP LINE
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 28px;
+    right: 28px;
+
+    height: 3px;
+
+    border-radius: 0 0 4px 4px;
+
+    background: rgba(255,255,255,.35);
+
+    opacity: .8;
+}
+
+
+/* =========================================================
+   SUBTLE DECORATIVE GLOW
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -55px;
+    bottom: -65px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.09);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   01 — BOOK
+   Deep Forest
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(1) article {
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d4a3d 0%,
+            #173f34 65%,
+            #12372e 100%
+        ) !important;
+
+    color: #f5efe3 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(1) article::before {
+
+    background: #d4ad68;
+}
+
+
+/* =========================================================
+   02 — FOLLOW
+   Antique Bronze
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(2) article {
+
+    background:
+        linear-gradient(
+            145deg,
+            #c29a5b 0%,
+            #ad8244 62%,
+            #987238 100%
+        ) !important;
+
+    color: #fff8ea !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(2) article::before {
+
+    background: #f5e5c4;
+}
+
+
+/* =========================================================
+   03 — DELIVER
+   Muted Sage
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(3) article {
+
+    background:
+        linear-gradient(
+            145deg,
+            #718878 0%,
+            #607a68 62%,
+            #526c5b 100%
+        ) !important;
+
+    color: #f7f2e8 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(3) article::before {
+
+    background: #d9c49b;
+}
+
+
+/* =========================================================
+   04 — MANAGE
+   Warm Terracotta
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(4) article {
+
+    background:
+        linear-gradient(
+            145deg,
+            #a96f59 0%,
+            #985f4c 62%,
+            #875143 100%
+        ) !important;
+
+    color: #fff5e8 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(4) article::before {
+
+    background: #e1bd79;
+}
+
+
+/* =========================================================
+   NUMBER
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article > span {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 24px;
+
+    margin: 0 !important;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:
+        #f3d39a !important;
+
+    font-family:
+        "DM Sans",
+        sans-serif !important;
+
+    font-size:
+        10px !important;
+
+    font-weight:
+        800 !important;
+
+    letter-spacing:
+        .12em;
+
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article > i {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    margin: 45px 0 25px !important;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:
+        #fff5e5 !important;
+
+    font-size:
+        25px !important;
+
+    line-height:
+        1 !important;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article h3 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin:
+        0 0 10px !important;
+
+    font-family:
+        "Playfair Display",
+        serif !important;
+
+    font-size:
+        27px !important;
+
+    line-height:
+        1.15 !important;
+
+    font-weight:
+        500 !important;
+
+    letter-spacing:
+        -.02em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article p {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin:
+        0 !important;
+
+    max-width:
+        270px;
+
+    font-family:
+        "DM Sans",
+        sans-serif !important;
+
+    font-size:
+        13px !important;
+
+    line-height:
+        1.65 !important;
+}
+
+
+/* =========================================================
+   CARD 01 TEXT
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(1) article h3,
+.pp-paper-section .pp-service-grid > div:nth-child(1) article p {
+
+    color: #f5efe3 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(1) article p {
+
+    color: #c7d2ca !important;
+}
+
+
+/* =========================================================
+   CARD 02 TEXT
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(2) article h3,
+.pp-paper-section .pp-service-grid > div:nth-child(2) article p {
+
+    color: #fff7e8 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(2) article p {
+
+    color: #f1dfbf !important;
+}
+
+
+/* =========================================================
+   CARD 03 TEXT
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(3) article h3,
+.pp-paper-section .pp-service-grid > div:nth-child(3) article p {
+
+    color: #f5f1e7 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(3) article p {
+
+    color: #d8e0d8 !important;
+}
+
+
+/* =========================================================
+   CARD 04 TEXT
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(4) article h3,
+.pp-paper-section .pp-service-grid > div:nth-child(4) article p {
+
+    color: #fff4e7 !important;
+}
+
+
+.pp-paper-section .pp-service-grid > div:nth-child(4) article p {
+
+    color: #eed9cb !important;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid article:hover {
+
+    transform:
+        translateY(-8px) !important;
+
+    box-shadow:
+        0 24px 48px rgba(28, 47, 39, .17) !important;
+}
+
+
+/* =========================================================
+   HOVER — FOREST
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(1) article:hover {
+
+    background:
+        linear-gradient(
+            145deg,
+            #235545 0%,
+            #173f34 100%
+        ) !important;
+}
+
+
+/* =========================================================
+   HOVER — BRONZE
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(2) article:hover {
+
+    background:
+        linear-gradient(
+            145deg,
+            #cda764 0%,
+            #ad8244 100%
+        ) !important;
+}
+
+
+/* =========================================================
+   HOVER — SAGE
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(3) article:hover {
+
+    background:
+        linear-gradient(
+            145deg,
+            #7b9280 0%,
+            #607a68 100%
+        ) !important;
+}
+
+
+/* =========================================================
+   HOVER — TERRACOTTA
+   ========================================================= */
+
+.pp-paper-section .pp-service-grid > div:nth-child(4) article:hover {
+
+    background:
+        linear-gradient(
+            145deg,
+            #b77a62 0%,
+            #985f4c 100%
+        ) !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .pp-paper-section .pp-service-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+
+        gap: 16px !important;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 575px) {
+
+    .pp-paper-section {
+
+        padding-top: 65px !important;
+        padding-bottom: 70px !important;
+    }
+
+
+    .pp-paper-section .pp-service-grid {
+
+        grid-template-columns:
+            1fr !important;
+
+        gap: 14px !important;
+    }
+
+
+    .pp-paper-section .pp-service-grid article {
+
+        min-height:
+            280px !important;
+
+        padding:
+            27px !important;
+
+        border-radius:
+            16px !important;
+    }
+
+
+    .pp-paper-section .pp-service-grid article > i {
+
+        margin-top:
+            35px !important;
+    }
+
 }
