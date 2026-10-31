@@ -231,7 +231,7 @@ def shipment_label(request, pk):
 
     return render(
         request,
-        "shipments/label.html",
+        "shipments/shipping_label.html",
         {
             "shipment": shipment,
             "qr_code": qr_code,

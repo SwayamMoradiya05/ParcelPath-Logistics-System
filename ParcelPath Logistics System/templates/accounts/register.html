@@ -66,8 +66,31 @@
             <button type="submit" class="pp-auth-submit"><i class="bi bi-person-plus"></i> Create ParcelPath account</button>
           </form>
           <div class="pp-auth-switch">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></div>
-          <div class="pp-auth-note"><i class="bi bi-shield-check"></i><span>Your existing Django registration, validation and account-role handling remain unchanged. This page only changes how the form is presented.</span></div>
-        </div>
+<div class="pp-auth-note pp-register-note">
+        <div class="pp-auth-note-heading">
+        <i class="bi bi-shield-check"></i>
+        <span>REGISTRATION & ACCOUNT INFORMATION</span>
+    </div>
+
+    <div class="pp-auth-note-content">
+        <p>
+            By registering as a new user, you agree to the applicable
+            user terms and privacy policy. You can book and track shipments,
+            submit shipping instructions, access transport documents and
+            manage your account information.
+        </p>
+
+        <p>
+            As a registered customer, you can view your personal and
+            company details through your profile.
+        </p>
+
+        <p>
+            Your account and its associated information are handled
+            according to the applicable terms and privacy policy.
+        </p>
+    </div>
+</div>        </div>
       </div>
     </div>
   </div>

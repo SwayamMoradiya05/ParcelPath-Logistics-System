@@ -1,16 +1,67 @@
+
 <aside class="pp-side-panel">
-    <div class="pp-side-brand"><span class="pp-side-mark">PP</span><div><strong>Driver desk</strong><small>Delivery operations</small></div></div>
-    <div class="pp-side-label">Today</div>
+
+    <!-- Driver branding -->
+    <div class="pp-side-brand">
+        
+
+        <div class="pp-side-brand-text">
+            <strong>Driver desk</strong>
+            <small>Delivery operations</small>
+        </div>
+    </div>
+
+    <!-- Today's workspace -->
+    <div class="pp-side-label">TODAY</div>
+
     <nav class="pp-side-nav">
-        <a href="{% url 'drivers:dashboard' %}"><i class="bi bi-grid-1x2"></i><span>Overview</span></a>
-        <a href="{% url 'drivers:deliveries' %}"><i class="bi bi-truck"></i><span>Assigned deliveries</span></a>
-        <a href="{% url 'drivers:route' %}"><i class="bi bi-signpost-2"></i><span>Today's route</span></a>
-        <a href="{% url 'drivers:history' %}"><i class="bi bi-clock-history"></i><span>Delivery history</span></a>
+
+        <a href="{% url 'drivers:dashboard' %}"
+           class="{% if request.resolver_match.view_name == 'drivers:dashboard' %}active{% endif %}">
+            <span>Overview</span>
+        </a>
+
+        <a href="{% url 'drivers:deliveries' %}"
+           class="{% if request.resolver_match.view_name == 'drivers:deliveries' %}active{% endif %}">
+            <span>Assigned deliveries</span>
+        </a>
+
+        <a href="{% url 'drivers:route' %}"
+           class="{% if request.resolver_match.view_name == 'drivers:route' %}active{% endif %}">
+            <span>Today's route</span>
+        </a>
+
+        <a href="{% url 'drivers:history' %}"
+           class="{% if request.resolver_match.view_name == 'drivers:history' %}active{% endif %}">
+            <span>Delivery history</span>
+        </a>
+
     </nav>
-    <div class="pp-side-label">Account</div>
+
+    <!-- Account -->
+    <div class="pp-side-label pp-side-account-label">ACCOUNT</div>
+
     <nav class="pp-side-nav">
-        <a href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i><span>Profile</span></a>
-        <a href="{% url 'accounts:logout' %}" class="pp-side-danger"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+
+        <a href="{% url 'accounts:profile' %}">
+            <span>Profile</span>
+        </a>
+
+        <a href="{% url 'accounts:logout' %}"
+           class="pp-side-danger">
+            <span>Logout</span>
+        </a>
+
     </nav>
-    <div class="pp-side-note"><strong>On the road</strong><p>Keep shipment status accurate so customers always know what is happening.</p></div>
+
+    <!-- Driver note -->
+    <div class="pp-side-note">
+        <strong>On the road</strong>
+
+        <p>
+            Keep shipment status accurate so customers always
+            know what is happening.
+        </p>
+    </div>
+
 </aside>

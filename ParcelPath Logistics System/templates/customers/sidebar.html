@@ -1,18 +1,65 @@
 <aside class="pp-side-panel">
-    <div class="pp-side-brand"><span class="pp-side-mark">PP</span><div><strong>Customer desk</strong><small>Shipment management</small></div></div>
-    <div class="pp-side-label">Workspace</div>
+
+    <div class="pp-side-brand">
+        <div class="pp-side-brand-text">
+            <strong>Customer desk</strong>
+            <small>Shipment management</small>
+        </div>
+    </div>
+
+    <div class="pp-side-label">WORKSPACE</div>
+
     <nav class="pp-side-nav">
-        <a href="{% url 'customers:dashboard' %}"><i class="bi bi-grid-1x2"></i><span>Overview</span></a>
-        <a href="{% url 'shipments:shipment_create' %}"><i class="bi bi-plus-square"></i><span>Book shipment</span></a>
-        <a href="{% url 'shipments:shipment_list' %}"><i class="bi bi-box-seam"></i><span>My shipments</span></a>
-        <a href="{% url 'tracking:tracking_list' %}"><i class="bi bi-pin-map"></i><span>Track parcel</span></a>
-        <a href="{% url 'notifications:list' %}"><i class="bi bi-bell"></i><span>Notifications</span></a>
+
+        <a href="{% url 'customers:dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <span>Overview</span>
+        </a>
+
+        <a href="{% url 'shipments:shipment_create' %}"
+           class="{% if request.resolver_match.url_name == 'shipment_create' %}active{% endif %}">
+            <span>Book shipment</span>
+        </a>
+
+        <a href="{% url 'shipments:shipment_list' %}"
+           class="{% if request.resolver_match.url_name == 'shipment_list' %}active{% endif %}">
+            <span>My shipments</span>
+        </a>
+
+       <a href="{% url 'tracking:tracking_list' %}"
+            class="{% if request.resolver_match.view_name == 'tracking:tracking_list' %}active{% endif %}">
+                <span>Track parcel</span>
+        </a>
+
+            <a href="{% url 'notifications:list' %}"
+            class="{% if request.resolver_match.view_name == 'notifications:list' %}active{% endif %}">
+                <span>Notifications</span>
+        </a>
+
     </nav>
-    <div class="pp-side-label">Account</div>
+
+    <div class="pp-side-label pp-side-account-label">ACCOUNT</div>
+
     <nav class="pp-side-nav">
-        <a href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i><span>Profile</span></a>
-        <a href="{% url 'accounts:change_password' %}"><i class="bi bi-lock"></i><span>Change password</span></a>
-        <a href="{% url 'accounts:logout' %}" class="pp-side-danger"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+
+        <a href="{% url 'accounts:profile' %}">
+            <span>Profile</span>
+        </a>
+
+        <a href="{% url 'accounts:change_password' %}">
+            <span>Change password</span>
+        </a>
+
+        <a href="{% url 'accounts:logout' %}" class="pp-side-danger">
+            <span>Logout</span>
+        </a>
+
     </nav>
-    <div class="pp-side-note"><strong>Need help?</strong><p>Our support team can help with a shipment, return or delivery question.</p><a href="{% url 'contact' %}">Contact support <i class="bi bi-arrow-right"></i></a></div>
+
+    <div class="pp-side-note">
+        <strong>Need assistance?</strong>
+        <p>Our support team is here to help with shipments, returns and delivery questions.</p>
+        <a href="{% url 'contact' %}">Contact support</a>
+    </div>
+
 </aside>

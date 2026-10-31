@@ -1,3 +1,4 @@
+
 {% extends "base/base.html" %}
 
 {% block title %}
@@ -6,121 +7,130 @@ Notifications | ParcelPath
 
 {% block content %}
 
-<section class="py-4">
+<div class="container-fluid py-4">
+    <div class="row g-4">
 
-<div class="container">
+        {% if request.user.is_authenticated and request.user.role == "CUSTOMER" %}
+        <div class="col-xl-2 col-lg-3">
+            {% include "customers/sidebar.html" %}
+        </div>
+        {% endif %}
 
-<div class="card border-0 shadow-sm">
+        <div class="{% if request.user.is_authenticated and request.user.role == 'CUSTOMER' %}col-xl-10 col-lg-9{% else %}col-12{% endif %}">
 
-<div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <section class="pp-notifications-page">
 
-<h3 class="mb-0">
+                <div class="card border-0 shadow-sm">
 
-Notifications
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
 
-</h3>
+                        <h3 class="mb-0">Notifications</h3>
 
-<div class="d-flex gap-2 mb-3">
+                        <div class="d-flex gap-2 flex-wrap">
 
-<a
-href="{% url 'notifications:mark_all_read' %}"
-class="btn btn-success">
+                            <a href="{% url 'notifications:mark_all_read' %}"
+                               class="btn btn-success">
+                                <i class="bi bi-check2-all"></i>
+                                Mark All Read
+                            </a>
 
-<i class="bi bi-check2-all"></i>
+                            <form method="post"
+                                  action="{% url 'notifications:delete_all' %}">
+                                {% csrf_token %}
 
-Mark All Read
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                    Delete All
+                                </button>
+                            </form>
 
-</a>
+                        </div>
 
-<form
-method="post"
-action="{% url 'notifications:delete_all' %}">
+                    </div>
 
-{% csrf_token %}
+                    <div class="list-group list-group-flush">
 
-<button
-class="btn btn-danger">
+                        {% for notification in notifications %}
 
-<i class="bi bi-trash"></i>
+                        <div class="list-group-item py-3">
 
-Delete All
+                            <div class="d-flex justify-content-between align-items-start gap-3">
 
-</button>
+                                <div>
+                                    <h6 class="mb-1">
+                                        {{ notification.title }}
+                                    </h6>
 
-</form>
+                                    <p class="mb-1">
+                                        {{ notification.message }}
+                                    </p>
 
+                                    <small class="text-muted">
+                                        {{ notification.created_at }}
+                                    </small>
+                                </div>
+
+                                {% if not notification.is_read %}
+                                <span class="badge bg-danger">New</span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% empty %}
+
+                        <div class="text-center py-5">
+                            No notifications available.
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% if page_obj.has_other_pages %}
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination justify-content-center mb-0">
+
+                                {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status|urlencode }}{% endif %}">
+                                        Previous
+                                    </a>
+                                </li>
+                                {% endif %}
+
+                                {% for num in page_obj.paginator.page_range %}
+                                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                    <a class="page-link"
+                                       href="?page={{ num }}{% if query %}&q={{ query|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status|urlencode }}{% endif %}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status|urlencode }}{% endif %}">
+                                        Next
+                                    </a>
+                                </li>
+                                {% endif %}
+
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        </div>
+    </div>
 </div>
-
-<a
-href="#"
-class="btn btn-outline-primary btn-sm">
-
-Mark All Read
-
-</a>
-
-</div>
-
-<div class="list-group list-group-flush">
-
-{% for notification in notifications %}
-
-<div class="list-group-item py-3">
-
-<div class="d-flex justify-content-between">
-
-<div>
-
-<h6 class="mb-1">
-
-{{ notification.title }}
-
-</h6>
-
-<p class="mb-1">
-
-{{ notification.message }}
-
-</p>
-
-<small class="text-muted">
-
-{{ notification.created_at }}
-
-</small>
-
-</div>
-
-{% if not notification.is_read %}
-
-<span class="badge bg-danger">
-
-New
-
-</span>
-
-{% endif %}
-
-</div>
-
-</div>
-
-{% empty %}
-
-<div class="text-center py-5">
-
-No notifications available.
-
-</div>
-
-{% endfor %}
-
-</div>
-
-</div>
-
-</div>
-
-</section>
 
 {% endblock %}

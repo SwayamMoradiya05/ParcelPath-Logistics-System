@@ -1,3 +1,4 @@
+
 {% extends "base/base.html" %}
 {% load static %}
 
@@ -6,18 +7,254 @@
 {% endblock %}
 
 {% block extra_css %}
-    <link
-        rel="stylesheet"
-        href="{% static 'css/admin_dashboard.css' %}"
-    >
 
-    <style>
-        /* Admin pages must not show the public website navigation */
-        .parcel-topbar,
-        .parcel-navbar {
-            display: none !important;
-        }
-    </style>
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<style>
+/* ==========================================
+   PARCELPATH ADMIN OPERATIONS SIDEBAR
+   Premium Ivory / Sage / Forest Green
+   ========================================== */
+
+.pp-admin-shell {
+    --admin-green: #173f33;
+    --admin-green-light: #e5eee8;
+    --admin-gold: #b58a49;
+    --admin-ivory: #f7f4ec;
+    --admin-border: #ded8c9;
+    --admin-text: #345449;
+    --admin-muted: #78877e;
+}
+
+/* Hide public navigation on admin pages */
+
+.parcel-topbar,
+.parcel-navbar {
+    display: none !important;
+}
+
+/* Sidebar */
+
+.pp-admin-sidebar {
+    position: sticky;
+    top: 20px;
+    min-height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 24px 18px;
+
+    background: linear-gradient(
+        145deg,
+        #f0f5f1,
+        #e7eee9
+    );
+
+    border: 1px solid #d5e0d8;
+    border-radius: 19px;
+
+    box-shadow: 0 12px 35px rgba(23, 63, 51, .07);
+}
+
+/* Scrollbar */
+
+.pp-admin-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: #b58a49 transparent;
+}
+
+.pp-admin-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.pp-admin-sidebar::-webkit-scrollbar-thumb {
+    background: #b58a49;
+    border-radius: 10px;
+}
+
+/* Brand */
+
+.pp-admin-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 10px 23px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d1ded5;
+}
+
+.pp-admin-brand-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pp-admin-brand-logo {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fbf8f0;
+    border: 1px solid #dfcda9;
+    border-radius: 11px;
+
+    color: var(--admin-green);
+    font-size: 21px;
+
+    box-shadow: 0 3px 8px rgba(23, 63, 51, .05);
+}
+
+.pp-admin-brand strong {
+    color: var(--admin-green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+}
+
+.pp-admin-brand small {
+    margin-top: 9px;
+    margin-left: 55px;
+    color: #7a8c85;
+    font-size: 13px;
+    letter-spacing: .2px;
+}
+
+/* Section headings */
+
+.pp-admin-sidebar .nav-section {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    margin: 25px 10px 13px;
+
+    color: #a77c3f;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.pp-admin-sidebar .nav-section::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    background: var(--admin-gold);
+    border-radius: 50%;
+}
+
+/* Navigation links */
+
+.pp-admin-sidebar > a {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    min-height: 59px;
+    margin-bottom: 7px;
+    padding: 9px 11px;
+
+    color: var(--admin-text);
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 650;
+
+    border-radius: 10px;
+    border: 1px solid transparent;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease,
+        border-color .2s ease;
+}
+
+/* Icon containers */
+
+.pp-admin-sidebar > a i {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, .62);
+    border: 1px solid #d4e0d8;
+    border-radius: 11px;
+
+    color: #668575;
+    font-size: 18px;
+
+    transition: all .2s ease;
+}
+
+/* Hover */
+
+.pp-admin-sidebar > a:hover {
+    background: #e0eae2;
+    border-color: #d1dfd5;
+    color: var(--admin-green);
+    transform: translateX(3px);
+}
+
+.pp-admin-sidebar > a:hover i {
+    background: #fffdf8;
+    border-color: #cdb88e;
+    color: var(--admin-green);
+}
+
+/* Active navigation */
+
+.pp-admin-sidebar > a.active {
+    background: var(--admin-green);
+    color: #fffdf7;
+    border-color: var(--admin-green);
+    box-shadow: 0 5px 13px rgba(23, 63, 51, .12);
+}
+
+.pp-admin-sidebar > a.active i {
+    background: rgba(255, 255, 255, .13);
+    border-color: rgba(255, 255, 255, .2);
+    color: #e7c68c;
+}
+
+/* Sidebar responsive */
+
+@media(max-width: 991px) {
+    .pp-admin-sidebar {
+        position: relative;
+        top: auto;
+        min-height: auto;
+        max-height: none;
+        margin-bottom: 20px;
+    }
+}
+
+@media(max-width: 576px) {
+    .pp-admin-sidebar {
+        padding: 17px 13px;
+    }
+
+    .pp-admin-sidebar > a {
+        min-height: 53px;
+        font-size: 14px;
+    }
+
+    .pp-admin-sidebar > a i {
+        width: 38px;
+        height: 38px;
+    }
+}
+</style>
+
 {% endblock %}
 
 
@@ -29,10 +266,7 @@
 
         <div class="row g-4">
 
-
-            <!-- ==================================================
-                 ADMIN SIDEBAR
-            ================================================== -->
+            <!-- ADMIN SIDEBAR -->
 
             <div class="col-xl-2 col-lg-3">
 
@@ -42,135 +276,155 @@
 
                     <div class="pp-admin-brand">
 
-                        <strong>
-                            <i class="bi bi-box-seam me-2"></i>
-                            ParcelPath
-                        </strong>
+                        <div class="pp-admin-brand-main">
 
-                        <small>
-                            Operations Center
-                        </small>
+
+                            <strong>ParcelPath</strong>
+
+                        </div>
+
+                        <small>Operations Center</small>
 
                     </div>
 
 
-                    <!-- ==================================================
-                         OPERATIONS
-                    ================================================== -->
+                    <!-- OPERATIONS -->
 
                     <div class="nav-section">
                         Operations
                     </div>
 
+                    <a href="{% url 'dashboard:admin_dashboard' %}"
+                       class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:admin_dashboard' %}">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Overview</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'shipments' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'shipments' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'shipments' %}">
                         <i class="bi bi-box-seam"></i>
                         <span>Shipments</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'payments' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'payments' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'payments' %}">
                         <i class="bi bi-credit-card"></i>
                         <span>Payments</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'tracking' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'tracking' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'tracking' %}">
                         <i class="bi bi-geo-alt"></i>
                         <span>Tracking</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'routes' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'routes' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'routes' %}">
                         <i class="bi bi-signpost-split"></i>
                         <span>Routes</span>
+
                     </a>
 
 
-                    <!-- ==================================================
-                         PEOPLE
-                    ================================================== -->
+                    <!-- PEOPLE -->
 
                     <div class="nav-section">
                         People
                     </div>
 
+                    <a href="{% url 'dashboard:model_list' 'customers' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'customers' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'customers' %}">
                         <i class="bi bi-people"></i>
                         <span>Customers</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'drivers' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'drivers' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'drivers' %}">
                         <i class="bi bi-truck"></i>
                         <span>Drivers</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'users' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'users' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'users' %}">
                         <i class="bi bi-person-lines-fill"></i>
                         <span>Users</span>
+
                     </a>
 
 
-                    <!-- ==================================================
-                         MANAGEMENT
-                    ================================================== -->
+                    <!-- MANAGEMENT -->
 
                     <div class="nav-section">
                         Management
                     </div>
 
+                    <a href="{% url 'dashboard:model_list' 'destinations' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'destinations' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'destinations' %}">
                         <i class="bi bi-pin-map"></i>
                         <span>Destinations</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'contacts' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'contacts' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'contacts' %}">
                         <i class="bi bi-headset"></i>
                         <span>Support</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'notifications' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'notifications' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'notifications' %}">
                         <i class="bi bi-bell"></i>
                         <span>Notifications</span>
+
                     </a>
 
 
-                    <!-- ==================================================
-                         SECURITY
-                    ================================================== -->
+                    <!-- SECURITY -->
 
                     <div class="nav-section">
                         Security
                     </div>
 
+                    <a href="{% url 'dashboard:model_list' 'login-history' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'login-history' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'login-history' %}">
                         <i class="bi bi-shield-check"></i>
                         <span>Login History</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'email-verification-tokens' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'email-verification-tokens' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'email-verification-tokens' %}">
                         <i class="bi bi-envelope-check"></i>
                         <span>Email Verification</span>
+
                     </a>
 
+                    <a href="{% url 'dashboard:model_list' 'password-reset-tokens' %}"
+                       class="{% if request.resolver_match.kwargs.model_name == 'password-reset-tokens' %}active{% endif %}">
 
-                    <a href="{% url 'dashboard:model_list' 'password-reset-tokens' %}">
                         <i class="bi bi-key"></i>
                         <span>Password Reset</span>
+
                     </a>
 
                 </aside>
@@ -178,12 +432,9 @@
             </div>
 
 
-            <!-- ==================================================
-                 ADMIN CONTENT
-            ================================================== -->
+            <!-- ADMIN CONTENT -->
 
             <div class="col-xl-10 col-lg-9 pp-admin-main">
-
 
                 <!-- Django Messages -->
 
@@ -212,12 +463,9 @@
                 {% endif %}
 
 
-                <!-- ==================================================
-                     ADMIN TOP BAR
-                ================================================== -->
+                <!-- ADMIN TOP BAR -->
 
-                <div
-                    class="pp-admin-topbar d-flex justify-content-between align-items-center gap-3">
+                <div class="pp-admin-topbar d-flex justify-content-between align-items-center gap-3">
 
                     <div>
 
@@ -231,37 +479,25 @@
 
                     </div>
 
-
                     <div class="d-flex align-items-center gap-2">
 
-                        <!-- SYSTEM STATUS -->
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
 
-                        <span
-                            class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">
-
-                            <i
-                                class="bi bi-circle-fill me-1"
-                                style="font-size: 7px"></i>
+                            <i class="bi bi-circle-fill me-1"
+                               style="font-size:7px"></i>
 
                             System Online
 
                         </span>
-
-
-                        <!-- NEW SHIPMENT -->
 
                         <a
                             href="{% url 'dashboard:model_create' 'shipments' %}"
                             class="btn btn-primary btn-sm">
 
                             <i class="bi bi-plus-lg me-1"></i>
-
                             New Shipment
 
                         </a>
-
-
-                        <!-- LOGOUT -->
 
                         <form
                             method="post"
@@ -275,7 +511,6 @@
                                 class="btn btn-outline-danger btn-sm">
 
                                 <i class="bi bi-box-arrow-right me-1"></i>
-
                                 Logout
 
                             </button>
@@ -283,14 +518,13 @@
                         </form>
 
                     </div>
-                    
+
                 </div>
 
 
-                <!-- PAGE-SPECIFIC ADMIN CONTENT -->
+                <!-- PAGE-SPECIFIC CONTENT -->
 
                 {% block admin_content %}{% endblock %}
-
 
             </div>
 

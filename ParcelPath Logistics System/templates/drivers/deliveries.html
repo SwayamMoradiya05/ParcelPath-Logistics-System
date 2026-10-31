@@ -1,3 +1,4 @@
+
 {% extends "base/base.html" %}
 
 {% block title %}
@@ -6,197 +7,460 @@ Assigned Deliveries | ParcelPath
 
 {% block content %}
 
-<section class="py-5">
+<style>
+/* ==========================================
+   PARCELPATH DRIVER DELIVERIES
+   Premium Customer Dashboard Theme
+   ========================================== */
+
+.pp-driver-deliveries {
+    --pp-green: #173f33;
+    --pp-green-soft: #e4eee8;
+    --pp-gold: #b58a49;
+    --pp-ivory: #f6f2e9;
+    --pp-card: #fffdf8;
+    --pp-border: #ded5c6;
+    --pp-text: #34332e;
+    --pp-muted: #817a70;
+
+    color: var(--pp-text);
+    min-width: 0;
+}
+
+/* Header */
+
+.pp-driver-deliveries .driver-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.pp-driver-deliveries .driver-page-title {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.pp-driver-deliveries .driver-page-subtitle {
+    color: var(--pp-muted);
+    font-size: 13px;
+    margin: 0;
+}
+
+.pp-driver-deliveries .driver-delivery-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 15px;
+    border-radius: 7px;
+    background: var(--pp-green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+/* Table card */
+
+.pp-driver-deliveries .driver-delivery-card {
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border) !important;
+    border-radius: 13px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(43,55,43,.045);
+}
+
+/* Table */
+
+.pp-driver-deliveries .driver-delivery-table {
+    width: 100%;
+    min-width: 760px;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pp-driver-deliveries .driver-delivery-table thead th {
+    padding: 17px 20px;
+    background: #eae4d8;
+    color: #625c51;
+    border-bottom: 1px solid var(--pp-border);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.pp-driver-deliveries .driver-delivery-table tbody td {
+    padding: 17px 20px;
+    vertical-align: middle;
+    color: var(--pp-text);
+    background: var(--pp-card);
+    border-bottom: 1px solid #eee8de;
+    font-size: 13px;
+}
+
+.pp-driver-deliveries .driver-delivery-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pp-driver-deliveries .driver-delivery-table tbody tr {
+    transition: background .2s ease;
+}
+
+.pp-driver-deliveries .driver-delivery-table tbody tr:hover td {
+    background: #f8f4eb;
+}
+
+/* Tracking number */
+
+.pp-driver-deliveries .driver-tracking-number {
+    color: var(--pp-green);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+/* Receiver */
+
+.pp-driver-deliveries .driver-receiver {
+    color: #393a32;
+    font-weight: 600;
+    min-width: 130px;
+}
+
+/* Package */
+
+.pp-driver-deliveries .driver-package {
+    color: var(--pp-muted);
+    font-weight: 500;
+}
+
+/* Status badges */
+
+.pp-driver-deliveries .driver-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    padding: 8px 11px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.pp-driver-deliveries .status-delivered {
+    background: #e1ede4;
+    color: #27613f;
+}
+
+.pp-driver-deliveries .status-pending {
+    background: #f6e9cc;
+    color: #906522;
+}
+
+.pp-driver-deliveries .status-transit {
+    background: #e9e8d9;
+    color: #596b40;
+}
+
+.pp-driver-deliveries .status-failed {
+    background: #f1dfd9;
+    color: #994c3d;
+}
+
+.pp-driver-deliveries .status-returned {
+    background: #e9e2d7;
+    color: #74644d;
+}
+
+.pp-driver-deliveries .status-default {
+    background: #eee9df;
+    color: #70695d;
+}
+
+/* Actions */
+
+.pp-driver-deliveries .driver-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.pp-driver-deliveries .driver-action-btn {
+    min-width: 72px;
+    height: 35px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 0 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s ease;
+}
+
+.pp-driver-deliveries .driver-details-btn {
+    background: #e8eee8;
+    color: var(--pp-green);
+    border: 1px solid #d3dfd4;
+}
+
+.pp-driver-deliveries .driver-details-btn:hover {
+    background: var(--pp-green);
+    color: white;
+}
+
+.pp-driver-deliveries .driver-update-btn {
+    background: #f3ead9;
+    color: #8b672e;
+    border: 1px solid #e7d8bb;
+}
+
+.pp-driver-deliveries .driver-update-btn:hover {
+    background: var(--pp-gold);
+    color: white;
+}
+
+/* Empty state */
+
+.pp-driver-deliveries .driver-empty-state {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.pp-driver-deliveries .driver-empty-state i {
+    color: var(--pp-gold);
+    font-size: 43px;
+}
+
+.pp-driver-deliveries .driver-empty-state h4 {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+}
+
+/* Responsive */
+
+@media (max-width: 991px) {
+    .pp-driver-deliveries .driver-page-title {
+        font-size: 27px;
+    }
+}
+
+@media (max-width: 576px) {
+    .pp-driver-deliveries .driver-page-title {
+        font-size: 25px;
+    }
+
+    .pp-driver-deliveries .driver-delivery-table thead th,
+    .pp-driver-deliveries .driver-delivery-table tbody td {
+        padding: 13px;
+    }
+}
+</style>
+
+<section class="py-4 pp-driver-deliveries">
+
+    <div class="container-fluid">
+
+        <div class="row g-4">
+
+            <!-- Driver Sidebar -->
+
+            <div class="col-xl-2 col-lg-3">
+                {% include "drivers/sidebar.html" %}
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="col-xl-10 col-lg-9">
+
+                <!-- Page Header -->
+
+                <div class="driver-page-header">
+
+                    <div>
+                        <h2 class="driver-page-title">
+                            Assigned Deliveries
+                        </h2>
+
+                        <p class="driver-page-subtitle">
+                            Manage and track your assigned shipment deliveries.
+                        </p>
+                    </div>
+
+                    <span class="driver-delivery-count">
+                        {{ shipments.count }} Deliveries
+                    </span>
+
+                </div>
+
+                <!-- Deliveries Table -->
+
+                <div class="card driver-delivery-card border-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table driver-delivery-table align-middle mb-0">
+
+                            <thead>
+                                <tr>
+                                    <th>Tracking Number</th>
+                                    <th>Receiver</th>
+                                    <th>Package</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for shipment in shipments %}
+
+                                <tr>
+
+                                    <!-- Tracking -->
 
-<div class="container-fluid">
+                                    <td>
+                                        <span class="driver-tracking-number">
+                                            {{ shipment.tracking_number }}
+                                        </span>
+                                    </td>
+
+                                    <!-- Receiver -->
 
-<div class="row">
+                                    <td>
+                                        <span class="driver-receiver">
+                                            {{ shipment.receiver_name }}
+                                        </span>
+                                    </td>
 
-<div class="col-lg-3">
+                                    <!-- Package -->
 
-{% include "drivers/sidebar.html" %}
+                                    <td>
+                                        <span class="driver-package">
+                                            {{ shipment.package_type }}
+                                        </span>
+                                    </td>
 
-</div>
+                                    <!-- Status -->
 
-<div class="col-lg-9">
+                                    <td>
 
-<div class="card driver-delivery-card border-0">
+                                        {% if shipment.status == "DELIVERED" %}
+                                            <span class="driver-status status-delivered">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div class="card-header driver-delivery-header">
+                                        {% elif shipment.status == "PENDING" %}
+                                            <span class="driver-status status-pending">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                        {% elif shipment.status == "OUT_FOR_DELIVERY" %}
+                                            <span class="driver-status status-transit">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div>
+                                        {% elif shipment.status == "FAILED" %}
+                                            <span class="driver-status status-failed">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<h3 class="mb-1">
+                                        {% elif shipment.status == "RETURNED" %}
+                                            <span class="driver-status status-returned">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<i class="bi bi-truck-front-fill text-primary me-2"></i>
+                                        {% else %}
+                                            <span class="driver-status status-default">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
+                                        {% endif %}
 
-Assigned Deliveries
+                                    </td>
 
-</h3>
+                                    <!-- Actions -->
 
-<p class="text-muted mb-0">
+                                    <td>
 
-Manage your assigned shipment deliveries.
+                                        <div class="driver-actions">
 
-</p>
+                                            <a
+                                                href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                                                class="driver-action-btn driver-details-btn">
+                                                <i class="bi bi-eye"></i>
+                                                View
+                                            </a>
 
-</div>
+                                            {% if shipment.status != "DELIVERED" %}
 
-<span class="badge driver-delivery-count">
+                                                <a
+                                                    href="{% url 'shipments:driver_update_status' shipment.pk %}"
+                                                    class="driver-action-btn driver-update-btn">
+                                                    <i class="bi bi-arrow-repeat"></i>
+                                                    Update Status
+                                                </a>
 
-{{ shipments.count }} Deliveries
+                                            {% endif %}
 
-</span>
-</div>
+                                        </div>
 
-<div class="table-responsive">
+                                    </td>
 
-<table class="table driver-delivery-table align-middle mb-0">
+                                </tr>
 
-<thead>
+                                {% empty %}
 
-<tr>
+                                <tr>
+                                    <td colspan="5">
 
-<th>Tracking</th>
-<th>Receiver</th>
-<th>Package</th>
-<th>Status</th>
+                                        <div class="driver-empty-state">
 
-<th></th>
+                                            <i class="bi bi-truck"></i>
 
-</tr>
+                                            <h4 class="mt-3">
+                                                No Deliveries Assigned
+                                            </h4>
 
-</thead>
+                                            <p class="text-muted mb-0">
+                                                Your assigned deliveries will appear here.
+                                            </p>
 
-<tbody>
+                                        </div>
 
-{% for shipment in shipments %}
+                                    </td>
+                                </tr>
 
-<tr>
+                                {% endfor %}
 
-<td>
+                            </tbody>
 
-{{ shipment.tracking_number }}
+                        </table>
 
-</td>
+                    </div>
 
-<td>
+                </div>
 
-{{ shipment.receiver_name }}
+            </div>
 
-</td>
+        </div>
 
-<td>
-
-{{ shipment.package_type }}
-
-</td>
-
-<td>
-
-<span class="badge
-{% if shipment.status == 'PENDING' %}
-bg-warning text-dark
-{% elif shipment.status == 'OUT_FOR_DELIVERY' %}
-bg-info
-{% elif shipment.status == 'DELIVERED' %}
-bg-success
-{% elif shipment.status == 'FAILED' %}
-bg-danger
-{% else %}
-bg-secondary
-{% endif %}">
-
-{{ shipment.get_status_display|default:shipment.status }}
-
-</span>
-
-</td>
-
-
-<td>
-
-<a
-href="{% url 'shipments:shipment_detail' shipment.pk %}"
-class="btn btn-sm driver-details-btn">
-
-View
-
-</a>
-
-{% if shipment.status != "DELIVERED" %}
-
-<a
-href="{% url 'shipments:driver_update_status' shipment.pk %}"
-class="btn btn-sm driver-update-btn">
-
-Update
-
-</a>
-
-{% endif %}
-
-{% if shipment.status != "DELIVERED" %}
-
-<a
-href="{% url 'shipments:driver_update_status' shipment.id %}"
-class="btn btn-sm driver-update-btn">
-
-Update Status
-
-</a>
-
-{% endif %}
-
-</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-
-<td colspan="6">
-
-<div class="driver-empty-state">
-
-<i class="bi bi-truck display-4 text-secondary"></i>
-
-<h4 class="mt-3">
-
-No Deliveries Assigned
-
-</h4>
-
-<p class="text-muted mb-0">
-
-Your assigned deliveries will appear here.
-
-</p>
-
-</div>
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 

@@ -1,3 +1,4 @@
+
 {% extends "base/base.html" %}
 {% load static %}
 
@@ -7,242 +8,548 @@ Today's Route | ParcelPath
 
 {% block content %}
 
-<section class="py-5">
+<style>
+/* ==========================================
+   PARCELPATH — DRIVER TODAY'S ROUTE
+   Forest Green / Ivory / Champagne
+   ========================================== */
+
+.pp-driver-route {
+    --pp-green: #173f33;
+    --pp-green-soft: #e4eee8;
+    --pp-gold: #b58a49;
+    --pp-ivory: #f6f2e9;
+    --pp-card: #fffdf8;
+    --pp-border: #ded5c6;
+    --pp-text: #34332e;
+    --pp-muted: #817a70;
+
+    color: var(--pp-text);
+    min-width: 0;
+}
+
+/* Page heading */
+
+.pp-driver-route .route-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.pp-driver-route .route-page-title {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.pp-driver-route .route-page-subtitle {
+    color: var(--pp-muted);
+    font-size: 13px;
+    margin: 0;
+}
+
+.pp-driver-route .route-count {
+    background: var(--pp-green);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Shared cards */
+
+.pp-driver-route .driver-route-card,
+.pp-driver-route .driver-route-list {
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border) !important;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(43,55,43,.045);
+}
+
+.pp-driver-route .driver-route-header {
+    padding: 18px 24px;
+    background: #fcfaf5;
+    border-bottom: 1px solid var(--pp-border);
+}
+
+.pp-driver-route .driver-route-header h4 {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Map */
+
+.pp-driver-route .route-map-wrapper {
+    width: 100%;
+    height: 340px;
+    background: #eae4d8;
+}
+
+.pp-driver-route .route-map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+}
+
+/* Delivery stop cards */
+
+.pp-driver-route .driver-stop-item {
+    padding: 23px 25px;
+    background: var(--pp-card);
+    border-bottom: 1px solid #eee8de;
+    transition: background .2s ease;
+}
+
+.pp-driver-route .driver-stop-item:last-child {
+    border-bottom: none;
+}
+
+.pp-driver-route .driver-stop-item:hover {
+    background: #f8f4eb;
+}
+
+.pp-driver-route .stop-topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+
+.pp-driver-route .stop-name {
+    color: var(--pp-green);
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.pp-driver-route .stop-address {
+    color: var(--pp-muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    overflow-wrap: anywhere;
+}
+
+.pp-driver-route .stop-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+}
+
+.pp-driver-route .stop-detail {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #696358;
+    font-size: 12px;
+}
+
+.pp-driver-route .stop-detail i {
+    color: var(--pp-gold);
+    font-size: 14px;
+}
+
+/* Status badges */
+
+.pp-driver-route .stop-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 95px;
+    padding: 8px 11px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.pp-driver-route .status-delivered {
+    background: #e1ede4;
+    color: #27613f;
+}
+
+.pp-driver-route .status-pending {
+    background: #f6e9cc;
+    color: #906522;
+}
+
+.pp-driver-route .status-transit {
+    background: #e9e8d9;
+    color: #596b40;
+}
+
+.pp-driver-route .status-out {
+    background: #e4eee8;
+    color: #27613f;
+}
+
+.pp-driver-route .status-cancelled {
+    background: #f1dfd9;
+    color: #994c3d;
+}
+
+.pp-driver-route .status-default {
+    background: #eee9df;
+    color: #70695d;
+}
+
+/* Stop actions */
+
+.pp-driver-route .stop-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pp-driver-route .stop-action-btn {
+    min-width: 92px;
+    height: 37px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s ease;
+}
+
+.pp-driver-route .stop-view-btn {
+    color: var(--pp-green);
+    background: #e8eee8;
+    border: 1px solid #d3dfd4;
+}
+
+.pp-driver-route .stop-view-btn:hover {
+    background: var(--pp-green);
+    color: white;
+}
+
+.pp-driver-route .stop-update-btn {
+    color: #8b672e;
+    background: #f3ead9;
+    border: 1px solid #e7d8bb;
+}
+
+.pp-driver-route .stop-update-btn:hover {
+    background: var(--pp-gold);
+    color: white;
+}
+
+.pp-driver-route .stop-map-btn {
+    color: #526b58;
+    background: #e8ede5;
+    border: 1px solid #d5dfd2;
+}
+
+.pp-driver-route .stop-map-btn:hover {
+    background: #526b58;
+    color: white;
+}
+
+/* Empty state */
+
+.pp-driver-route .route-empty-state {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.pp-driver-route .route-empty-state i {
+    color: var(--pp-gold);
+    font-size: 43px;
+}
+
+.pp-driver-route .route-empty-state h4 {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+}
+
+/* Responsive */
+
+@media(max-width: 991px) {
+    .pp-driver-route .route-page-title {
+        font-size: 27px;
+    }
+
+    .pp-driver-route .route-map-wrapper {
+        height: 290px;
+    }
+
+    .pp-driver-route .stop-actions {
+        justify-content: flex-start;
+        margin-top: 18px;
+    }
+}
+
+@media(max-width: 576px) {
+    .pp-driver-route .route-page-title {
+        font-size: 25px;
+    }
+
+    .pp-driver-route .driver-stop-item {
+        padding: 18px;
+    }
+
+    .pp-driver-route .stop-topline {
+        flex-direction: column;
+    }
+
+    .pp-driver-route .stop-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .pp-driver-route .stop-action-btn {
+        width: 100%;
+    }
+
+    .pp-driver-route .route-map-wrapper {
+        height: 240px;
+    }
+}
+</style>
+
+<section class="py-4 pp-driver-route">
+
+    <div class="container-fluid">
+
+        <div class="row g-4">
+
+            <!-- Driver Sidebar -->
+
+            <div class="col-xl-2 col-lg-3">
+                {% include "drivers/sidebar.html" %}
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="col-xl-10 col-lg-9">
+
+                <!-- Page Header -->
+
+                <div class="route-page-header">
+
+                    <div>
+                        <h2 class="route-page-title">
+                            Today's Route
+                        </h2>
+
+                        <p class="route-page-subtitle">
+                            Manage today's assigned delivery stops.
+                        </p>
+                    </div>
+
+                    <span class="route-count">
+                        {{ shipments.count }} Stops
+                    </span>
+
+                </div>
+
+                <!-- Google Map -->
+
+                <div class="card driver-route-card border-0 mb-4">
+
+                    <div class="card-header driver-route-header">
+                        <h4>
+                            <i class="bi bi-map me-2"></i>
+                            Route Map
+                        </h4>
+                    </div>
+
+                    <div class="route-map-wrapper">
+
+                        {% if shipments %}
+
+                            <iframe
+                                src="https://www.google.com/maps?q={{ shipments.0.receiver_address|urlencode }}&output=embed"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Today's delivery route map">
+                            </iframe>
+
+                        {% else %}
+
+                            <iframe
+                                src="https://www.google.com/maps?q=Ahmedabad&output=embed"
+                                loading="lazy"
+                                title="Delivery location map">
+                            </iframe>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <!-- Delivery Stops -->
+
+                <div class="card driver-route-list border-0">
+
+                    <div class="card-header driver-route-header">
+
+                        <h4>
+                            Delivery Stops
+                        </h4>
+
+                    </div>
+
+                    <div class="list-group list-group-flush">
+
+                        {% for shipment in shipments %}
+
+                        <div class="list-group-item driver-stop-item">
+
+                            <div class="row align-items-center g-3">
+
+                                <!-- Stop Information -->
+
+                                <div class="col-xl-7 col-lg-7">
+
+                                    <div class="stop-topline">
+
+                                        <h5 class="stop-name">
+                                            {{ shipment.receiver_name }}
+                                        </h5>
+
+                                        {% if shipment.status == "PICKUP_ASSIGNED" %}
+                                            <span class="stop-status status-pending">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "IN_TRANSIT" %}
+                                            <span class="stop-status status-transit">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "OUT_FOR_DELIVERY" %}
+                                            <span class="stop-status status-out">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div class="container-fluid">
+                                        {% elif shipment.status == "DELIVERED" %}
+                                            <span class="stop-status status-delivered">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div class="row">
+                                        {% elif shipment.status == "CANCELLED" %}
+                                            <span class="stop-status status-cancelled">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
 
-<div class="col-lg-3">
+                                        {% else %}
+                                            <span class="stop-status status-default">
+                                                {{ shipment.get_status_display|default:shipment.status }}
+                                            </span>
+                                        {% endif %}
 
-{% include "drivers/sidebar.html" %}
+                                    </div>
 
-</div>
+                                    <p class="stop-address">
+                                        <i class="bi bi-geo-alt me-1"></i>
+                                        {{ shipment.receiver_address|default:"Address not available" }}
+                                    </p>
 
-<div class="col-lg-9">
+                                    <div class="stop-details">
 
-<div class="card driver-route-card border-0 mb-4">
+                                        <span class="stop-detail">
+                                            <i class="bi bi-box-seam"></i>
+                                            {{ shipment.package_type }}
+                                        </span>
 
-<div class="card-header driver-route-header">
+                                        <span class="stop-detail">
+                                            <i class="bi bi-calendar-event"></i>
+                                            {{ shipment.expected_delivery|date:"M d, Y"|default:shipment.expected_delivery }}
+                                        </span>
 
-<div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    </div>
 
-<div>
+                                </div>
 
-<h3 class="mb-1">
+                                <!-- Actions -->
 
-<i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                                <div class="col-xl-5 col-lg-5">
 
-Today's Route
+                                    <div class="stop-actions">
 
-</h3>
+                                        <a
+                                            href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                                            class="stop-action-btn stop-view-btn">
+                                            <i class="bi bi-eye"></i>
+                                            View
+                                        </a>
 
-<p class="text-muted mb-0">
+                                        {% if shipment.status != "DELIVERED" %}
 
-Manage today's assigned delivery stops.
+                                            <a
+                                                href="{% url 'shipments:driver_update_status' shipment.pk %}"
+                                                class="stop-action-btn stop-update-btn">
+                                                <i class="bi bi-pencil-square"></i>
+                                                Update Status
+                                            </a>
 
-</p>
+                                        {% endif %}
 
-</div>
+                                        <a
+                                            href="https://www.google.com/maps/search/?api=1&query={{ shipment.receiver_address|urlencode }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="stop-action-btn stop-map-btn">
+                                            <i class="bi bi-map"></i>
+                                            Open Maps
+                                        </a>
 
-<span class="badge driver-route-count">
+                                    </div>
 
-{{ shipments.count }} Stops
+                                </div>
 
-</span>
+                            </div>
 
-</div>
+                        </div>
 
-</div>
+                        {% empty %}
 
-<div class="card-body p-0">
+                        <div class="route-empty-state">
 
-<div class="ratio ratio-21x9">
+                            <i class="bi bi-geo-alt"></i>
 
-{% if shipments %}
+                            <h4 class="mt-3">
+                                No Route Assigned
+                            </h4>
 
-<iframe
-src="https://www.google.com/maps?q={{ shipments.0.receiver_address|urlencode }}&output=embed"
-loading="lazy">
-</iframe>
+                            <p class="text-muted mb-0">
+                                There are no deliveries assigned for today.
+                            </p>
 
-{% else %}
+                        </div>
 
-<iframe
-src="https://www.google.com/maps?q=Ahmedabad&output=embed"
-loading="lazy">
-</iframe>
+                        {% endfor %}
 
-{% endif %}
+                    </div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
-<div class="card driver-route-list border-0">
-
-<div class="card-header driver-route-header">
-
-<h4 class="mb-0">
-
-Delivery Stops
-
-</h4>
-
-</div>
-
-<div class="list-group list-group-flush">
-
-{% for shipment in shipments %}
-
-<div class="list-group-item driver-stop-item">
-
-<div class="row align-items-center">
-
-<div class="col-lg-7">
-
-<h5 class="mb-2">
-
-<i class="bi bi-person-circle text-primary me-2"></i>
-
-{{ shipment.receiver_name }}
-
-</h5>
-
-<p class="mb-2 text-muted">
-
-<i class="bi bi-geo-alt-fill text-danger me-2"></i>
-
-{{ shipment.receiver_address }}
-
-</p>
-
-<div class="d-flex flex-wrap gap-3">
-
-<span>
-
-<i class="bi bi-box-seam me-1"></i>
-
-{{ shipment.package_type }}
-
-</span>
-
-<span>
-
-<i class="bi bi-calendar-event me-1"></i>
-
-{{ shipment.expected_delivery }}
-
-</span>
-
-</div>
-
-</div>
-
-<div class="col-lg-2 text-center mt-3 mt-lg-0">
-
-<span class="badge
-
-{% if shipment.status == 'PICKUP_ASSIGNED' %}
-bg-warning text-dark
-{% elif shipment.status == 'IN_TRANSIT' %}
-bg-info
-{% elif shipment.status == 'OUT_FOR_DELIVERY' %}
-bg-primary
-{% elif shipment.status == 'DELIVERED' %}
-bg-success
-{% elif shipment.status == 'CANCELLED' %}
-bg-danger
-{% else %}
-bg-secondary
-{% endif %}">
-
-{{ shipment.get_status_display }}
-
-</span>
-
-</div>
-
-<div class="col-lg-3 text-lg-end mt-3 mt-lg-0">
-
-<div class="d-grid gap-2">
-
-<a
-href="{% url 'shipments:shipment_detail' shipment.pk %}"
-class="btn btn-outline-primary">
-
-<i class="bi bi-eye me-1"></i>
-
-View
-
-</a>
-
-{% if shipment.status != "DELIVERED" %}
-
-<a
-href="{% url 'shipments:driver_update_status' shipment.pk %}"
-class="btn btn-primary">
-
-<i class="bi bi-pencil-square me-1"></i>
-
-Update Status
-
-</a>
-
-{% endif %}
-
-<a
-href="https://www.google.com/maps/search/?api=1&query={{ shipment.receiver_address|urlencode }}"
-target="_blank"
-class="btn btn-success">
-
-<i class="bi bi-map me-1"></i>
-
-Open Maps
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-{% empty %}
-
-<div class="text-center py-5">
-
-<i class="bi bi-geo-alt display-2 text-secondary"></i>
-
-<h4 class="mt-3">
-
-No Route Assigned
-
-</h4>
-
-<p class="text-muted mb-0">
-
-There are no deliveries assigned for today.
-
-</p>
-
-</div>
-
-{% endfor %}
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 

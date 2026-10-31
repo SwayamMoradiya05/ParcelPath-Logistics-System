@@ -5166,3 +5166,182 @@ body {
         width: 100% !important;
     }
 }
+
+/* ==========================================
+   ADMIN SIDEBAR — CUSTOMER SIDEBAR STYLE
+   Full left-edge alignment
+   ========================================== */
+
+/* Remove outer spacing around admin sidebar */
+
+.pp-admin-shell > .container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.pp-admin-shell > .container-fluid > .row {
+    --bs-gutter-x: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.pp-admin-shell > .container-fluid > .row > .col-xl-2 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Sidebar */
+
+.pp-admin-sidebar {
+    position: sticky !important;
+    top: 0 !important;
+
+    width: 100% !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+
+    margin: 0 !important;
+    padding: 18px 10px !important;
+
+    box-sizing: border-box !important;
+
+    background: #12382f !important;
+    color: #f6f2e9 !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    scrollbar-width: thin;
+    scrollbar-color: #b58a49 #12382f;
+}
+
+/* Remove branding completely */
+
+.pp-admin-sidebar .pp-admin-brand {
+    display: none !important;
+}
+
+/* Section headings */
+
+.pp-admin-sidebar .nav-section {
+    display: block !important;
+
+    margin: 25px 15px 14px !important;
+    padding: 0 !important;
+
+    color: #c69b5b !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+}
+
+.pp-admin-sidebar .nav-section::before,
+.pp-admin-sidebar .nav-section::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Navigation links */
+
+.pp-admin-sidebar > a {
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    min-height: 55px !important;
+
+    margin: 0 0 5px !important;
+    padding: 15px 20px !important;
+
+    background: transparent !important;
+    color: #e8e9df !important;
+
+    border: none !important;
+    border-left: 4px solid transparent !important;
+    border-radius: 4px !important;
+
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+
+    gap: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove all icons */
+
+.pp-admin-sidebar > a i {
+    display: none !important;
+}
+
+/* Navigation text */
+
+.pp-admin-sidebar > a span {
+    color: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hover */
+
+.pp-admin-sidebar > a:hover {
+    background: rgba(231, 226, 212, .10) !important;
+    color: #fffaf0 !important;
+}
+
+/* Active page — dark green text on ivory */
+
+.pp-admin-sidebar > a.active,
+.pp-admin-sidebar > a.active:hover {
+    background: #e7e2d4 !important;
+    color: #173f33 !important;
+
+    border-left: 4px solid #b58a49 !important;
+    border-radius: 4px !important;
+
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+.pp-admin-sidebar > a.active span {
+    color: #173f33 !important;
+    font-weight: 700 !important;
+}
+
+/* Remove decorative bars */
+
+.pp-admin-sidebar > a::before,
+.pp-admin-sidebar > a::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Main content retains its own spacing */
+
+.pp-admin-main {
+    padding: 24px !important;
+    min-width: 0;
+}
+
+/* Responsive */
+
+@media(max-width: 991px) {
+    .pp-admin-sidebar {
+        position: relative !important;
+        top: auto !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+    }
+
+    .pp-admin-main {
+        padding: 18px !important;
+    }
+}

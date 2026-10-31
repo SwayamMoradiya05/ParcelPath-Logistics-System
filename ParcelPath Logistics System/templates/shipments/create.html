@@ -1,223 +1,223 @@
+
 {% extends "base/base.html" %}
 
-{% block title %}
-Create Shipment | ParcelPath
-{% endblock %}
+{% block title %}Create Shipment | ParcelPath{% endblock %}
 
 {% block content %}
 
-<div class="container py-4">
+<div class="container-fluid py-4">
+    <div class="row g-4">
 
-    <div class="card shipment-form-card border-0">
-
-        <div class="card-header shipment-form-header">
-
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-
-        <div>
-
-            <h3 class="mb-1">
-
-                <i class="bi bi-box-seam-fill text-primary me-2"></i>
-
-                Create Shipment
-
-            </h3>
-
-            <p class="text-muted mb-0">
-
-                Fill in the shipment information below.
-
-            </p>
-
+        <!-- CUSTOMER SIDEBAR -->
+        <div class="col-xl-2 col-lg-3">
+            {% include "customers/sidebar.html" %}
         </div>
 
-        <span class="badge bg-primary fs-6">
+        <!-- PAGE CONTENT -->
+        <div class="col-xl-10 col-lg-9">
+            <div class="pp-create-page">
+    <!-- PAGE HEADER -->
+    <div class="pp-create-heading">
+        <div>
+            <span class="pp-create-eyebrow">PARCELPATH / SHIPMENT OPERATIONS</span>
+            <h1>Create a shipment</h1>
+            <p>Enter the shipment details to arrange your next delivery.</p>
+        </div>
 
-            New Shipment
-
-        </span>
-
+        <div class="pp-create-reference">
+            <span class="pp-reference-dot"></span>
+            NEW SHIPMENT
+        </div>
     </div>
 
-</div>
+    <form method="post" novalidate class="pp-create-form">
+        {% csrf_token %}
 
-        <div class="card-body">
+        {% if form.non_field_errors %}
+        <div class="pp-form-errors">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
 
-            <form method="post" novalidate>
+        <!-- PACKAGE TYPE -->
+        <section class="pp-form-section pp-package-section">
 
-                {% csrf_token %}
+            <div class="pp-section-heading">
+                <div class="pp-section-number">01</div>
+                <div>
+                    <h2>Shipment category</h2>
+                    <p>Choose the type of parcel you want to send.</p>
+                </div>
+            </div>
 
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        {{ form.non_field_errors }}
+            <div class="pp-field pp-package-field">
+                <label for="{{ form.package_type.id_for_label }}">Package type</label>
+                {{ form.package_type }}
+                {{ form.package_type.errors }}
+            </div>
+
+        </section>
+
+        <!-- SENDER AND RECEIVER -->
+        <div class="pp-address-grid">
+
+            <!-- SENDER -->
+            <section class="pp-form-section">
+
+                <div class="pp-section-heading">
+                    <div class="pp-section-number">02</div>
+                    <div>
+                        <h2>Sender information</h2>
+                        <p>Details of the person sending the parcel.</p>
                     </div>
-                {% endif %}
-
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ field.label }}:</strong> {{ error }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
-                <div class="row">
-
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Package Type</label>
-                        {{ form.package_type }}
-                        {{ form.package_type.errors }}
-                    </div>
-
                 </div>
 
-                <hr class="shipment-divider">
-
-                <h5 class="form-section-title mb-4">
-
-                    <i class="bi bi-person-fill me-2"></i>
-
-                    Sender Information
-
-                </h5>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Sender Name</label>
-                        {{ form.sender_name }}
-                        {{ form.sender_name.errors }}
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Sender Phone</label>
-                        {{ form.sender_phone }}
-                        {{ form.sender_phone.errors }}
-                    </div>
-
+                <div class="pp-field">
+                    <label for="{{ form.sender_name.id_for_label }}">Sender name</label>
+                    {{ form.sender_name }}
+                    {{ form.sender_name.errors }}
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Sender Address</label>
+                <div class="pp-field">
+                    <label for="{{ form.sender_phone.id_for_label }}">Sender phone</label>
+                    {{ form.sender_phone }}
+                    {{ form.sender_phone.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.sender_address.id_for_label }}">Pickup address</label>
                     {{ form.sender_address }}
                     {{ form.sender_address.errors }}
                 </div>
 
-                <hr class="shipment-divider">
+            </section>
 
-                <h5 class="form-section-title mb-4">
+            <!-- RECEIVER -->
+            <section class="pp-form-section">
 
-                    <i class="bi bi-person-check-fill me-2"></i>
-
-                    Receiver Information
-
-                </h5>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Receiver Name</label>
-                        {{ form.receiver_name }}
-                        {{ form.receiver_name.errors }}
+                <div class="pp-section-heading">
+                    <div class="pp-section-number">03</div>
+                    <div>
+                        <h2>Receiver information</h2>
+                        <p>Where should this shipment be delivered?</p>
                     </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Receiver Phone</label>
-                        {{ form.receiver_phone }}
-                        {{ form.receiver_phone.errors }}
-                    </div>
-
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Receiver Address</label>
+                <div class="pp-field">
+                    <label for="{{ form.receiver_name.id_for_label }}">Receiver name</label>
+                    {{ form.receiver_name }}
+                    {{ form.receiver_name.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.receiver_phone.id_for_label }}">Receiver phone</label>
+                    {{ form.receiver_phone }}
+                    {{ form.receiver_phone.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.receiver_address.id_for_label }}">Delivery address</label>
                     {{ form.receiver_address }}
                     {{ form.receiver_address.errors }}
                 </div>
 
-                <hr class="shipment-divider">
-
-                <h5 class="form-section-title mb-4">
-
-                    <i class="bi bi-box-fill me-2"></i>
-
-                    Package Details
-
-                </h5>
-
-                <div class="row">
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Weight (kg)</label>
-                        {{ form.weight }}
-                        {{ form.weight.errors }}
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Length</label>
-                        {{ form.length }}
-                        {{ form.length.errors }}
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Width</label>
-                        {{ form.width }}
-                        {{ form.width.errors }}
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Height</label>
-                        {{ form.height }}
-                        {{ form.height.errors }}
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Declared Value</label>
-                        {{ form.declared_value }}
-                        {{ form.declared_value.errors }}
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Shipping Cost</label>
-                        {{ form.shipping_cost }}
-                        {{ form.shipping_cost.errors }}
-                    </div>
-
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Expected Delivery</label>
-                    {{ form.expected_delivery }}
-                    {{ form.expected_delivery.errors }}
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label">Remarks</label>
-                    {{ form.remarks }}
-                    {{ form.remarks.errors }}
-                </div>
-
-                <button type="submit" class="btn shipment-save-btn">
-                    Save Shipment
-                </button>
-
-                <a href="{% url 'shipments:shipment_list' %}"
-                   class="btn shipment-cancel-btn ms-2"
-                    Cancel
-                </a>
-
-            </form>
+            </section>
 
         </div>
 
-    </div>
+        <!-- PACKAGE DETAILS -->
+        <section class="pp-form-section pp-package-details">
 
+            <div class="pp-section-heading">
+                <div class="pp-section-number">04</div>
+                <div>
+                    <h2>Package details</h2>
+                    <p>Provide the parcel measurements and shipment value.</p>
+                </div>
+            </div>
+
+            <div class="pp-measurement-grid">
+
+                <div class="pp-field">
+                    <label for="{{ form.weight.id_for_label }}">Weight (kg)</label>
+                    {{ form.weight }}
+                    {{ form.weight.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.length.id_for_label }}">Length</label>
+                    {{ form.length }}
+                    {{ form.length.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.width.id_for_label }}">Width</label>
+                    {{ form.width }}
+                    {{ form.width.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.height.id_for_label }}">Height</label>
+                    {{ form.height }}
+                    {{ form.height.errors }}
+                </div>
+
+            </div>
+
+            <div class="pp-value-grid">
+
+                <div class="pp-field">
+                    <label for="{{ form.declared_value.id_for_label }}">Declared value (₹)</label>
+                    {{ form.declared_value }}
+                    {{ form.declared_value.errors }}
+                </div>
+
+                <div class="pp-field">
+                    <label for="{{ form.shipping_cost.id_for_label }}">Shipping cost (₹)</label>
+                    {{ form.shipping_cost }}
+                    {{ form.shipping_cost.errors }}
+                </div>
+
+            </div>
+
+            <div class="pp-field pp-delivery-date">
+                <label for="{{ form.expected_delivery.id_for_label }}">Expected delivery date</label>
+                {{ form.expected_delivery }}
+                {{ form.expected_delivery.errors }}
+            </div>
+
+            <div class="pp-field">
+                <label for="{{ form.remarks.id_for_label }}">Additional remarks <span>(Optional)</span></label>
+                {{ form.remarks }}
+                {{ form.remarks.errors }}
+            </div>
+
+        </section>
+
+        <!-- FORM ACTIONS -->
+        <div class="pp-create-footer">
+            <div class="pp-create-footer-note">
+                <strong>Review before submitting</strong>
+                <span>Make sure sender, receiver and package information is accurate.</span>
+            </div>
+
+            <div class="pp-create-actions">
+                <a href="{% url 'shipments:shipment_list' %}" class="pp-cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit" class="pp-submit-button">
+                    Create shipment <span>→</span>
+                </button>
+            </div>
+        </div>
+
+    </form>
+
+            </div>
+        </div>
+
+    </div>
 </div>
 
 {% endblock %}

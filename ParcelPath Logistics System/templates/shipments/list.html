@@ -1,3 +1,4 @@
+
 {% extends "base/base.html" %}
 
 {% block title %}
@@ -6,277 +7,590 @@ Shipments | ParcelPath
 
 {% block content %}
 
-<section class="py-4">
+<style>
+/* =========================================
+   PARCELPATH SHIPMENT LIST
+   Premium forest / ivory / champagne theme
+   ========================================= */
 
-<div class="container-fluid">
+.pp-shipment-page {
+    --pp-green: #173f33;
+    --pp-green-soft: #e4eee8;
+    --pp-gold: #b58a49;
+    --pp-ivory: #f6f2e9;
+    --pp-card: #fffdf8;
+    --pp-border: #ded5c6;
+    --pp-text: #34332e;
+    --pp-muted: #817a70;
 
-<div class="shipment-header mb-4">
+    color: var(--pp-text);
+    min-width: 0;
+}
 
-<div class="d-lg-flex justify-content-between align-items-center">
+.pp-shipment-page .shipment-header h2 {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+}
 
-    <div>
+.pp-shipment-page .shipment-header p {
+    color: var(--pp-muted) !important;
+}
 
-        <h2 class="fw-bold mb-1">
+.pp-shipment-page .shipment-create-btn {
+    background: var(--pp-gold);
+    border: 1px solid var(--pp-gold);
+    color: #fff;
+    padding: 12px 21px;
+    border-radius: 8px;
+    font-weight: 600;
+}
 
-            <i class="bi bi-box-seam-fill text-primary me-2"></i>
+.pp-shipment-page .shipment-create-btn:hover {
+    background: #98703a;
+    color: #fff;
+}
 
-            Shipments
+/* Filter */
 
-        </h2>
+.pp-shipment-page .shipment-filter-card,
+.pp-shipment-page .shipment-table-card {
+    background: var(--pp-card);
+    border: 1px solid var(--pp-border) !important;
+    border-radius: 13px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(43, 55, 43, .045);
+}
 
-        <p class="text-muted mb-0">
+.pp-shipment-page .shipment-filter-card .card-body {
+    padding: 20px;
+}
 
-            Manage and track all shipments from one place.
+.pp-shipment-page .form-control,
+.pp-shipment-page .form-select {
+    min-height: 44px;
+    border: 1px solid var(--pp-border);
+    border-radius: 7px;
+    background-color: #fffdf8;
+    color: var(--pp-text);
+}
 
-        </p>
+.pp-shipment-page .form-control:focus,
+.pp-shipment-page .form-select:focus {
+    border-color: var(--pp-gold);
+    box-shadow: 0 0 0 3px rgba(181, 138, 73, .12);
+}
+
+.pp-shipment-page .shipment-search-btn {
+    background: var(--pp-green);
+    border: 1px solid var(--pp-green);
+    color: white;
+    min-height: 44px;
+    border-radius: 7px;
+    font-weight: 600;
+}
+
+.pp-shipment-page .shipment-search-btn:hover {
+    background: #245746;
+    color: white;
+}
+
+/* Table */
+
+.pp-shipment-page .shipment-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pp-shipment-page .shipment-table thead th {
+    background: #eae4d8;
+    color: #625c51;
+    padding: 17px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--pp-border);
+}
+
+.pp-shipment-page .shipment-table tbody td {
+    padding: 17px 20px;
+    vertical-align: middle;
+    background: var(--pp-card);
+    border-bottom: 1px solid #eee8de;
+    color: var(--pp-text);
+}
+
+.pp-shipment-page .shipment-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pp-shipment-page .shipment-table tbody tr {
+    transition: background .2s ease;
+}
+
+.pp-shipment-page .shipment-table tbody tr:hover td {
+    background: #f8f4eb;
+}
+
+/* Tracking */
+
+.pp-shipment-page .shipment-tracking {
+    color: var(--pp-green);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+/* Customer / Receiver */
+
+.pp-shipment-page .shipment-person {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 155px;
+}
+
+.pp-shipment-page .shipment-person-main {
+    color: #393a32;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pp-shipment-page .shipment-person-sub {
+    color: var(--pp-muted);
+    font-size: 12px;
+}
+
+.pp-shipment-page .shipment-person-sub span {
+    color: var(--pp-gold);
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+/* Status */
+
+.pp-shipment-page .shipment-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 105px;
+    padding: 8px 11px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+.pp-shipment-page .status-delivered {
+    background: #e1ede4;
+    color: #27613f;
+}
+
+.pp-shipment-page .status-transit {
+    background: #e9e8d9;
+    color: #596b40;
+}
+
+.pp-shipment-page .status-out {
+    background: #f6e9cc;
+    color: #906522;
+}
+
+.pp-shipment-page .status-cancelled {
+    background: #f1dfd9;
+    color: #994c3d;
+}
+
+.pp-shipment-page .status-returned {
+    background: #e9e2d7;
+    color: #74644d;
+}
+
+.pp-shipment-page .status-default {
+    background: #eee9df;
+    color: #70695d;
+}
+
+/* Amount */
+
+.pp-shipment-page .shipment-amount {
+    color: var(--pp-green);
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Actions */
+
+.pp-shipment-page .shipment-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.pp-shipment-page .shipment-action-btn {
+    min-width: 72px;
+    height: 35px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s ease;
+}
+
+.pp-shipment-page .shipment-view-btn {
+    background: #e8eee8;
+    color: var(--pp-green);
+    border: 1px solid #d3dfd4;
+}
+
+.pp-shipment-page .shipment-view-btn:hover {
+    background: var(--pp-green);
+    color: white;
+}
+
+.pp-shipment-page .shipment-label-btn {
+    background: #f3ead9;
+    color: #8b672e;
+    border: 1px solid #e7d8bb;
+}
+
+.pp-shipment-page .shipment-label-btn:hover {
+    background: var(--pp-gold);
+    color: white;
+}
+
+.pp-shipment-page .shipment-pdf-btn {
+    background: #f0e1dc;
+    color: #984c3d;
+    border: 1px solid #e5cbc2;
+}
+
+.pp-shipment-page .shipment-pdf-btn:hover {
+    background: #984c3d;
+    color: white;
+}
+
+/* Empty state */
+
+.pp-shipment-page .shipment-empty {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.pp-shipment-page .shipment-empty i {
+    color: var(--pp-gold);
+    font-size: 43px;
+}
+
+.pp-shipment-page .shipment-empty h4 {
+    color: var(--pp-green);
+    font-family: 'Playfair Display', serif;
+}
+
+/* Responsive */
+
+@media (max-width: 991px) {
+    .pp-shipment-page .shipment-header h2 {
+        font-size: 27px;
+    }
+}
+
+@media (max-width: 576px) {
+    .pp-shipment-page .shipment-header h2 {
+        font-size: 25px;
+    }
+
+    .pp-shipment-page .shipment-filter-card .card-body {
+        padding: 14px;
+    }
+
+    .pp-shipment-page .shipment-create-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .pp-shipment-page .shipment-table thead th,
+    .pp-shipment-page .shipment-table tbody td {
+        padding: 13px;
+    }
+}
+</style>
+
+<section class="py-4 pp-shipment-page">
+
+    <div class="container-fluid">
+
+        <div class="row g-4">
+
+            {% if request.user.role == "CUSTOMER" %}
+            <div class="col-xl-2 col-lg-3">
+                {% include "customers/sidebar.html" %}
+            </div>
+            {% endif %}
+
+            <div class="{% if request.user.role == 'CUSTOMER' %}col-xl-10 col-lg-9{% else %}col-12{% endif %}">
+
+                <!-- Header -->
+
+                <div class="shipment-header mb-4">
+
+                    <div class="d-lg-flex justify-content-between align-items-center">
+
+                        <div>
+                            <h2 class="fw-bold mb-1">
+                                <i class="bi bi-box-seam-fill me-2"></i>
+                                Shipments
+                            </h2>
+
+                            <p class="mb-0">
+                                Manage and track all shipments from one place.
+                            </p>
+                        </div>
+
+                        <div class="mt-3 mt-lg-0">
+                            <a href="{% url 'shipments:shipment_create' %}"
+                               class="btn shipment-create-btn">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                Create Shipment
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Filters -->
+
+                <div class="card shipment-filter-card border-0">
+
+                    <div class="card-body">
+
+                        <form method="get">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        value="{{ request.GET.search|default:'' }}"
+                                        class="form-control"
+                                        placeholder="Tracking Number / Customer">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <select name="status" class="form-select">
+
+                                        <option value="">All Status</option>
+
+                                        <option value="Booked"
+                                            {% if request.GET.status == "Booked" %}selected{% endif %}>
+                                            Booked
+                                        </option>
+
+                                        <option value="In Transit"
+                                            {% if request.GET.status == "In Transit" %}selected{% endif %}>
+                                            In Transit
+                                        </option>
+
+                                        <option value="Out For Delivery"
+                                            {% if request.GET.status == "Out For Delivery" %}selected{% endif %}>
+                                            Out For Delivery
+                                        </option>
+
+                                        <option value="Delivered"
+                                            {% if request.GET.status == "Delivered" %}selected{% endif %}>
+                                            Delivered
+                                        </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        value="{{ request.GET.date|default:'' }}"
+                                        class="form-control">
+                                </div>
+
+                                <div class="col-md-2 d-grid">
+                                    <button type="submit"
+                                            class="btn shipment-search-btn">
+                                        <i class="bi bi-search me-1"></i>
+                                        Search
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <!-- Shipment Table -->
+
+                <div class="card shipment-table-card border-0 mt-4">
+
+                    <div class="table-responsive">
+
+                        <table class="table shipment-table align-middle mb-0">
+
+                            <thead>
+                                <tr>
+                                    <th>Tracking Number</th>
+                                    <th>Customer / Receiver</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for shipment in shipments %}
+
+                                <tr>
+
+                                    <td>
+                                        <span class="shipment-tracking">
+                                            {{ shipment.tracking_number }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="shipment-person">
+
+                                            <span class="shipment-person-main">
+                                                {{ shipment.customer }}
+                                            </span>
+
+                                            <span class="shipment-person-sub">
+                                                <span>TO</span>
+                                                {{ shipment.receiver_name }}
+                                            </span>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+
+                                        {% if shipment.status == "DELIVERED" or shipment.status == "Delivered" %}
+                                            <span class="shipment-status status-delivered">
+                                                {{ shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "IN_TRANSIT" or shipment.status == "In Transit" %}
+                                            <span class="shipment-status status-transit">
+                                                {{ shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "OUT_FOR_DELIVERY" or shipment.status == "Out For Delivery" %}
+                                            <span class="shipment-status status-out">
+                                                {{ shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "CANCELLED" or shipment.status == "Cancelled" %}
+                                            <span class="shipment-status status-cancelled">
+                                                {{ shipment.status }}
+                                            </span>
+
+                                        {% elif shipment.status == "RETURNED" or shipment.status == "Returned" %}
+                                            <span class="shipment-status status-returned">
+                                                {{ shipment.status }}
+                                            </span>
+
+                                        {% else %}
+                                            <span class="shipment-status status-default">
+                                                {{ shipment.status }}
+                                            </span>
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td>
+                                        <span class="shipment-amount">
+                                            ₹{{ shipment.total_amount }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="shipment-actions">
+
+                                            <a href="{% url 'shipments:shipment_detail' shipment.pk %}"
+                                               class="shipment-action-btn shipment-view-btn">
+                                                <i class="bi bi-eye"></i>
+                                                View
+                                            </a>
+
+                                            <a href="{% url 'shipments:shipment_label' shipment.pk %}"
+                                               class="shipment-action-btn shipment-label-btn">
+                                                <i class="bi bi-printer"></i>
+                                                Label
+                                            </a>
+
+                                            <a href="{% url 'shipments:shipment_label_pdf' shipment.pk %}"
+                                               class="shipment-action-btn shipment-pdf-btn">
+                                                <i class="bi bi-file-earmark-pdf"></i>
+                                                PDF
+                                            </a>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                {% empty %}
+
+                                <tr>
+                                    <td colspan="5">
+
+                                        <div class="shipment-empty">
+                                            <i class="bi bi-box-seam"></i>
+
+                                            <h4 class="mt-3">
+                                                No Shipments Found
+                                            </h4>
+
+                                            <p class="text-muted mb-0">
+                                                Create your first shipment to get started.
+                                            </p>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
-
-    <div class="mt-3 mt-lg-0">
-
-        <a
-            href="{% url 'shipments:shipment_create' %}"
-            class="btn shipment-create-btn">
-
-            <i class="bi bi-plus-circle me-2"></i>
-
-            Create Shipment
-
-        </a>
-
-    </div>
-
-</div>
-
-<div class="card shipment-filter-card border-0">
-
-<div class="card-body">
-
-<form method="get">
-
-<div class="row g-3">
-
-<div class="col-md-4">
-
-<input
-type="text"
-name="search"
-class="form-control"
-placeholder="Tracking Number / Customer">
-
-</div>
-
-<div class="col-md-3">
-
-<select
-name="status"
-class="form-select">
-
-<option value="">
-
-All Status
-
-</option>
-
-<option>
-
-Booked
-
-</option>
-
-<option>
-
-In Transit
-
-</option>
-
-<option>
-
-Out For Delivery
-
-</option>
-
-<option>
-
-Delivered
-
-</option>
-
-</select>
-
-</div>
-
-<div class="col-md-3">
-
-<input
-type="date"
-name="date"
-class="form-control">
-
-</div>
-
-<div class="col-md-2 d-grid">
-
-<button
-class="btn shipment-search-btn"
-
-Search
-
-</button>
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-<div class="card shipment-table-card border-0 mt-4">
-
-<div class="table-responsive">
-
-<table class="table table-hover shipment-table align-middle mb-0">
-<thead>
-
-<tr>
-
-<th>Tracking</th>
-<th>Customer</th>
-<th>Receiver</th>
-<th>Status</th>
-<th>Amount</th>
-<th></th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for shipment in shipments %}
-
-<tr>
-
-<td>{{ shipment.tracking_number }}</td>
-
-<td>{{ shipment.customer }}</td>
-
-<td>{{ shipment.receiver_name }}</td>
-
-<td>
-
-{% if shipment.status == "Delivered" %}
-<span class="badge shipment-status bg-success">
-    {{ shipment.status }}
-</span>
-
-{% elif shipment.status == "In Transit" %}
-<span class="badge shipment-status bg-primary">
-    {{ shipment.status }}
-</span>
-
-{% elif shipment.status == "Out For Delivery" %}
-<span class="badge shipment-status bg-warning text-dark">
-    {{ shipment.status }}
-</span>
-
-{% elif shipment.status == "Cancelled" %}
-<span class="badge shipment-status bg-danger">
-    {{ shipment.status }}
-</span>
-
-{% else %}
-<span class="badge shipment-status bg-secondary">
-    {{ shipment.status }}
-</span>
-{% endif %}
-
-</td>
-
-<td>
-
-₹{{ shipment.total_amount }}
-
-</td>
-
-<td>
-
-<a
-    href="{% url 'shipments:shipment_detail' shipment.pk %}"
-    class="btn btn-sm shipment-view-btn">
-
-    <i class="bi bi-eye me-1"></i>
-
-    View
-
-</a>
-
-<a
-    href="{% url 'shipments:shipment_label' shipment.pk %}"
-    class="btn btn-sm shipment-label-btn">
-
-    <i class="bi bi-printer me-1"></i>
-
-    Label
-
-</a>
-
-<a
-    href="{% url 'shipments:shipment_label_pdf' shipment.pk %}"
-    class="btn btn-sm shipment-pdf-btn">
-
-    <i class="bi bi-file-earmark-pdf me-1"></i>
-
-    PDF
-
-</a>
-
-</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-
-<td colspan="6" class="text-center py-5">
-
-<div class="py-5">
-
-    <i class="bi bi-box display-2 text-secondary"></i>
-
-    <h4 class="mt-3">
-
-        No Shipments Found
-
-    </h4>
-
-    <p class="text-muted">
-
-        Create your first shipment to get started.
-
-    </p>
-
-</div>
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
 
 </section>
 

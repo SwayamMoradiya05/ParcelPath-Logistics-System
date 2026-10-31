@@ -1,95 +1,550 @@
+
 {% extends "base/base.html" %}
 
-{% block title %}
-Shipping Label | ParcelPath
-{% endblock %}
+{% block title %}Shipping Label | ParcelPath{% endblock %}
 
 {% block content %}
 
-<section class="py-5">
+<style>
+.pp-label-page {
+    --green: #173f33;
+    --gold: #b58a49;
+    --ivory: #f6f2e9;
+    --paper: #fffdf9;
+    --border: #ded5c6;
+    --muted: #81796e;
+    color: #34332e;
+    padding: 30px 0 50px;
+}
 
-<div class="container">
+.pp-label-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-<div class="card border-0 shadow">
+.pp-label-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
 
-<div class="card-body p-5">
+.pp-label-actions .btn {
+    min-height: 42px;
+    padding: 10px 17px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+}
 
-<div class="d-flex justify-content-between mb-4">
+.pp-print-btn {
+    background: var(--green);
+    color: white;
+    border: 1px solid var(--green);
+}
 
-<h2>
+.pp-print-btn:hover {
+    background: #245746;
+    color: white;
+}
 
-Shipping Label
+.pp-pdf-btn {
+    background: var(--gold);
+    color: white;
+    border: 1px solid var(--gold);
+}
 
-</h2>
+.pp-pdf-btn:hover {
+    background: #98703a;
+    color: white;
+}
 
-<button
-class="btn btn-primary"
-onclick="window.print()">
+.pp-back-btn {
+    color: var(--green);
+    border: 1px solid var(--green);
+}
 
-<i class="bi bi-printer me-2"></i>
+.pp-back-btn:hover {
+    background: var(--green);
+    color: white;
+}
 
-Print Label
+.pp-shipping-document {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(40,48,39,.07);
+}
 
-</button>
+/* Header */
 
-</div>
+.pp-label-brand {
+    padding: 25px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: #fcfaf5;
+    border-bottom: 1px solid var(--border);
+}
 
-<hr>
+.pp-brand-name {
+    color: var(--green);
+    font-family: 'Playfair Display', serif;
+    font-size: 39px;
+    font-weight: 700;
+    line-height: 1.1;
+}
 
-<div class="row">
+.pp-brand-tagline {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
 
-<div class="col-md-6">
+.pp-label-stamp {
+    padding: 13px 20px;
+    background: var(--green);
+    color: white;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
 
-<h5>
+/* Heading */
 
-Sender
+.pp-label-heading {
+    padding: 22px 35px;
+    border-bottom: 1px solid var(--border);
+}
 
-</h5>
+.pp-label-heading h2 {
+    color: var(--green);
+    font-family: 'Playfair Display', serif;
+    font-size: 27px;
+    font-weight: 700;
+    margin: 0;
+}
 
-<p>{{ shipment.sender_name }}</p>
+.pp-label-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    margin: 5px 0 0;
+    text-transform: uppercase;
+}
 
-<p>{{ shipment.pickup_address }}</p>
+/* Main content */
 
-</div>
+.pp-label-content {
+    padding: 30px 35px;
+}
 
-<div class="col-md-6">
+.pp-address-card {
+    height: 100%;
+    padding: 23px;
+    background: #fbf8f1;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
 
-<h5>
+.pp-address-card.receiver {
+    background: #e7eee8;
+    border-color: #d0ded2;
+}
 
-Receiver
+.pp-address-card h5 {
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
 
-</h5>
+.pp-address-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
 
-<p>{{ shipment.receiver_name }}</p>
+.pp-address-card strong {
+    color: #34332e;
+}
 
-<p>{{ shipment.delivery_address }}</p>
+/* Tracking */
 
-</div>
+.pp-tracking-card {
+    margin-top: 27px;
+    padding: 27px 20px;
+    text-align: center;
+    background: #faf7f0;
+    border: 1px dashed #c7b99f;
+    border-radius: 9px;
+}
 
-</div>
+.pp-tracking-caption {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
 
-<hr>
+.pp-tracking-number {
+    margin: 9px 0 22px;
+    color: var(--green);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    overflow-wrap: anywhere;
+}
 
-<div class="text-center mt-4">
+.pp-barcode-image {
+    display: block;
+    width: 100%;
+    max-width: 430px;
+    max-height: 125px;
+    object-fit: contain;
+    margin: 0 auto;
+}
 
-<img
-src="{{ barcode_url }}"
-class="img-fluid"
-style="max-width:350px;">
+.pp-barcode-error {
+    color: #994c3d;
+    font-size: 13px;
+    margin-top: 15px;
+}
 
-<h4 class="mt-3">
+.pp-barcode-note {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 12px;
+}
 
-{{ shipment.tracking_number }}
+/* Footer */
 
-</h4>
+.pp-label-footer {
+    padding: 17px 35px;
+    background: #f7f3eb;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 
-</div>
+.pp-label-footer strong {
+    color: var(--green);
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+}
 
-</div>
+.pp-label-footer span {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .5px;
+}
 
-</div>
+/* Responsive */
 
-</div>
+@media(max-width:768px) {
+    .pp-label-page {
+        padding: 18px 0 30px;
+    }
+
+    .pp-label-brand {
+        padding: 22px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pp-label-heading,
+    .pp-label-content {
+        padding: 21px;
+    }
+
+    .pp-brand-name {
+        font-size: 31px;
+    }
+
+    .pp-label-heading h2 {
+        font-size: 22px;
+    }
+
+    .pp-address-card {
+        padding: 19px;
+    }
+
+    .pp-tracking-number {
+        font-size: 19px;
+    }
+
+    .pp-label-footer {
+        padding: 17px 21px;
+    }
+
+    .pp-label-actions {
+        width: 100%;
+    }
+
+    .pp-label-actions .btn {
+        flex: 1;
+    }
+}
+
+/* Print */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    .pp-shipping-document,
+    .pp-shipping-document * {
+        visibility: visible !important;
+    }
+
+    .pp-shipping-document {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .pp-label-toolbar {
+        display: none !important;
+    }
+
+    .pp-label-page {
+        padding: 0 !important;
+    }
+
+    .pp-label-brand,
+    .pp-label-heading,
+    .pp-address-card,
+    .pp-tracking-card,
+    .pp-label-footer {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .pp-address-card {
+        break-inside: avoid;
+    }
+
+    .pp-barcode-image {
+        max-height: 110px;
+    }
+}
+</style>
+
+<section class="pp-label-page">
+
+    <div class="container">
+
+        <!-- Action buttons -->
+
+        <div class="pp-label-toolbar">
+
+            <div>
+                <h5 class="mb-1" style="color:#173f33;font-weight:700;">
+                    Shipment Document
+                </h5>
+                <small class="text-muted">
+                    Your ParcelPath shipping label
+                </small>
+            </div>
+
+            <div class="pp-label-actions">
+
+                <button type="button"
+                        class="btn pp-print-btn"
+                        onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i>
+                    Print Label
+                </button>
+
+                <a href="{% url 'shipments:shipment_label_pdf' shipment.pk %}"
+                   class="btn pp-pdf-btn">
+                    <i class="bi bi-file-earmark-pdf me-2"></i>
+                    Download PDF
+                </a>
+
+                <a href="{% url 'shipments:shipment_list' %}"
+                   class="btn pp-back-btn">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Back
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- Shipping document -->
+
+        <div class="pp-shipping-document">
+
+            <div class="pp-label-brand">
+
+                <div>
+                    <div class="pp-brand-name">ParcelPath</div>
+
+                    <div class="pp-brand-tagline">
+                        Smart Logistics & Parcel Delivery
+                    </div>
+                </div>
+
+                <div class="pp-label-stamp">
+                    SHIPPING LABEL
+                </div>
+
+            </div>
+
+            <div class="pp-label-heading">
+
+                <h2>
+                    <i class="bi bi-box-seam me-2"></i>
+                    ParcelPath Shipping Label
+                </h2>
+
+                <p>Professional Shipment Label</p>
+
+            </div>
+
+            <div class="pp-label-content">
+
+                <div class="row g-4">
+
+                    <!-- Sender -->
+
+                    <div class="col-md-6">
+
+                        <div class="pp-address-card">
+
+                            <h5>
+                                <i class="bi bi-box-arrow-up-right me-2"></i>
+                                Sender Information
+                            </h5>
+
+                            <p>
+                                <strong>Name:</strong>
+                                {{ shipment.sender_name|default:"Not available" }}
+                            </p>
+
+                            <p>
+                                <strong>Phone:</strong>
+                                {{ shipment.sender_phone|default:"Not available" }}
+                            </p>
+
+                            <p>
+                                <strong>Address:</strong>
+                                {{ shipment.sender_address|default:"Not available" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Receiver -->
+
+                    <div class="col-md-6">
+
+                        <div class="pp-address-card receiver">
+
+                            <h5>
+                                <i class="bi bi-geo-alt me-2"></i>
+                                Receiver Information
+                            </h5>
+
+                            <p>
+                                <strong>Name:</strong>
+                                {{ shipment.receiver_name|default:"Not available" }}
+                            </p>
+
+                            <p>
+                                <strong>Phone:</strong>
+                                {{ shipment.receiver_phone|default:"Not available" }}
+                            </p>
+
+                            <p>
+                                <strong>Address:</strong>
+                                {{ shipment.receiver_address|default:"Not available" }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Tracking and generated barcode -->
+
+                <div class="pp-tracking-card">
+
+                    <div class="pp-tracking-caption">
+                        Shipment Tracking Number
+                    </div>
+
+                    <div class="pp-tracking-number">
+                        {{ shipment.tracking_number }}
+                    </div>
+
+                    {% if barcode %}
+
+                        <img
+                            src="data:image/png;base64,{{ barcode }}"
+                            alt="Generated shipment barcode"
+                            class="pp-barcode-image">
+
+                    {% else %}
+
+                        <div class="pp-barcode-error">
+                            <i class="bi bi-exclamation-circle me-1"></i>
+                            Barcode data was not provided by the server.
+                        </div>
+
+                    {% endif %}
+
+                    <div class="pp-barcode-note">
+                        Keep this label attached to the shipment
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="pp-label-footer">
+
+                <strong>ParcelPath</strong>
+
+                <span>
+                    SMART LOGISTICS · SECURE DELIVERY
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 

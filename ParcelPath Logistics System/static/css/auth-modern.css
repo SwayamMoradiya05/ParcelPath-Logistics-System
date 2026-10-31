@@ -34,3 +34,206 @@
 .pp-auth-message{border-radius:10px!important;margin-bottom:16px!important}
 @media(max-width:991px){.pp-auth-intro{min-height:auto;margin-bottom:22px;padding:38px}.pp-auth-card{padding:34px}.pp-auth-page{padding-top:30px}}
 @media(max-width:575px){.pp-auth-page{padding:20px 0 45px}.pp-auth-intro,.pp-auth-card{border-radius:18px;padding:27px}.pp-auth-intro h1{font-size:2.7rem}.pp-auth-row{grid-template-columns:1fr}.pp-auth-options{align-items:flex-start;flex-direction:column}}
+/* =========================================
+   PARCELPATH AUTH — HEADING VISIBILITY FIX
+   Text colors only. Background unchanged.
+   ========================================= */
+
+.pp-auth-page .pp-auth-intro h1 {
+    color: #F7F1E6 !important;
+    -webkit-text-fill-color: #F7F1E6 !important;
+    background: none !important;
+}
+
+.pp-auth-page .pp-auth-intro h1 em {
+    color: #E4BD72 !important;
+    -webkit-text-fill-color: #E4BD72 !important;
+    background: none !important;
+}
+/* ==========================================
+   PARCELPATH — INFORMATION PANEL LAYOUT FIX
+   ========================================== */
+
+.pp-auth-card .pp-auth-note {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+    padding: 22px 24px !important;
+    margin-top: 28px !important;
+
+    background: #202923 !important;
+    border: 1px solid #35453a !important;
+    border-radius: 8px !important;
+}
+
+/* Heading */
+.pp-auth-note-heading {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+
+    width: 100% !important;
+    padding-bottom: 14px !important;
+    margin-bottom: 17px !important;
+
+    border-bottom: 1px solid rgba(229,220,199,.2) !important;
+}
+
+/* IMPORTANT: Normal full-width paragraph layout */
+.pp-auth-note-content {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.pp-auth-note-content p {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 13px !important;
+
+    color: #e8e9e2 !important;
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+}
+
+.pp-auth-note-content p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .pp-auth-card .pp-auth-note {
+        padding: 17px !important;
+    }
+}
+/* ==========================================
+   LOGIN — PROFESSIONAL SECURITY INFORMATION
+   ========================================== */
+
+.pp-auth-card .pp-auth-note {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 13px !important;
+
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    margin-top: 25px !important;
+    padding: 18px 20px !important;
+
+    background: #202923 !important;
+    border: 1px solid #35453a !important;
+    border-radius: 8px !important;
+}
+
+/* Shield icon */
+.pp-auth-card .pp-auth-note > i {
+    display: flex !important;
+    flex: 0 0 22px !important;
+
+    color: #d9b66e !important;
+    font-size: 18px !important;
+
+    margin-top: 2px !important;
+}
+
+/* Text */
+.pp-auth-card .pp-auth-note span {
+    display: block !important;
+    min-width: 0 !important;
+
+    color: #e8e9e2 !important;
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .pp-auth-card .pp-auth-note {
+        padding: 15px !important;
+    }
+}
+/* ==========================================
+   REGISTRATION INFORMATION — LAYOUT FIX
+   Independent from login information styling
+   ========================================== */
+
+.pp-auth-card .pp-register-note {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+    padding: 22px 24px !important;
+    margin-top: 28px !important;
+
+    background: #202923 !important;
+    border: 1px solid #35453a !important;
+    border-radius: 8px !important;
+}
+
+/* Heading stays on its own row */
+
+.pp-auth-card .pp-register-note .pp-auth-note-heading {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 11px !important;
+
+    padding-bottom: 14px !important;
+    margin-bottom: 17px !important;
+
+    border-bottom: 1px solid rgba(229, 220, 199, .20) !important;
+}
+
+/* Content takes the FULL available width */
+
+.pp-auth-card .pp-register-note .pp-auth-note-content {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Paragraphs appear one below another */
+
+.pp-auth-card .pp-register-note .pp-auth-note-content p {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 14px !important;
+
+    color: #e8e9e2 !important;
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+}
+
+.pp-auth-card .pp-register-note .pp-auth-note-content p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Mobile */
+
+@media (max-width: 576px) {
+    .pp-auth-card .pp-register-note {
+        padding: 17px !important;
+    }
+
+    .pp-auth-card .pp-register-note .pp-auth-note-content p {
+        font-size: 13px !important;
+        line-height: 1.7 !important;
+    }
+}
